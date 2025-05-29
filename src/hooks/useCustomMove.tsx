@@ -1,8 +1,12 @@
+import { useState } from "react"
 import { createSearchParams, useNavigate, useSearchParams } from "react-router"
 
 function useCustomMove() : UseCustomMoveReturn { // return 타입 = UseCustomMoveReturn
   const navigate = useNavigate()
   const [queryParams] = useSearchParams() // useSearchParams-> queryparameter가져오기
+
+  // 동일 페이지 클릭 처리
+  const [refresh, setRefresh] = useState<boolean>(false)
 
   const pageStr: string | null = queryParams.get('page')
   const sizeStr: string | null = queryParams.get('size')
@@ -34,14 +38,22 @@ function useCustomMove() : UseCustomMoveReturn { // return 타입 = UseCustomMov
         page: String(pageNum),
         size: String(sizeNum),
       }).toString()
+
+      // 동일 페이지 클릭 처리
+      // queryDefault : url로 부터 가져온 쿼리 파라미터
+      // queryStr : 사용자가 전달한 page, size 값
+      if(queryStr === queryDefault) {
+        setRefresh(!refresh)
+      }
+
     } else {
-      queryStr = queryDefault
+      queryStr = queryDefault  
     }
 
     navigate({ pathname: `../list`, search: queryStr})
   }
 
-  return {page, size, moveToList, moveToModify, moveToRead}
+  return {page, size, refresh, moveToList, moveToModify, moveToRead}
 }
 
 export default useCustomMove

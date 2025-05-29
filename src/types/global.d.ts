@@ -9,6 +9,7 @@ interface UseCustomMoveReturn {
   moveToRead : (tno:number) => void
   page : number
   size: number
+  refresh: boolean
 }
 
 interface PageRequestDto {
@@ -27,4 +28,10 @@ interface pageResponseDto<T> {
   nextPage : number
   totalPage : number
   currentPage : number
+}
+
+interface ResultModel {
+  title : string,
+  content : string,
+  callbackFn? : () => void
 }

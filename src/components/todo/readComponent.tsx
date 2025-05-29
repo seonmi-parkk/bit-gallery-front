@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { getOne } from "../../api/todoApi";
-import useCustomMove from "../../hooks/UseCustomMove";
+import useCustomMove from "../../hooks/useCustomMove";
 
 function ReadComponent({tno} : {tno:number}) {// js일경우 {tno}만해줘도 됨
 

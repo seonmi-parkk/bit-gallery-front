@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import useCustomMove from "../../hooks/UseCustomMove";
+import useCustomMove from "../../hooks/useCustomMove";
 import { getList } from "../../api/todoApi";
+import PageComponent from "../common/PageComponent";
 
 function ListComponent() {
 
-  const {page,size,moveToRead}:UseCustomMoveReturn = useCustomMove()
+  const {page,size,refresh,moveToRead,moveToList}:UseCustomMoveReturn = useCustomMove()
 
   const [serverData, setServerData] = useState<pageResponseDto<Todo> | undefined>()
 
@@ -15,11 +16,12 @@ function ListComponent() {
       setServerData(data)
     })
 
-  },[page,size])
+  },[page,size,refresh])
 
   return ( 
   <div className="border-2 border-blue-100 mt-10 mr-2 ml-2">
     {serverData && 
+      <>
       <div className="flex flex-wrap mx-auto justify-center p-6">
         {serverData.dtoList.map(todo =>
         <div
@@ -41,6 +43,9 @@ function ListComponent() {
         </div>
         )}
       </div>
+
+      <PageComponent serverData={serverData} movePage={moveToList}/>
+      </>
     }
   </div>
 

@@ -15,3 +15,18 @@ export const getList = async (pageParam : PageParam) => {
   return res.data
 }
 
+export const addPost = async (todoObj:AddTodo) => {
+  const res = await axios.post(`${prefix}/`, todoObj)
+  return res.data
+}
+
+export const putOne = async (todoObj : ModifyTodo) => {
+  const res = await axios.put(`${prefix}/${todoObj.tno}`, todoObj)
+  return res.data
+}
+
+export const deleteOne = async (tno : number) => {
+  const res = await axios.delete(`${prefix}/${tno}`)
+  return res.data
+}
+
