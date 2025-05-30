@@ -1,9 +1,9 @@
 interface Todo {
-  tno: number
-  title: string
-  userId: number
-  content: string
-  dueDate: string | null 
+  tno: number,
+  title: string,
+  userId: number,
+  content: string,
+  dueDate: string | null,
   complete: boolean
 }
 
@@ -16,7 +16,7 @@ interface AddTodo {
 interface ModifyTodo {
   tno : number,
   title : string,
-  content : string
+  content : string,
   dueDate : string | null,
   complete : boolean
 }

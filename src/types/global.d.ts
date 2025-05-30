@@ -1,14 +1,14 @@
 interface PageParam {
-  page ?: string | number //? -> 없을 수 도 있음. | -> 문자거나 숫자
+  page ?: string | number, //? -> 없을 수 도 있음. | -> 문자거나 숫자
   size ?: string | number 
 }
 
 interface UseCustomMoveReturn {
-  moveToList : (pageParam?: PageParam) => void
-  moveToModify : (tno:number) => void
-  moveToRead : (tno:number) => void
-  page : number
-  size: number
+  moveToList : (pageParam?: PageParam) => void,
+  moveToModify : (tno:number) => void,
+  moveToRead : (tno:number) => void,
+  page : number,
+  size: number,
   refresh: boolean
 }
 
@@ -18,15 +18,15 @@ interface PageRequestDto {
 }
 
 interface pageResponseDto<T> {
-  dtoList : T[]
-  pageNumList : number[]
-  pageRequestDto : PageRequestDto | null
-  prev : boolean
-  next : boolean
-  totalCount : number
-  prevPage : number
-  nextPage : number
-  totalPage : number
+  dtoList : T[],
+  pageNumList : number[],
+  pageRequestDto : PageRequestDto | null,
+  prev : boolean,
+  next : boolean,
+  totalCount : number,
+  prevPage : number,
+  nextPage : number,
+  totalPage : number,
   currentPage : number
 }
 
