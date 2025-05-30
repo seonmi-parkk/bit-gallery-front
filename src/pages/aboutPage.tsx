@@ -4,7 +4,7 @@ function aboutPage() {
     return ( 
         <div className="text-3xl">
               <div className="flex">
-                <NavLink to='/about'>About</NavLink>           
+                <NavLink to='/'>Main</NavLink>           
               </div>
             <div>About Page</div>
         </div>

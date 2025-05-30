@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import useCustomMove from "../../hooks/useCustomMove";
 import { getList } from "../../api/todoApi";
-import PageComponent from "../common/PageComponent";
+import PageComponent from "../common/pageComponent";
 
 function ListComponent() {
 
