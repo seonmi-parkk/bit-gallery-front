@@ -2,6 +2,7 @@ import { Outlet } from "react-router";
 import BasicMenu from "../components/menus/basicMenu";
 
 function BasicLayout() {
+
   return (
     <>
       <BasicMenu/>

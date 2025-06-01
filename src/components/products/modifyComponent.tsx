@@ -1,8 +1,8 @@
 import { useActionState, useState, type MouseEvent } from "react"
 import useCustomMove from "../../hooks/useCustomMove"
-import axios from "axios"
 import PendingModal from "../common/pendingModal"
 import ResultModal from "../common/resultModal"
+import jwtAxios from "../../util/jwtUtil"
 
 interface ProductTaskResult {
   actionType : string,
@@ -23,10 +23,10 @@ const modifyDeleteAsyncAction = async(state: ProductTaskResult, formData:FormDat
   let res;
 
   if(actionType === 'modify'){
-    res = await axios.put(`http://localhost:8080/api/products/${pno}`, formData)
+    res = await jwtAxios.put(`http://localhost:8080/api/products/${pno}`, formData)
   }else if(actionType === 'delete'){
     try {
-      res = await axios.patch(`http://localhost:8080/api/products/${pno}`, null)
+      res = await jwtAxios.patch(`http://localhost:8080/api/products/${pno}`, null)
     } catch (e) {
       console.error('PATCH 요청 실패:', e)
     }

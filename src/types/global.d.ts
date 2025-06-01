@@ -30,6 +30,12 @@ interface pageResponseDto<T> {
   currentPage : number
 }
 
+interface ApiResponse {
+  code: number,
+  message: string,
+  data: any 
+}
+
 interface ResultModel {
   title : string,
   content : string,
