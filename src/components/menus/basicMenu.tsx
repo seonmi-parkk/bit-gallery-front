@@ -45,7 +45,6 @@ function BasicMenu() {
           </div>
         }
       </div>
-
     </nav>
   )
 }

@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit"
-import { loginPost } from "../api/memberApi"
+import { loginPost } from "../api/userApi"
 import { removeCookie, setCookie } from "../util/cookieUtil"
 
 export interface LoginInfo {

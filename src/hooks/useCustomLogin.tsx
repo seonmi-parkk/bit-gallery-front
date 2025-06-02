@@ -4,6 +4,7 @@ import { Navigate, useNavigate } from "react-router"
 import { loginPostAsnyThunk, logout, save } from "../slices/loginSlices"
 import { useEffect } from "react"
 import { getCookie } from "../util/cookieUtil"
+import { logoutPost } from "../api/userApi"
 
 const useCustomLogin = () => {
 
@@ -33,7 +34,7 @@ const useCustomLogin = () => {
 
   // 로그아웃
   const doLogout = () => {
-    dispatch(logout(null))
+    logoutPost().then(()=>dispatch(logout(null)))
   }
 
   // 클릭이벤트 등에서 사용
