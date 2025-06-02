@@ -1,10 +1,7 @@
-import { useActionState, useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { loginPostAsnyThunk } from "../../slices/loginSlices";
-import {  type AppDispatch, type RootState } from "../../store";
-import { useNavigate } from "react-router";
+import { useState } from "react";
 import ResultModal from "../common/resultModal";
 import useCustomLogin from "../../hooks/useCustomLogin";
+import KakaoLoginComponent from "./kakaoLoginComponent";
 
 interface LoginResult {
   email: string,
@@ -60,6 +57,7 @@ const LoginComponent = () => {
               onClick={() => handleLogin()}>
               LOGIN
             </button>
+            <KakaoLoginComponent/>
           </div>
         </div>
       </div>

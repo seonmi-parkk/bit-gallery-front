@@ -5,6 +5,8 @@ function BasicMenu() {
 
   const {loginState, loginStatus} = useCustomLogin()
 
+  const {doLogout} = useCustomLogin()
+
   return (
     <nav id='navbar' className=" flex bg-blue-300">
       <div className="w-4/5 bg-gray-500" >
@@ -38,7 +40,8 @@ function BasicMenu() {
           :
           <div className="text-white text-sm m-1 rounded">
             { loginStatus == 'fulfilled' && <p>{loginState.nickname} 님</p>}
-            <NavLink to={'/user/logout'}>Logout</NavLink>
+            {/* <NavLink to={'/user/logout'}>Logout</NavLink> */}
+            <div onClick={()=>doLogout()}>Logout</div>
           </div>
         }
       </div>

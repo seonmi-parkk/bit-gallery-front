@@ -33,7 +33,7 @@ interface pageResponseDto<T> {
 interface ApiResponse {
   code: number,
   message: string,
-  data: any 
+  data?: any 
 }
 
 interface ResultModel {

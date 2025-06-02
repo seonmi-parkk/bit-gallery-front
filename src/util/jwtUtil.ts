@@ -4,29 +4,21 @@ import { getCookie, setCookie } from "./cookieUtil";
 const jwtAxios = axios.create();
 
 // access token 재발급 요청
-const refreshJWT = async (refreshToken:string) => {
-
-  //const header = {headers: {"Authorization": `Bearer ${accessToken}`}}
-  
+const refreshJWT = async (refreshToken: string) => {
   const res = await axios.post(`http://localhost:8080/user/refresh`, { refreshToken: refreshToken })
-
-  console.log("--------")
-  console.log(res.data)
   return res.data
 }
-
 
 // before request
 // 요청 보내기 전에 추가 작업 - Acceess Token 전달
 const beforeReq = (config: InternalAxiosRequestConfig) => {
-  console.log("before request...");
 
   const userInfo = getCookie("user")
-  if(!userInfo) {
+  if (!userInfo) {
     console.log("User Not Found")
     return Promise.reject(new Error("REQUIRE_LOGIN"))
   }
-  const {accessToken} = userInfo
+  const { accessToken } = userInfo
 
   // Authorization 헤더 처리
   config.headers.Authorization = `Bearer ${accessToken}`
@@ -36,34 +28,27 @@ const beforeReq = (config: InternalAxiosRequestConfig) => {
 
 // fail request
 const requestFail = async (err: AxiosError) => {
-  console.log("request error...");
   return Promise.reject(err);
 }
 
 // before return response
 // 성공적인 응답이 왔을 때 추가 작업
 const beforeRes = async (res: AxiosResponse): Promise<AxiosResponse> => {
-  console.log("before return response...");
-  console.log(res);
-
   return res;
 }
 
 // fail response
 const responseFail = async (err: AxiosError) => {
-  console.log("response fail error...");
   console.log(err);
 
-    const data = err.response?.data as ApiResponse
+  const data = err.response?.data as ApiResponse
 
-  // silent refreshing
-  // Access token 만료시
-  if(data && data.code === 40102){
-    console.log("40102 발생");
+  // Access token 만료시 silent refreshing
+  if (data && data.code === 40102) {
+    
     const userCookieValue = getCookie("user")
 
     const result = await refreshJWT(userCookieValue.refreshToken)
-    console.log("refreshJWT Result : ", result)
 
     userCookieValue.accessToken = result.accessToken
     userCookieValue.refreshToken = result.refreshToken
@@ -73,8 +58,7 @@ const responseFail = async (err: AxiosError) => {
     const expTimestamp = jwtPayload.exp * 1000; // ms
     const expires = new Date(expTimestamp);
 
-
-    setCookie("user", JSON.stringify(userCookieValue),expires)  
+    setCookie("user", JSON.stringify(userCookieValue), expires)
 
     //원래의 호출
     const originalRequest = err.config
@@ -84,32 +68,9 @@ const responseFail = async (err: AxiosError) => {
       return await axios(originalRequest);
     }
 
-
-
-
-
-    // ---------
-    // silent refreshing
-  // Access token 만료시
-  // if(data && data.error === `ERROR_ACCESS_TOKEN`){
-  //   const userCookieValue = getCookie("user")
-
-  //   const result = await refreshJWT(userCookieValue.accessToken, userCookieValue.refreshToken)
-  //   console.log("refreshJWT Result : ", result)
-
-  //   userCookieValue.accessToken = result.accessToken
-  //   userCookieValue.refreshToken = result.refreshToken
-
-  //   setCookie("user", JSON.stringify(userCookieValue),1)  //acceess token 유효시간 수정!!! 1시간
-
-  //   //원래의 호출
-  //   const originalRequest = res.config
-
-  //   originalRequest.headers.Authorization = `Bearer ${result.accessToken}`
-
-  //  return await axios(originalRequest)
-  //}
-
+  } else if (data && data.code === 40300){
+    alert('열람 권한이 없습니다.');
+    window.history.back();
   }
 
   return Promise.reject(err);

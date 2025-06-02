@@ -8,7 +8,9 @@ export interface LoginInfo {
   accessToken:string,
   refreshToken:string,
   roleNames: string[],
-  status:string
+  status:string,
+  isSocial?:boolean,
+  password?:string
 }
 
 const initState:LoginInfo = {
@@ -32,13 +34,22 @@ const loginSlice = createSlice({ // slice생성
   initialState: initState,
   reducers: {
       save: (state, action) => {
-        console.log("save....")
-        return action.payload
+        const payload = action.payload
+        const newState = {...payload, status: 'fulfilled'}
+
+        // refreshToken 보관기한 추출
+        const jwtPayload = JSON.parse(atob(payload.refreshToken.split('.')[1]));
+        const expTimestamp = jwtPayload.exp * 1000; // ms
+        const expires = new Date(expTimestamp);
+
+        setCookie("user",JSON.stringify(newState),expires)
+
+        return newState
       },
       logout: (state, action) => {
         removeCookie("user")
         console.log("logout...")
-        //return {email:''}
+        return initState
       }
   },
   extraReducers : (builder) => {
