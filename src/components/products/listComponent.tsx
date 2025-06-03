@@ -25,12 +25,12 @@ const ListComponent = ({ serverData }: { serverData: pageResponseDto<ProductDto>
                 <div className="w-full overflow-hidden ">
                   <img alt="product"
                     className="m-auto rounded-md w-60"
-                    src={`http://localhost:8080/api/products/view/s_${product.uploadedFileNames[0]}`} />
+                    src={`http://localhost:8080/products/view/s_${product.uploadedFileNames[0]}`} />
                 </div>
 
                 <div className="bottom-0 font-extrabold bg-white">
                   <div className="text-center p-1">
-                    이름: {product.name}
+                    이름: {product.pname}
                   </div>
                   <div className="text-center p-1">
                     가격: {product.price}

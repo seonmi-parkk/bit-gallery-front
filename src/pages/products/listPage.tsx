@@ -8,7 +8,7 @@ export async function loadProducts({request}: LoaderFunctionArgs){
   const page = url.searchParams.get('page') || "1";
   const size = url.searchParams.get('size') || "10";
   const queryStr = createSearchParams({page,size}).toString()
-  const res = await jwtAxios.get(`http://localhost:8080/api/products/list?${queryStr}`)
+  const res = await jwtAxios.get(`http://localhost:8080/products/list?${queryStr}`)
 
   return res.data
 }

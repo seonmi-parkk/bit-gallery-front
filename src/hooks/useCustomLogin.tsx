@@ -34,7 +34,10 @@ const useCustomLogin = () => {
 
   // 로그아웃
   const doLogout = () => {
-    logoutPost().then(()=>dispatch(logout(null)))
+    logoutPost().then(() => {
+      dispatch(logout(null))
+      navigate("/")
+    })
   }
 
   // 클릭이벤트 등에서 사용

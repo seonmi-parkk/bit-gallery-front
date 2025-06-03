@@ -19,6 +19,7 @@ const beforeReq = (config: InternalAxiosRequestConfig) => {
     return Promise.reject(new Error("REQUIRE_LOGIN"))
   }
   const { accessToken } = userInfo
+  console.log("==========accessToken: "+ accessToken);
 
   // Authorization 헤더 처리
   config.headers.Authorization = `Bearer ${accessToken}`

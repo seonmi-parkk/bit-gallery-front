@@ -23,10 +23,10 @@ const modifyDeleteAsyncAction = async(state: ProductTaskResult, formData:FormDat
   let res;
 
   if(actionType === 'modify'){
-    res = await jwtAxios.put(`http://localhost:8080/api/products/${pno}`, formData)
+    res = await jwtAxios.put(`http://localhost:8080/products/${pno}`, formData)
   }else if(actionType === 'delete'){
     try {
-      res = await jwtAxios.patch(`http://localhost:8080/api/products/${pno}`, null)
+      res = await jwtAxios.patch(`http://localhost:8080/products/${pno}`, null)
     } catch (e) {
       console.error('PATCH 요청 실패:', e)
     }
@@ -78,7 +78,7 @@ const ModifyComponent = ({ product }: { product: ProductDto }) => {
           <div className="relative mb-4 flex w-full flex-wrap items-stretch">
             <div className="w-1/5 p-6 text-right font-bold">PNAME</div>
             <input className="w-4/5 p-6 rounded-r border border-solid border-neutral-300 shadow-md"
-              name="pname" required defaultValue={product.name}>
+              name="pname" required defaultValue={product.pname}>
             </input>
           </div>
         </div>
@@ -124,7 +124,7 @@ const ModifyComponent = ({ product }: { product: ProductDto }) => {
               </button>
               <img
                 alt="img"
-                src={`http://localhost:8080/api/products/view/s_${imgFile}`} />
+                src={`http://localhost:8080/products/view/s_${imgFile}`} />
               <input type="hidden" name="uploadedFileNames" value={imgFile} />
 
             </div>

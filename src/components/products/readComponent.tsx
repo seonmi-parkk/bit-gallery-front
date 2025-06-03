@@ -18,7 +18,7 @@ const ReadComponent = ({ product }: { product: ProductDto }) => {
         <div className="relative mb-4 flex w-full flex-wrap items-stretch">
           <div className="w-1/5 p-6 text-right font-bold">PNAME</div>
           <div className="w-4/5 p-6 rounded-r border border-solid shadow-md">
-            {product.name}
+            {product.pname}
           </div>
         </div>
       </div>
@@ -44,7 +44,7 @@ const ReadComponent = ({ product }: { product: ProductDto }) => {
             alt="product"
             key={i}
             className="p-4 w-1/2"
-            src={`http://localhost:8080/api/products/view/${imgFile}`} />
+            src={`http://localhost:8080/products/view/${imgFile}`} />
         )}
       </div>
 

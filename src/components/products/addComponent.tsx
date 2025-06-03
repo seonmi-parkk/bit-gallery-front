@@ -18,7 +18,7 @@ const addAsyncAction = async (state: ProductAddResult, formData: FormData): Prom
 
   //await new Promise(resolve => setTimeout(resolve, 2000))
 
-  const res = await jwtAxios.post('http://localhost:8080/api/products/', formData)
+  const res = await jwtAxios.post('http://localhost:8080/products/', formData)
 
   return { result: res.data.result }
   
@@ -50,7 +50,7 @@ const AddComponent = () => {
           <div className="relative mb-4 flex w-full flex-wrap items-stretch">
             <div className="w-1/5 p-6 text-right font-bold">Product Name</div>
             <input className="w-4/5 p-6 rounded-r border border-solid border-neutral-300 shadow-md"
-              name="name" >
+              name="pname" >
             </input>
           </div>
         </div>

@@ -1,6 +1,6 @@
 interface ProductDto {
   pno : number,
-  name : string,
+  pname : string,
   price : number,
   pdesc : string,
   uploadedFileNames : string[],
