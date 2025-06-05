@@ -54,12 +54,7 @@ const responseFail = async (err: AxiosError) => {
     userCookieValue.accessToken = result.accessToken
     userCookieValue.refreshToken = result.refreshToken
 
-    // refreshToken 보관기한 추출
-    const jwtPayload = JSON.parse(atob(result.refreshToken.split('.')[1]));
-    const expTimestamp = jwtPayload.exp * 1000; // ms
-    const expires = new Date(expTimestamp);
-
-    setCookie("user", JSON.stringify(userCookieValue), expires)
+    setCookie("user", userCookieValue)
 
     //원래의 호출
     const originalRequest = err.config

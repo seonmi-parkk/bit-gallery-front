@@ -1,11 +1,16 @@
 import { Cookies } from "react-cookie";
+import type { LoginInfo } from "../slices/loginSlices";
 
 const cookies = new Cookies()
 
-export const setCookie = (name:string, value:string, expires:Date) => {
-  // const expires = new Date()
-  // expires.setUTCDate(expires.getUTCDate() + days) // 보관기한
-  return cookies.set(name, value, {path:'/', expires:expires})
+export const setCookie = (name:string, value:LoginInfo) => {
+  
+  // refreshToken 보관기한 추출
+  const jwtPayload = JSON.parse(atob(value.refreshToken.split('.')[1]));
+  const expTimestamp = jwtPayload.exp * 1000; // ms
+  const expires = new Date(expTimestamp);
+
+  return cookies.set(name, JSON.stringify(value), {path:'/', expires:expires})
 }
 
 export const getCookie = (name:string) => {

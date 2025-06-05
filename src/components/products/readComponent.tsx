@@ -1,8 +1,11 @@
+import UseCustomCart from "../../hooks/useCustomCart"
 import useCustomMove from "../../hooks/useCustomMove"
 
 const ReadComponent = ({ product }: { product: ProductDto }) => {
 
   const { moveToModify, moveToList } = useCustomMove()
+
+  const {addItem, isInCart} = UseCustomCart()
 
   return (
     <div className="border-2 border-sky-200 mt-10 m-2 p-4 bg-white">
@@ -47,21 +50,31 @@ const ReadComponent = ({ product }: { product: ProductDto }) => {
             src={`http://localhost:8080/products/view/${imgFile}`} />
         )}
       </div>
-
-      <div className="flex justify-end p-4">
-        <button type="button"
-          className="inline-block rounded p-4 m-2 text-xl w-32 text-white bg-red-500"
-          onClick={() => moveToModify(product.pno)}
-        >
-          Modify
-        </button>
-        <button type="button"
-          className="rounded p-4 m-2 text-xl w-32 text-white bg-blue-500"
-          onClick={() => moveToList()}
-        >
-          List
-        </button>
-      </div>
+      
+        <div className="flex justify-end p-4">
+          {/* 해당 상품이 장바구니에 없는 경우에만 추가 버튼 */}
+          {!isInCart(product.pno) &&
+            <button type="button"
+              className="inline-block rounded p-4 m-2 text-xl w-32 text-white bg-green-500"
+              onClick={() => addItem(product.pno)}
+            >
+              add Cart
+            </button>
+          } 
+          <button type="button"
+            className="inline-block rounded p-4 m-2 text-xl w-32 text-white bg-red-500"
+            onClick={() => moveToModify(product.pno)}
+          >
+            Modify
+          </button>
+          <button type="button"
+            className="rounded p-4 m-2 text-xl w-32 text-white bg-blue-500"
+            onClick={() => moveToList()}
+          >
+            List
+          </button>
+        </div>
+    
     </div>
 
   )

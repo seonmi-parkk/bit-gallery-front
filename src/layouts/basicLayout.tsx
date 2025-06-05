@@ -1,5 +1,6 @@
 import { Outlet } from "react-router";
 import BasicMenu from "../components/menus/basicMenu";
+import CartComponent from "../components/menus/cartComponent";
 
 function BasicLayout() {
 
@@ -11,7 +12,7 @@ function BasicLayout() {
           <Outlet />
         </main>
         <aside className="bg-green-300 md:w-1/3 lg:w-1/4 px-5 py-40">
-          <h1 className="text-2xl md:text-4xl"> Sidebar </h1>
+          <CartComponent/>
         </aside>
       </div>
     </>

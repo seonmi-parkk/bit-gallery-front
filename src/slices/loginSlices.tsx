@@ -10,6 +10,7 @@ export interface LoginInfo {
   roleNames: string[],
   status:string,
   isSocial?:boolean,
+  isManagerOrAdmin?: boolean,
   password?:string
 }
 
@@ -28,6 +29,10 @@ export const loginPostAsnyThunk = createAsyncThunk('loginPostAsnyThunk',({email,
   return loginPost(email, password)
 })
 
+export const isManagerOrAdmin = (payload:LoginInfo) => {
+  const roleArr = payload.roleNames
+  return roleArr.includes('MANAGER') || roleArr.includes('ADMIN')
+}
 
 const loginSlice = createSlice({ // slice생성
   name: 'loginSlice',
@@ -35,14 +40,9 @@ const loginSlice = createSlice({ // slice생성
   reducers: {
       save: (state, action) => {
         const payload = action.payload
-        const newState = {...payload, status: 'fulfilled'}
+        const newState = {...payload, status: 'fulfilled', isManagerOrAdmin: isManagerOrAdmin(payload)}
 
-        // refreshToken 보관기한 추출
-        const jwtPayload = JSON.parse(atob(payload.refreshToken.split('.')[1]));
-        const expTimestamp = jwtPayload.exp * 1000; // ms
-        const expires = new Date(expTimestamp);
-
-        setCookie("user",JSON.stringify(newState),expires)
+        setCookie("user", payload)  
 
         return newState
       },
@@ -56,16 +56,10 @@ const loginSlice = createSlice({ // slice생성
     // fulfilled : 완료된 경우
     builder.addCase(loginPostAsnyThunk.fulfilled, (state, action) => {
       console.log("loginPostAsnyc.fulfilled")
+      const payload = action.payload
+      const newState:LoginInfo = {...payload, status: 'fulfilled', isManagerOrAdmin: isManagerOrAdmin(payload)}
 
-      const newState:LoginInfo = action.payload
-      newState.status = 'fulfilled'
-
-      // refreshToken 보관기한 추출
-      const jwtPayload = JSON.parse(atob(newState.refreshToken.split('.')[1]));
-      const expTimestamp = jwtPayload.exp * 1000; // ms
-      const expires = new Date(expTimestamp);
-
-      setCookie("user", JSON.stringify(newState), expires) 
+      setCookie("user", payload) 
       
       return newState
     })// pending: 진행중

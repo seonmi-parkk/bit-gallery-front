@@ -55,6 +55,9 @@ const useCustomLogin = () => {
     navigate({pathname: path}, {replace: true})
   }
 
+  // 관리자 여부 확인
+  
+
   return {loginState, loginStatus, doLogin, doLogout, moveToLogin, moveToLoginReturn, moveToPath}
 
 }

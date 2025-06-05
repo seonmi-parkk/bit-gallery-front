@@ -8,7 +8,6 @@ interface CartItemRequest {
 interface CartItemResponse {
   cino: number,
   pno: number,
-  pno: number,
   pname: string,
   price: number,
   imageFile: string

@@ -1,8 +1,10 @@
+import UseCustomCart from "../../hooks/useCustomCart";
 import useCustomMove from "../../hooks/useCustomMove"
 import PageComponent from "../common/pageComponent";
 
 const ListComponent = ({ serverData }: { serverData: pageResponseDto<ProductDto> }) => {
   const { moveToList, moveToRead } = useCustomMove()
+  const {isInCart, addItem} = UseCustomCart()
 
   return (
     <div className="border-2 border-blue-100 mt-10 mr-2 ml-2 text-2xl">
@@ -37,6 +39,15 @@ const ListComponent = ({ serverData }: { serverData: pageResponseDto<ProductDto>
                   </div>
                 </div>
 
+                {/* 해당 상품이 장바구니에 없는 경우에만 추가 버튼 */}
+                {!isInCart(product.pno) &&
+                  <button type="button"
+                    className="inline-block m-auto rounded p-4 m-2 text-xl w-32 text-white bg-green-500"
+                    onClick={() => addItem(product.pno)}
+                  >
+                    add Cart
+                  </button>
+                }
               </div>
             </div>
           </div>
