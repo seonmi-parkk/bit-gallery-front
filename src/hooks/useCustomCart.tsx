@@ -1,7 +1,7 @@
 import { useDispatch, useSelector } from "react-redux"
 import useCustomLogin from "./useCustomLogin"
 import type { AppDispatch, RootState } from "../store"
-import { useEffect } from "react"
+import { useEffect, type MouseEvent } from "react"
 import { getCartItemsAsyncThunk, postAddItemAsyncThunk } from "../slices/cartSlice"
 
 const UseCustomCart = () => {

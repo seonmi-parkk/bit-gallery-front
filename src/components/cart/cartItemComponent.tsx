@@ -2,12 +2,7 @@ import { useDispatch } from "react-redux"
 import { deleteDeleteItemAsyncThunk } from "../../slices/cartSlice"
 import type { AppDispatch } from "../../store"
 
-interface CartItemComponentProps {
-  cartItem: CartItemResponse,
-  addItem: (pno: number) => void
-}
-
-const CartItemComponent = ({ cartItem, addItem }: CartItemComponentProps) => {
+const CartItemComponent = ({cartItem}: {cartItem:CartItemResponse}) => {
 
   const dispatch = useDispatch<AppDispatch>()
 

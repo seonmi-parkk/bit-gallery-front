@@ -19,7 +19,7 @@ const CartComponent = () => {
                 {cartItems.items.length}
               </div>
               <ul>
-                {cartItems.items.map(item => <CartItemComponent cartItem={item} addItem={addItem} key={item.cino}/>)}
+                {cartItems.items.map(item => <CartItemComponent cartItem={item} key={item.cino}/>)}
               </ul>
             </>
           }

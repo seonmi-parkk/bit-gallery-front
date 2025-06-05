@@ -61,12 +61,16 @@ const ReadComponent = ({ product }: { product: ProductDto }) => {
               add Cart
             </button>
           } 
+
+          {/* 해당 상품 글의 작성자인 경우에만 수정 버튼 노출 */}
+          {
           <button type="button"
             className="inline-block rounded p-4 m-2 text-xl w-32 text-white bg-red-500"
             onClick={() => moveToModify(product.pno)}
           >
             Modify
           </button>
+          }
           <button type="button"
             className="rounded p-4 m-2 text-xl w-32 text-white bg-blue-500"
             onClick={() => moveToList()}

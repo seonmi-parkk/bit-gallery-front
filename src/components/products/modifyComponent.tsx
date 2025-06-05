@@ -44,10 +44,17 @@ const ModifyComponent = ({ product }: { product: ProductDto }) => {
 
   const [images, setImages] = useState<string[]>(product.uploadedFileNames)
 
+  const deletedFileNames:string[] = [];
+
   const deleteOldImages = (event: MouseEvent, target: string) => {
     event.preventDefault()
     event.stopPropagation()
     setImages(prev => prev.filter(img => img !== target));
+    deletedFileNames.push(target);
+    const input = document.querySelector('input[name="deletedFileNames"]') as HTMLInputElement;
+    if (input) {
+      input.value = deletedFileNames.join(',');
+    }
   }
 
   return (
@@ -125,11 +132,10 @@ const ModifyComponent = ({ product }: { product: ProductDto }) => {
               <img
                 alt="img"
                 src={`http://localhost:8080/products/view/s_${imgFile}`} />
-              <input type="hidden" name="uploadedFileNames" value={imgFile} />
-
             </div>
           )}
         </div>
+        <input type="hidden" name="deletedFileNames"/>
 
         <div className="flex justify-end p-4">
           <button type="submit" name='actionType' value='delete'

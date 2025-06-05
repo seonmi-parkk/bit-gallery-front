@@ -3,6 +3,7 @@ import PendingModal from "../common/pendingModal"
 import ResultModal from "../common/resultModal"
 import useCustomMove from "../../hooks/useCustomMove"
 import jwtAxios from "../../util/jwtUtil"
+import { Navigate } from "react-router"
 
 interface ProductAddResult {
   result?: number,
@@ -38,11 +39,7 @@ const AddComponent = () => {
     <div className="border-2 border-sky-200 mt-10 m-2 p-4">
       {isPending && <PendingModal/>}
       {state.result != 0 && !state.error && 
-        <ResultModal 
-          title="상품 추가 결과"
-          content={`새로운 ${state.result} 상품 추가됨`}
-          callbackFn={closeModal}  
-        />
+        <Navigate to={`/products/read/${state.result}`} replace />
       }
       
       <form action={action}>

@@ -15,7 +15,7 @@ const ListComponent = ({ serverData }: { serverData: pageResponseDto<ProductDto>
 
           <div
             key={product.pno}
-            className="w-1/2 p-1 rounded shadow-md border-2 border-gray-200"
+            className="relative w-1/2 p-1 rounded shadow-md border-2 border-gray-200"
             onClick={() => moveToRead(product.pno)}
           >
 
@@ -23,7 +23,7 @@ const ListComponent = ({ serverData }: { serverData: pageResponseDto<ProductDto>
               <div className="font-extrabold text-2xl p-2 w-full ">
                 {product.pno}
               </div>
-              <div className="text-1xl m-1 p-2 w-full flex flex-col">
+              <div className="mb-20 text-1xl m-1 p-2 w-full flex flex-col">
                 <div className="w-full overflow-hidden ">
                   <img alt="product"
                     className="m-auto rounded-md w-60"
@@ -42,8 +42,8 @@ const ListComponent = ({ serverData }: { serverData: pageResponseDto<ProductDto>
                 {/* 해당 상품이 장바구니에 없는 경우에만 추가 버튼 */}
                 {!isInCart(product.pno) &&
                   <button type="button"
-                    className="inline-block m-auto rounded p-4 m-2 text-xl w-32 text-white bg-green-500"
-                    onClick={() => addItem(product.pno)}
+                    className="absolute left-1/2 transform -translate-x-1/2 bottom-4 inline-block rounded p-4 m-2 text-xl w-32 text-white bg-green-500"
+                    onClick={(e) => { e.stopPropagation(); addItem(product.pno)}}
                   >
                     add Cart
                   </button>
