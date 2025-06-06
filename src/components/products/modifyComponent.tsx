@@ -3,48 +3,16 @@ import useCustomMove from "../../hooks/useCustomMove"
 import PendingModal from "../common/pendingModal"
 import ResultModal from "../common/resultModal"
 import jwtAxios from "../../util/jwtUtil"
-
-interface ProductTaskResult {
-  actionType : string,
-  result: string,
-  error?: string
-}
-
-const initState: ProductTaskResult = {
-  actionType: 'modify',
-  result: ''
-}
-
-const modifyDeleteAsyncAction = async(state: ProductTaskResult, formData:FormData) => {
-
-  const pno = formData.get('pno') as string
-  const actionType = formData.get('actionType') as string
-  
-  let res;
-
-  if(actionType === 'modify'){
-    res = await jwtAxios.put(`http://localhost:8080/products/${pno}`, formData)
-  }else if(actionType === 'delete'){
-    try {
-      res = await jwtAxios.patch(`http://localhost:8080/products/${pno}`, null)
-    } catch (e) {
-      console.error('PATCH 요청 실패:', e)
-    }
-  }
-
-  return {actionType: actionType, result: res?.data?.result}
-}
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 
 const ModifyComponent = ({ product }: { product: ProductDto }) => {
 
-  const [state, action, isPending] = useActionState(modifyDeleteAsyncAction, initState)
+  const { moveToList, moveToRead } = useCustomMove()
 
-  const {moveToList, moveToRead} = useCustomMove()
+  const [images, setImages] = useState<string[]>([...product.uploadedFileNames])
 
-  const [images, setImages] = useState<string[]>(product.uploadedFileNames)
-
-  const deletedFileNames:string[] = [];
+  const deletedFileNames: string[] = [];
 
   const deleteOldImages = (event: MouseEvent, target: string) => {
     event.preventDefault()
@@ -57,21 +25,62 @@ const ModifyComponent = ({ product }: { product: ProductDto }) => {
     }
   }
 
+  const queryClient = useQueryClient()
+
+  const deleteMutation = useMutation({
+    mutationFn: async () => {
+      const res = await jwtAxios.patch(`http://localhost:8080/products/${product.pno}`)
+      return res.data
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['product', String(product.pno)] })
+      queryClient.invalidateQueries({ queryKey: ['products/list'], exact: false })
+    }
+  })
+
+  const modifyMutation = useMutation({
+    mutationFn: async (formData: FormData) => {
+      const header = { headers: { "Content-Type": "multipart/form-data" } }
+      const res = await jwtAxios.put(`http://localhost:8080/products/${product.pno}`, formData, header)
+      return res.data
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['product', String(product.pno)] })
+      queryClient.invalidateQueries({ queryKey: ['products/list'], exact: false })
+    }
+  })
+
+  const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+
+    const formData = new FormData(e.currentTarget)
+    // 수정 or 삭제 버튼 여부
+    const submitter = (e.nativeEvent as SubmitEvent).submitter as HTMLButtonElement
+    const actionType = submitter.value
+    console.log("actionType : ", actionType)
+
+    if(actionType === 'modify') {
+      modifyMutation.mutate(formData)
+    } else if(actionType === 'delete') {
+      deleteMutation.mutate()
+    }
+  }
+
   return (
     <div className="border-2 border-sky-200 mt-10 m-2 p-4 bg-white">
 
-      {isPending && <PendingModal/>}
-      
-      {state.result && <ResultModal title="처리 완료" content="완료" callbackFn={() => {
-          if(state.actionType === 'modify'){
-            moveToRead(product.pno)
-          }else if(state.actionType === 'delete'){
-            moveToList()
-          }
-        }}/>
+      { (deleteMutation.isPending || modifyMutation.isPending) && <PendingModal />}
+
+      {(deleteMutation.data || modifyMutation.data) &&  <ResultModal title="처리 완료" content="완료" callbackFn={() => {
+        if (modifyMutation.data?.result) {
+          moveToRead(product.pno)
+        } else if (deleteMutation.data?.result) {
+          moveToList()
+        }
+      }} />
       }
 
-      <form action={action}>
+      <form onSubmit={handleSubmit}>
         <div className="flex justify-center mt-10">
           <div className="relative mb-4 flex w-full flex-wrap items-stretch">
             <div className="w-1/5 p-6 text-right font-bold">PNO</div>
@@ -125,7 +134,7 @@ const ModifyComponent = ({ product }: { product: ProductDto }) => {
         <div className="w-full justify-center flex flex-col m-auto items-center">
           {images.map((imgFile, i) =>
             <div className="flex justify-center flex-col w-1/3" key={i}>
-              <button className="bg-blue-500 text-3xl text-white" 
+              <button className="bg-blue-500 text-3xl text-white"
                 onClick={(event) => deleteOldImages(event, imgFile)}>
                 DELETE
               </button>
@@ -135,7 +144,7 @@ const ModifyComponent = ({ product }: { product: ProductDto }) => {
             </div>
           )}
         </div>
-        <input type="hidden" name="deletedFileNames"/>
+        <input type="hidden" name="deletedFileNames" />
 
         <div className="flex justify-end p-4">
           <button type="submit" name='actionType' value='delete'
@@ -154,7 +163,7 @@ const ModifyComponent = ({ product }: { product: ProductDto }) => {
           </button>
         </div>
       </form>
-  
+
     </div>
 
 

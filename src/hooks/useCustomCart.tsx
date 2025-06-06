@@ -1,21 +1,21 @@
-import { useDispatch, useSelector } from "react-redux"
-import useCustomLogin from "./useCustomLogin"
-import type { AppDispatch, RootState } from "../store"
-import { useEffect, type MouseEvent } from "react"
-import { getCartItemsAsyncThunk, postAddItemAsyncThunk } from "../slices/cartSlice"
+
+import { useEffect } from "react"
+import useLoginStore from "../zstore/useLoginStore"
+import useCartStore from "../zstore/useCartStore"
 
 const UseCustomCart = () => {
 
-  const { loginState, loginStatus } = useCustomLogin()
+  const {user:loginState, status:loginStatus} = useLoginStore()
 
-  const cartItems = useSelector((state: RootState) => state.cartSlice)
+  const {items, getItems, addCartItem, deleteCartItem, status} = useCartStore()
 
-  const dispatch = useDispatch<AppDispatch>()
+  const cartItems = {items:items, status:status}
+
 
   // 로그인/로그아웃 상태 변화시 장바구니 아이템 가져오기 -> 로그인시 노출/ 로그아웃시 비노출
   useEffect(() => {
     if (loginStatus) {
-      dispatch(getCartItemsAsyncThunk())
+      getItems()
     }
   }, [loginStatus])
 
@@ -24,14 +24,18 @@ const UseCustomCart = () => {
     const email = loginState.email
     const requestItem:CartItemRequest = {email, pno}
 
-    dispatch(postAddItemAsyncThunk(requestItem))
+    addCartItem(requestItem)
   }
+
+  const deleteItem = (cino: number) => {
+    deleteCartItem(cino)
+  } 
 
   const isInCart = (pno: number) => {
     return cartItems.items.some(item => item.pno === pno)
   }
 
-  return {loginState, loginStatus, cartItems, addItem, isInCart}
+  return {loginState, loginStatus, cartItems, addItem, deleteItem, isInCart}
 }
 
 export default UseCustomCart

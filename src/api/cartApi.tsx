@@ -7,11 +7,11 @@ export const getCartItems = async () : Promise<CartItemResponse[]> => {
   console.log("getCartItems.res.data" ,res.data )
   return res.data
 }
-export const postAddItem = async (cartItem:CartItemRequest) => {
+export const postAddCartItem = async (cartItem:CartItemRequest) => {
   const res = await jwtAxios.post(`${host}`,cartItem)
   return res.data
 } 
-export const deleteDeleteItem = async (cino:number) => {
+export const deleteDeleteCartItem = async (cino:number) => {
   const res = await jwtAxios.delete(`${host}/${cino}`)
   return res.data
 }

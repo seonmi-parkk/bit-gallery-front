@@ -4,6 +4,7 @@ import ResultModal from "../common/resultModal"
 import useCustomMove from "../../hooks/useCustomMove"
 import jwtAxios from "../../util/jwtUtil"
 import { Navigate } from "react-router"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 
 interface ProductAddResult {
   result?: number,
@@ -13,23 +14,33 @@ const initState: ProductAddResult = {
   result: 0
 }
 
-// 액션 처리 함수
-const addAsyncAction = async (state: ProductAddResult, formData: FormData): Promise<ProductAddResult> => {
-  console.log("addAsyncAction")
-
-  //await new Promise(resolve => setTimeout(resolve, 2000))
-
+const addProduct = async (formData: FormData) => {
   const res = await jwtAxios.post('http://localhost:8080/products/', formData)
-
-  return { result: res.data.result }
-  
+  return {result: res.data.result}
 }
 
 const AddComponent = () => {
-  // useActionState (액션, 상태) => 액션이 반환하는 타입 값이 상태와 같아야한다.
-  const [state, action, isPending] = useActionState(addAsyncAction, initState)
 
   const {moveToList} = useCustomMove()
+
+  const queryClient = useQueryClient()
+
+  const mutation = useMutation({
+    mutationFn: addProduct,
+    onSuccess: (data) => {
+      console.log("-------------data :",data)
+      queryClient.invalidateQueries({
+        queryKey: ['products/list'],
+        exact: false
+      })
+    }
+  })
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
+    mutation.mutate(formData)
+  }
 
   const closeModal = () => {
     moveToList()
@@ -37,12 +48,12 @@ const AddComponent = () => {
 
   return (
     <div className="border-2 border-sky-200 mt-10 m-2 p-4">
-      {isPending && <PendingModal/>}
-      {state.result != 0 && !state.error && 
-        <Navigate to={`/products/read/${state.result}`} replace />
+      {mutation.isPending && <PendingModal/>}
+      {mutation.data?.result &&
+        <Navigate to={`/products/read/${mutation.data.result}`} replace />
       }
       
-      <form action={action}>
+      <form onSubmit={handleSubmit}>
         <div className="flex justify-center">
           <div className="relative mb-4 flex w-full flex-wrap items-stretch">
             <div className="w-1/5 p-6 text-right font-bold">Product Name</div>

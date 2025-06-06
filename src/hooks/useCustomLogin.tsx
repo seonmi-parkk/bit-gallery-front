@@ -1,20 +1,19 @@
-import { useDispatch, useSelector } from "react-redux"
-import {  type AppDispatch, type RootState } from "../store"
 import { Navigate, useNavigate } from "react-router"
-import { loginPostAsnyThunk, logout, save } from "../slices/loginSlices"
 import { useEffect } from "react"
 import { getCookie } from "../util/cookieUtil"
 import { logoutPost } from "../api/userApi"
+import useLoginStore from "../zstore/useLoginStore"
+
 
 const useCustomLogin = () => {
 
-  const dispatch = useDispatch<AppDispatch>()
+  const {user, status, login, logout, save} = useLoginStore()
 
   // 로그인 상태 객체
-  const loginState = useSelector((state: RootState) => state.loginSlice)
+  const loginState = user
 
   // 로그인 여부 
-  const loginStatus = loginState.status //fulfilled, pending, rejected
+  const loginStatus = status
 
   // 새로고침시 쿠키에서 로그인 정보 확인
   useEffect(()=>{
@@ -22,20 +21,20 @@ const useCustomLogin = () => {
       const cookieData = getCookie("user")
 
       if(cookieData){
-        dispatch(save(cookieData))
+        save(cookieData)
       }
     }
   }, [])
 
   const navigate = useNavigate()
   const doLogin = async(email:string, password:string)=>{
-    dispatch(loginPostAsnyThunk({email,password}))
+    login(email, password)
   }
 
   // 로그아웃
   const doLogout = () => {
     logoutPost().then(() => {
-      dispatch(logout(null))
+      logout()
       navigate("/")
     })
   }

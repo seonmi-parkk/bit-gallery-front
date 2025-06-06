@@ -1,16 +1,33 @@
+import { useQueryClient } from "@tanstack/react-query";
 import UseCustomCart from "../../hooks/useCustomCart";
 import useCustomMove from "../../hooks/useCustomMove"
 import PageComponent from "../common/pageComponent";
 
 const ListComponent = ({ serverData }: { serverData: pageResponseDto<ProductDto> }) => {
-  const { moveToList, moveToRead } = useCustomMove()
-  const {isInCart, addItem} = UseCustomCart()
+  const { cartItems ,isInCart, addItem } = UseCustomCart()
+
+  const query = useQueryClient()
+
+  const { page, size, moveToList, moveToRead } = useCustomMove()
+
+  // 동일 페이지 클릭 처리
+  const moveCheckPage = (pageParam: PageParam) => {
+    console.log(pageParam.page, page, pageParam.page === page)
+    if (pageParam.page === page) {
+      // if (!confirm("다시 페이지를 호출하시겠습니까?")) {
+      //   return
+      // }
+      query.invalidateQueries({ queryKey: ['products/list', page, size] }) // 키값 무효화
+    }
+    moveToList(pageParam)
+  }
+
 
   return (
     <div className="border-2 border-blue-100 mt-10 mr-2 ml-2 text-2xl">
 
       <div className="flex flex-wrap mx-auto p-6 bg-white">
-        
+
         {serverData.dtoList.map(product =>
 
           <div
@@ -40,10 +57,10 @@ const ListComponent = ({ serverData }: { serverData: pageResponseDto<ProductDto>
                 </div>
 
                 {/* 해당 상품이 장바구니에 없는 경우에만 추가 버튼 */}
-                {!isInCart(product.pno) &&
+                {cartItems.status === 'fulfilled' && !isInCart(product.pno) &&
                   <button type="button"
                     className="absolute left-1/2 transform -translate-x-1/2 bottom-4 inline-block rounded p-4 m-2 text-xl w-32 text-white bg-green-500"
-                    onClick={(e) => { e.stopPropagation(); addItem(product.pno)}}
+                    onClick={(e) => { e.stopPropagation(); addItem(product.pno) }}
                   >
                     add Cart
                   </button>
@@ -54,7 +71,7 @@ const ListComponent = ({ serverData }: { serverData: pageResponseDto<ProductDto>
         )}
       </div>
 
-      <PageComponent serverData={serverData} movePage={moveToList}></PageComponent>
+      <PageComponent serverData={serverData} movePage={moveCheckPage}></PageComponent>
 
     </div>
 

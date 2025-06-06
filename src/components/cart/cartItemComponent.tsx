@@ -1,10 +1,8 @@
-import { useDispatch } from "react-redux"
-import { deleteDeleteItemAsyncThunk } from "../../slices/cartSlice"
-import type { AppDispatch } from "../../store"
+import useCartStore from "../../zstore/useCartStore"
 
 const CartItemComponent = ({cartItem}: {cartItem:CartItemResponse}) => {
 
-  const dispatch = useDispatch<AppDispatch>()
+  const {deleteCartItem} = useCartStore()
 
   const { cino, pno, pname, price, imageFile } = cartItem
 
@@ -28,7 +26,7 @@ const CartItemComponent = ({cartItem}: {cartItem:CartItemResponse}) => {
           <div className="flex text-white font-bold p-2 justify-center">
             <button
               className="m-1 p-1 text-xl text-white bg-red-500 w-8 rounded-lg"
-              onClick={() => dispatch(deleteDeleteItemAsyncThunk(cino))}
+              onClick={() => deleteCartItem(cino)}
             > X </button>
           </div>
 

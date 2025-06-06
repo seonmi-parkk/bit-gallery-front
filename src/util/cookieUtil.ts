@@ -1,9 +1,9 @@
 import { Cookies } from "react-cookie";
-import type { LoginInfo } from "../slices/loginSlices";
+import type { UserInfo } from "../zstore/useLoginStore";
 
 const cookies = new Cookies()
 
-export const setCookie = (name:string, value:LoginInfo) => {
+export const setCookie = (name:string, value:UserInfo) => {
   
   // refreshToken 보관기한 추출
   const jwtPayload = JSON.parse(atob(value.refreshToken.split('.')[1]));

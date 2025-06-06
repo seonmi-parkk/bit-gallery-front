@@ -1,14 +1,12 @@
 import { useEffect } from "react"
 import { Navigate, useNavigate, useSearchParams } from "react-router"
-
-import { save } from "../../slices/loginSlices"
 import axios from "axios"
-import { useDispatch } from "react-redux"
-import type { AppDispatch } from "../../store"
+import useLoginStore from "../../zstore/useLoginStore"
+
 
 const KakaoRedirectPage = () => {
 
-  const dispatch = useDispatch<AppDispatch>()
+  const {save} = useLoginStore()
 
   const [searchParams] = useSearchParams();
   const authCode = searchParams.get("code")
@@ -23,7 +21,8 @@ const KakaoRedirectPage = () => {
     // 백엔드로 인가 코드 전달
     axios.post("http://localhost:8080/user/auth/kakao", { 'authCode': authCode })
       .then((result) => {
-        dispatch(save(result.data));
+        console.log("@@@@@@result : ",result)
+        save(result.data);
 
         if (result.data.isSocial) {
           navigate('/user/modify');
