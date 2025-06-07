@@ -1,5 +1,6 @@
 import UseCustomCart from "../../hooks/useCustomCart"
 import CartItemComponent from "../cart/cartItemComponent"
+import "../../styles/cart.css"
 
 const CartComponent = () => {
 

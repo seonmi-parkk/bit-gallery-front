@@ -1,4 +1,4 @@
-import { useLoaderData, useParams } from "react-router"
+import { useParams } from "react-router"
 import ModifyComponent from "../../components/products/modifyComponent"
 import { useQuery } from "@tanstack/react-query";
 import jwtAxios from "../../util/jwtUtil";
@@ -21,7 +21,7 @@ const ModifyPage = () => {
       <div className="text-3xl font-extrabold">
         Products Modify Page
       </div>
-      
+
       {data &&
       <ModifyComponent product={data}></ModifyComponent>
       }

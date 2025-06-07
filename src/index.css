@@ -1,1 +1,7 @@
 @import "tailwindcss";
+
+button{cursor: pointer;}
+.bg-main {background: #111;}
+.bg-main-2 {background: #1f1f1f;}
+a,div,p {color: #fff;}
+::marker {color: transparent;}

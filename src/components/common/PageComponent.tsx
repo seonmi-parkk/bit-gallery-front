@@ -10,7 +10,7 @@ function PageComponent({serverData, movePage} : PageComponentProps<any>) {
     <div className="m-6 flex justify-center">
       {serverData.prev &&
         <div 
-        className="m-2 p-2 w-16 text-center font-bold text-blue-400 "
+        className="cursor-pointer m-2 p-2 w-16 text-center font-bold text-blue-400 "
         onClick={() => movePage({page:serverData.prevPage} )}>
           Prev 
         </div>
@@ -19,7 +19,7 @@ function PageComponent({serverData, movePage} : PageComponentProps<any>) {
       {serverData.pageNumList.map(pageNum => 
         <div 
           key={pageNum}
-          className={ `m-2 p-2 w-12 text-center rounded shadow-md text-white ${serverData.currentPage === pageNum? 'bg-gray-500':'bg-blue-400'}`}
+          className={ `cursor-pointer m-2 p-2 w-12 text-center rounded shadow-md text-white ${serverData.currentPage === pageNum? 'bg-gray-500':'bg-blue-400'}`}
           onClick={() => movePage( {page:pageNum})}>
             {pageNum}
         </div>
@@ -28,7 +28,7 @@ function PageComponent({serverData, movePage} : PageComponentProps<any>) {
       {/* next가 true이면 next버튼 */}
       {serverData.next &&
         <div 
-          className="m-2 p-2 w-16 text-center font-bold text-blue-400"
+          className="cursor-pointer m-2 p-2 w-16 text-center font-bold text-blue-400"
           onClick={() => movePage( {page:serverData.nextPage})}> 
             Next 
         </div>

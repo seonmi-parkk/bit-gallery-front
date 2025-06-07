@@ -1,5 +1,6 @@
 import { NavLink } from "react-router";
 import useCustomLogin from "../../hooks/useCustomLogin";
+import logo from '../../assets/logo.png';
 
 function BasicMenu() {
 
@@ -8,43 +9,49 @@ function BasicMenu() {
   const {doLogout} = useCustomLogin()
 
   return (
-    <nav id='navbar' className=" flex bg-blue-300">
-      <div className="w-4/5 bg-gray-500" >
+    <nav id='navbar' className="fixed top-0 z-10 w-full bg-main flex p-6 ">
+      <div className="flex justify-between w-full" >
 
-        <ul className="flex p-4 text-white font-bold">
-          <li className="pr-6 text-2xl">
-            <NavLink to='/'>Main</NavLink>
+        <ul className="flex text-white font-bold">
+          <li className="flex items-center pr-6 text-2xl mr-10" style={{ maxWidth: '320px' }}>
+            <NavLink to='/'><img src={logo}/></NavLink>
           </li>
-          <li className="pr-6 text-2xl">
+          <li className="flex items-center pr-6 text-2xl">
             <NavLink to='/about'>About</NavLink>
           </li>
 
           {/* 로그인해서 email이 있는 경우만 사용*/}
           {loginStatus && <> 
-          <li className="pr-6 text-2xl">
+          <li className="flex items-center pr-6 text-2xl">
             <NavLink to='/todo/'>Todo</NavLink>
           </li>
-          <li className="pr-6 text-2xl">
+          <li className="flex items-center pr-6 text-2xl">
             <NavLink to='/products/'>Products</NavLink>
           </li>
           </>
           }
         </ul>
-      </div>
 
-      <div className="w-1/5 flex justify-end bg-orange-300 p-4 font-medium">
+        <div className="font-medium">
+
         { ! loginStatus ?
           <div className="text-white text-sm m-1 rounded">
             <NavLink to={'/user/login'}>Login</NavLink>
           </div>
           :
-          <div className="text-white text-sm m-1 rounded">
+          <div className=" flex gap-4 text-white text-sm m-1 rounded">
+
+            <a className="text-white" href="/manager">관리자</a>
+
             { loginStatus == 'fulfilled' && <p>{loginState.nickname} 님</p>}
             {/* <NavLink to={'/user/logout'}>Logout</NavLink> */}
             <div onClick={()=>doLogout()}>Logout</div>
           </div>
         }
       </div>
+      </div>
+
+      
     </nav>
   )
 }

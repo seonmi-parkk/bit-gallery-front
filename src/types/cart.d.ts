@@ -10,7 +10,8 @@ interface CartItemResponse {
   pno: number,
   pname: string,
   price: number,
-  imageFile: string
+  imageFile: string,
+  status: string
 }
 
 interface CartItemsArray {

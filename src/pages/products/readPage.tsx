@@ -1,4 +1,4 @@
-import { useLoaderData, useParams, type LoaderFunctionArgs } from "react-router"
+import { useParams } from "react-router"
 import ReadComponent from "../../components/products/readComponent"
 import jwtAxios from "../../util/jwtUtil"
 import { useQuery } from "@tanstack/react-query"

@@ -2,6 +2,15 @@ import { useQueryClient } from "@tanstack/react-query";
 import UseCustomCart from "../../hooks/useCustomCart";
 import useCustomMove from "../../hooks/useCustomMove"
 import PageComponent from "../common/pageComponent";
+import Masonry from 'react-masonry-css'
+import '../../styles/product.css'
+
+const breakpointColumnsObj = {
+  default: 4,
+  1100: 3,
+  700: 2,
+  500: 1
+};
 
 const ListComponent = ({ serverData }: { serverData: pageResponseDto<ProductDto> }) => {
   const { cartItems ,isInCart, addItem } = UseCustomCart()
@@ -9,6 +18,8 @@ const ListComponent = ({ serverData }: { serverData: pageResponseDto<ProductDto>
   const query = useQueryClient()
 
   const { page, size, moveToList, moveToRead } = useCustomMove()
+
+  //const images = serverData.dtoList;
 
   // 동일 페이지 클릭 처리
   const moveCheckPage = (pageParam: PageParam) => {
@@ -23,53 +34,55 @@ const ListComponent = ({ serverData }: { serverData: pageResponseDto<ProductDto>
   }
 
 
-  return (
-    <div className="border-2 border-blue-100 mt-10 mr-2 ml-2 text-2xl">
-
-      <div className="flex flex-wrap mx-auto p-6 bg-white">
-
-        {serverData.dtoList.map(product =>
-
+  return (  
+    <div>
+      <Masonry
+        breakpointCols={breakpointColumnsObj}
+        className="masonry-grid"
+        columnClassName="masonry-grid_column"
+      >
+        {serverData.dtoList.map(product => 
           <div
             key={product.pno}
-            className="relative w-1/2 p-1 rounded shadow-md border-2 border-gray-200"
+            className="list-item relative rounded cursor-pointer"
             onClick={() => moveToRead(product.pno)}
           >
 
             <div className="flex flex-col h-full">
-              <div className="font-extrabold text-2xl p-2 w-full ">
-                {product.pno}
-              </div>
-              <div className="mb-20 text-1xl m-1 p-2 w-full flex flex-col">
-                <div className="w-full overflow-hidden ">
+              <div className="text-1xl w-full flex flex-col">
+                <div className="relative w-full overflow-hidden ">
                   <img alt="product"
-                    className="m-auto rounded-md w-60"
+                    className="w-full rounded-md"
                     src={`http://localhost:8080/products/view/s_${product.uploadedFileNames[0]}`} />
-                </div>
+                  
+                  <div className="list-item-info absolute w-full bottom-0">
+                    <p>{product.pno}</p>
+                    <div className="bottom-0 font-extrabold">
+                      <div className="text-center p-1">
+                        이름: {product.pname}
+                      </div>
+                      <div className="text-center p-1">
+                        가격: {product.price}
+                      </div>
+                    </div>
 
-                <div className="bottom-0 font-extrabold bg-white">
-                  <div className="text-center p-1">
-                    이름: {product.pname}
+                    {/* 해당 상품이 장바구니에 없는 경우에만 추가 버튼 */}
+                    {cartItems.status === 'fulfilled' && !isInCart(product.pno) &&
+                      <button type="button"
+                        className="absolute left-1/2 transform -translate-x-1/2 bottom-4 inline-block rounded p-4 m-2 text-xl w-32 text-white bg-green-500"
+                        onClick={(e) => { e.stopPropagation(); addItem(product.pno) }}
+                      >
+                        add Cart
+                      </button>
+                    }
                   </div>
-                  <div className="text-center p-1">
-                    가격: {product.price}
-                  </div>
-                </div>
 
-                {/* 해당 상품이 장바구니에 없는 경우에만 추가 버튼 */}
-                {cartItems.status === 'fulfilled' && !isInCart(product.pno) &&
-                  <button type="button"
-                    className="absolute left-1/2 transform -translate-x-1/2 bottom-4 inline-block rounded p-4 m-2 text-xl w-32 text-white bg-green-500"
-                    onClick={(e) => { e.stopPropagation(); addItem(product.pno) }}
-                  >
-                    add Cart
-                  </button>
-                }
+                </div>
               </div>
             </div>
           </div>
-        )}
-      </div>
+        )} 
+      </Masonry>
 
       <PageComponent serverData={serverData} movePage={moveCheckPage}></PageComponent>
 
