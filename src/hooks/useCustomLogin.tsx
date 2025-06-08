@@ -1,30 +1,17 @@
 import { Navigate, useNavigate } from "react-router"
-import { useEffect } from "react"
-import { getCookie } from "../util/cookieUtil"
 import { logoutPost } from "../api/userApi"
 import useLoginStore from "../zstore/useLoginStore"
 
 
 const useCustomLogin = () => {
 
-  const {user, status, login, logout, save} = useLoginStore()
+  const {user, status, login, logout} = useLoginStore()
 
   // 로그인 상태 객체
   const loginState = user
 
   // 로그인 여부 
   const loginStatus = status
-
-  // 새로고침시 쿠키에서 로그인 정보 확인
-  useEffect(()=>{
-    if(!loginStatus) {
-      const cookieData = getCookie("user")
-
-      if(cookieData){
-        save(cookieData)
-      }
-    }
-  }, [])
 
   const navigate = useNavigate()
   const doLogin = async(email:string, password:string)=>{

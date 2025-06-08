@@ -47,7 +47,7 @@ function AddComponent() {
   return (
     <div className="border-2 border-sky-200 mt-10 m-2 p-4">
 
-      {result && <ResultModal title="등록 처리 완료" content={`${result}번 처리`} callbackFn={closeModal} />}
+      {result && <ResultModal message="등록 완료 되었습니다." confirmText="닫기" onConfirm={closeModal} />}
       <div className="flex justify-center">
         <div className="relative mb-4 flex w-full flex-wrap items-stretch">
           <div className="w-1/5 p-6 text-right font-bold">TITLE</div>

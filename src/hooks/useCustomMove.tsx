@@ -20,11 +20,11 @@ function useCustomMove() : UseCustomMoveReturn { // return 타입 = UseCustomMov
   }).toString()
 
   const moveToModify = (tno:number) => {
-    navigate({ pathname: `../modify/${tno}`, search: queryDefault})
+    navigate({ pathname: `/products/modify/${tno}`, search: queryDefault})
   }
 
   const moveToRead = (tno:number) => {
-    navigate({ pathname: `../read/${tno}`, search: queryDefault})
+    navigate({ pathname: `/products/read/${tno}`, search: queryDefault})
   }
 
   // 페이지 이동하기 위해 파라미터가 있으면 사용 / 없으면 기본
@@ -50,7 +50,7 @@ function useCustomMove() : UseCustomMoveReturn { // return 타입 = UseCustomMov
       queryStr = queryDefault  
     }
 
-    navigate({ pathname: `../list`, search: queryStr})
+    navigate({ pathname: `/products/list`, search: queryStr})
   }
 
   return {page, size, refresh, moveToList, moveToModify, moveToRead}

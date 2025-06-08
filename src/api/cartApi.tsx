@@ -2,7 +2,7 @@ import jwtAxios from "../util/jwtUtil";
 
 const host = `http://localhost:8080/cart`;
 
-export const getCartItems = async () : Promise<CartItemResponse[]> => {
+export const getCartItems = async () : Promise<ApiResponse> => {
   const res = await jwtAxios.get(`${host}`)
   console.log("getCartItems.res.data" ,res.data )
   return res.data

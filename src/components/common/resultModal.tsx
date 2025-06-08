@@ -1,39 +1,36 @@
-function ResultModal({ title, content, callbackFn }: ResultModel) {
+interface ResultModalProps {
+  message: string;
+  confirmText: string;
+  cancelText?: string;
+  onConfirm: () => void;
+  onCancel?: () => void; 
+}
+
+const ResultModal = ({ message, confirmText,cancelText, onConfirm, onCancel }:ResultModalProps) => {
   return (
-    <div
-      className="fixed top-0 left-0 z-[1055] flex h-full w-full justify-center bg-black "
-      style={{ backgroundColor: 'rgba(169, 169, 169, 0.7)' }}
-      onClick={() => {
-        if (callbackFn) {
-          callbackFn();
-        }
-      }}
-    >
-      <div
-        className="absolute bg-white shadow dark:bg-gray-700 w-1/4 rounded mt-10 mb-10 px-6 min-w-[600px]"
-      >
-        <div className="justify-center bg-warning-400 mt-6 mb-6 text-2xl border-b-4 border-gray-500">
-          {title}
-        </div>
-        <div className="text-4xl border-orange-400 border-b-4 pt-4 pb-4">
-          {content}
-        </div>
-        <div className="justify-end flex">
+    <div className="fixed bg-modal-back inset-0 z-50">
+      <div className="result-modal absolute left-[50%] top-[15%] transform -translate-x-[50%] bg-white p-8 rounded-xl shadow-xl w-80 text-center space-y-4">
+        <h5 className="text-white text-base">{message}</h5>
+
+        <div className="flex justify-center gap-4 pt-3">
+          {onCancel && (
+            <button
+              className="px-4 py-1.5 bg-white-1 text-black rounded hover:bg-gray-50"
+              onClick={onCancel}
+            >
+              {cancelText}
+            </button>
+          )}
           <button
-            className="rounded bg-blue-500 mt-4 mb-4 px-6 pt-4 pb-4 text-lg text-white"
-            onClick={() => {
-              if (callbackFn) {
-                callbackFn();
-              }
-            }}
+            className="px-4 py-1.5 bg-white-1 text-black rounded hover:bg-gray-200"
+            onClick={onConfirm}
           >
-            Close Modal
+            {confirmText}
           </button>
         </div>
       </div>
     </div>
-
   );
-}
+};
 
 export default ResultModal;

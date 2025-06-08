@@ -8,11 +8,11 @@ const CartComponent = () => {
 
 
   return (
-    <div className="w-full">
-      {loginStatus &&
+    <div className="w-full bg-main">
+      {loginStatus === 'fulfilled' &&
         <>
           {cartItems.status === 'pending' && <div>Loading....</div>}
-          {cartItems.status === 'rejected' && <div>rejected....</div>}
+          {cartItems.status === 'error' && <div>rejected....</div>}
           {cartItems.status === 'fulfilled' &&
             <>
               <div>{loginState.nickname}님 Cart</div>

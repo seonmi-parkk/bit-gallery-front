@@ -71,13 +71,14 @@ const ModifyComponent = ({ product }: { product: ProductDto }) => {
 
       { (deleteMutation.isPending || modifyMutation.isPending) && <PendingModal />}
 
-      {(deleteMutation.data || modifyMutation.data) &&  <ResultModal title="처리 완료" content="완료" callbackFn={() => {
-        if (modifyMutation.data?.result) {
-          moveToRead(product.pno)
-        } else if (deleteMutation.data?.result) {
-          moveToList()
-        }
-      }} />
+      {(deleteMutation.data || modifyMutation.data) &&  
+        <ResultModal message="처리 완료 되었습니다." confirmText="닫기" onConfirm={() => {
+          if (modifyMutation.data?.result) {
+            moveToRead(product.pno)  
+          } else if (deleteMutation.data?.result) {
+            moveToList()
+          }
+        }} />
       }
 
       <form onSubmit={handleSubmit}>

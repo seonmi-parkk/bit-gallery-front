@@ -1,15 +1,17 @@
-import { createBrowserRouter } from "react-router";
+import { createBrowserRouter, Navigate } from "react-router";
 
 import { lazy, Suspense } from "react";
 import BasicLayout from "../layouts/basicLayout";
-import todoRouter from "./todoRouter";
 import productRouter from "./productRouter";
 import userRouter from "./userRouter";
-const Loading = () => <div>Loaidng...</div> // 로딩할 때 보여주는 함수형 컴포넌트 (컴포넌트란 jsx반환해 주는 것)
-const Main = lazy(() => import("../pages/mainPage")) // lazy : 필요할 때 로딩
-const About = lazy(() => import("../pages/aboutPage"))
+import todoRouter from "./todoRouter";
+const Loading = () => <div>Loaidng...</div> // 로딩할 때 보여주는 함수형 컴포넌트 
 const ProductsList = lazy(() => import("../pages/products/listPage"))
-const MasonryTest = lazy(() => import("../pages/masonry"))
+const ProductsAdd = lazy(() => import("../pages/products/addPage"))
+const ProductsRead = lazy(() => import("../components/products/readModalComponent"))
+const ProductsModify = lazy(() => import("../pages/products/modifyPage"))
+const CartPage = lazy(() => import("../pages/cart/cartPage"))
+
 
 
 const router = createBrowserRouter([
@@ -19,21 +21,27 @@ const router = createBrowserRouter([
     children: [
       {
         index: true,
-        element: <Suspense fallback={<Loading/>}><ProductsList/></Suspense> 
+        element: <Navigate to={'/products/list'}></Navigate>
       },
       {
-        path: "about",
-        element: <Suspense fallback={<Loading/>}><About/></Suspense>
+        path: "cart",
+        element: <Suspense fallback={<Loading/>}><CartPage/></Suspense> 
       },
-      {
-        path: "masonry",
-        element: <Suspense fallback={<Loading/>}><MasonryTest/></Suspense>
-      },
+      productRouter(),
+      // {
+      //   path:"add",
+      //   element: <Suspense fallback={<Loading/>}><ProductsAdd/></Suspense>
+      // },
+      // {
+      //   path:"modify/:pno",
+      //   element: <Suspense fallback={<Loading/>}><ProductsModify/></Suspense>
+      // },
+
       todoRouter(),
-      productRouter()
+      userRouter() 
     ]
   },
-  userRouter() // BasicLayout을 사용하지 않기때문
+  
 ])
 
 export default router

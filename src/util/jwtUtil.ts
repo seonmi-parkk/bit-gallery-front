@@ -16,6 +16,7 @@ const beforeReq = (config: InternalAxiosRequestConfig) => {
   const userInfo = getCookie("user")
   if (!userInfo) {
     console.log("User Not Found")
+    alert('로그인이 필요합니다.');
     return Promise.reject(new Error("REQUIRE_LOGIN"))
   }
   const { accessToken } = userInfo

@@ -19,5 +19,18 @@
 .list-item-info {
   opacity: 0;
   transform: translateY(100%);
-  background: linear-gradient(rgba(0, 0, 0, 0), rgb(0,0,0,0.5) 32%, rgb(0,0,0,0.9) 100%);
+  background: linear-gradient(rgba(0, 0, 0, 0), rgb(0,0,0,0.5) 32%, rgb(0,0,0,0.8) 100%);
+}
+
+.product-detail-swiper .swiper-wrapper, .product-detail-swiper .swiper-slide {
+  height: 100%;
+}
+
+.product-thumb-nail-swiper .swiper-wrapper{
+  display: flex;
+  justify-content: center;
+}
+
+.product-thumb-nail-swiper .swiper-slide {
+  width: auto !important;
 }

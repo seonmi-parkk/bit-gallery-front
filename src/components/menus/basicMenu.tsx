@@ -9,7 +9,7 @@ function BasicMenu() {
   const {doLogout} = useCustomLogin()
 
   return (
-    <nav id='navbar' className="fixed top-0 z-10 w-full bg-main flex p-6 ">
+    <nav id='navbar' className="fixed top-0 z-10 w-full bg-main flex px-10 py-6 ">
       <div className="flex justify-between w-full" >
 
         <ul className="flex text-white font-bold">
@@ -21,20 +21,24 @@ function BasicMenu() {
           </li>
 
           {/* 로그인해서 email이 있는 경우만 사용*/}
-          {loginStatus && <> 
-          <li className="flex items-center pr-6 text-2xl">
-            <NavLink to='/todo/'>Todo</NavLink>
-          </li>
-          <li className="flex items-center pr-6 text-2xl">
-            <NavLink to='/products/'>Products</NavLink>
-          </li>
-          </>
+          {loginStatus && 
+            <> 
+              <li className="flex items-center pr-6 text-2xl">
+                <NavLink to='/todo/'>Todo</NavLink>
+              </li>
+              <li className="flex items-center pr-6 text-2xl">
+                <NavLink to='/products/'>Products</NavLink>
+              </li>
+              <li className="flex items-center pr-6 text-2xl">
+                <NavLink to='/cart'>Cart</NavLink>
+              </li>
+            </>
           }
         </ul>
 
         <div className="font-medium">
 
-        { ! loginStatus ?
+        { loginStatus !== 'fulfilled' ?
           <div className="text-white text-sm m-1 rounded">
             <NavLink to={'/user/login'}>Login</NavLink>
           </div>
@@ -43,7 +47,7 @@ function BasicMenu() {
 
             <a className="text-white" href="/manager">관리자</a>
 
-            { loginStatus == 'fulfilled' && <p>{loginState.nickname} 님</p>}
+            <p>{loginState.nickname} 님</p>
             {/* <NavLink to={'/user/logout'}>Logout</NavLink> */}
             <div onClick={()=>doLogout()}>Logout</div>
           </div>

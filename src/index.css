@@ -1,7 +1,62 @@
 @import "tailwindcss";
 
 button{cursor: pointer;}
-.bg-main {background: #111;}
-.bg-main-2 {background: #1f1f1f;}
 a,div,p {color: #fff;}
 ::marker {color: transparent;}
+
+h3{font-size: 30px;}
+h4{font-size: 24px;}
+h5{font-size: 20px;}
+
+.bg-main {background: #111;}
+.bg-main-2 {background: #1f1f1f;}
+.bg-main-3 {background: #333;}
+.bg-main-4 {background: #555;}
+.bg-main-6 {background: #777;}
+
+.bg-white-1 {background: #ddd;}
+.bg-white-2 {background: #ccc;}
+.bg-white-3 {background: #eee;}
+
+.bg-modal-back {background: rgb(17, 17, 17, 0.8);}
+.result-modal {
+  border: 1px solid rgb(58, 62, 65);
+  background-color: rgb(37, 40, 42);
+  backdrop-filter: blur(20px);
+}
+
+.border-white-2 {border-color: #ccc;}
+.border-main-6 {border-color: #777;}
+
+.text-white-1 {color: #ddd;}
+.text-black-1 {color: #111 !important;}
+.text-black-2 {color: #333 !important;}
+
+/* toast */
+div.Toastify__toast {
+  color: white !important;
+  width: auto;
+  min-width: 260px;
+  padding: 16px 24px;
+  min-height: 40px ;
+}
+
+div.toast-succeess{
+  background-color: #22c55e ;
+}
+
+div.toast-error{
+  background-color: #d83232 ;
+}
+
+div.toast-info{
+  background-color: #3853db ;
+}
+
+div.toast-ing{
+  background-color: #d8a413 ;
+}
+
+button.Toastify__close-button {color: #fff;}
+
+

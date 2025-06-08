@@ -3,7 +3,12 @@ import UseCustomCart from "../../hooks/useCustomCart";
 import useCustomMove from "../../hooks/useCustomMove"
 import PageComponent from "../common/pageComponent";
 import Masonry from 'react-masonry-css'
+import { BsCartPlus } from "react-icons/bs";
 import '../../styles/product.css'
+import useLoginStore from "../../zstore/useLoginStore";
+import ReadModalComponent from "./readModalComponent";
+import { useState } from "react";
+import useCustomLogin from "../../hooks/useCustomLogin";
 
 const breakpointColumnsObj = {
   default: 4,
@@ -15,9 +20,17 @@ const breakpointColumnsObj = {
 const ListComponent = ({ serverData }: { serverData: pageResponseDto<ProductDto> }) => {
   const { cartItems ,isInCart, addItem } = UseCustomCart()
 
-  const query = useQueryClient()
+  //const {status:loginStatus} = useLoginStore()
+  const {loginStatus} = useCustomLogin()
 
   const { page, size, moveToList, moveToRead } = useCustomMove()
+
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [selectedPno, setSelectedPno] = useState<number>(0);
+
+  const query = useQueryClient()
+
+  console.log("[ListComponent]LoginStatus : ", loginStatus)
 
   //const images = serverData.dtoList;
 
@@ -45,7 +58,7 @@ const ListComponent = ({ serverData }: { serverData: pageResponseDto<ProductDto>
           <div
             key={product.pno}
             className="list-item relative rounded cursor-pointer"
-            onClick={() => moveToRead(product.pno)}
+            onClick={() => {setIsOpenModal(true); setSelectedPno(product.pno)}}
           >
 
             <div className="flex flex-col h-full">
@@ -55,24 +68,23 @@ const ListComponent = ({ serverData }: { serverData: pageResponseDto<ProductDto>
                     className="w-full rounded-md"
                     src={`http://localhost:8080/products/view/s_${product.uploadedFileNames[0]}`} />
                   
-                  <div className="list-item-info absolute w-full bottom-0">
-                    <p>{product.pno}</p>
-                    <div className="bottom-0 font-extrabold">
-                      <div className="text-center p-1">
-                        이름: {product.pname}
+                  <div className="absolute w-full flex justify-between list-item-info px-4 pt-4 pb-3 bottom-0">
+                    <div className="">
+                      <div className="max-w-5/6 truncate text-white-1">
+                        {product.pname}
                       </div>
-                      <div className="text-center p-1">
-                        가격: {product.price}
+                      <div className="mt-1 text-white-1 text-sm">
+                        {product.price} 원
                       </div>
                     </div>
 
                     {/* 해당 상품이 장바구니에 없는 경우에만 추가 버튼 */}
-                    {cartItems.status === 'fulfilled' && !isInCart(product.pno) &&
+                    {(loginStatus === 'guest' || cartItems.status === 'fulfilled' && !isInCart(product.pno)) &&
                       <button type="button"
-                        className="absolute left-1/2 transform -translate-x-1/2 bottom-4 inline-block rounded p-4 m-2 text-xl w-32 text-white bg-green-500"
+                        className="flex justify-center items-center w-10 h-10 rounded text-xl bg-white-1 text-black-2"
                         onClick={(e) => { e.stopPropagation(); addItem(product.pno) }}
                       >
-                        add Cart
+                        <BsCartPlus/>
                       </button>
                     }
                   </div>
@@ -81,11 +93,20 @@ const ListComponent = ({ serverData }: { serverData: pageResponseDto<ProductDto>
               </div>
             </div>
           </div>
+          
         )} 
       </Masonry>
 
+      {/* 페이지네이션 */}
       <PageComponent serverData={serverData} movePage={moveCheckPage}></PageComponent>
-
+      
+      {/* 상세페이지 모달 */}
+      {isOpenModal && selectedPno !== 0 && 
+        <ReadModalComponent
+          pno={selectedPno} 
+          onClose={() => {setIsOpenModal(false); setSelectedPno(0); }}
+        />
+      }
     </div>
 
 

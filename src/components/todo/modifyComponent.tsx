@@ -68,7 +68,7 @@ function ModifyComponent({ tno }: { tno: number }) {
 
   return (
     <div className="border-2 border-sky-200 mt-10 m-2 p-4">
-      {result && <ResultModal title={'처리결과'} content={result} callbackFn={closeModal}/>}
+      {result && <ResultModal message={result} confirmText="닫기" onConfirm={closeModal}/>}
       <div className="flex justify-center mt-10">
         <div className="relative mb-4 flex w-full flex-wrap items-stretch">
           <div className="w-1/5 p-6 text-right font-bold">TNO</div>

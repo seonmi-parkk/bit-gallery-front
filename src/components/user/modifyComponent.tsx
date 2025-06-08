@@ -54,9 +54,9 @@ const ModifyComponent = () => {
       {/* {state.error.global && <div className="bg-amber-500"> {state.error.global} </div>} */}
       {state.resultCode === 200 &&
         <ResultModal
-          title="회원 정보 수정 결과 "
-          content={`회원 정보가 수정되었습니다.`}
-          callbackFn={closeModal} />
+          message="회원 정보가 수정되었습니다." 
+          confirmText="닫기" 
+          onConfirm={closeModal}/>
       }
       <form action={action}>
         <div className="mb-6">

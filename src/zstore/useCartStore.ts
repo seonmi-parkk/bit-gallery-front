@@ -1,9 +1,10 @@
 import { create } from "zustand"
 import { deleteDeleteCartItem, getCartItems, postAddCartItem } from "../api/cartApi"
+import { showErrorToast, showSuccessToast } from "../util/toastUtil"
 
 export interface CartStore {
   items: CartItemResponse[],
-  status: string,
+  status: ''|'pending'|'fulfilled'|'error',
   getItems: () => void,
   addCartItem: (cartItem:CartItemRequest) => void
   deleteCartItem: (cino:number) => void
@@ -17,19 +18,26 @@ const useCartStore = create<CartStore> ((set) => {
       set({status: 'pending'})
       
       const cartData = await getCartItems()
-      set({items: cartData, status:'fulfilled'})
+      console.log("items: cartData.data : ",cartData.data);
+      set({items: cartData.data, status:'fulfilled'})
     },
     addCartItem: async(cartItem:CartItemRequest) => {
       set({status: 'pending'})
-
+      console.log("addCartItem 요청직전");
       const changedData = await postAddCartItem(cartItem)
-      set({items: changedData, status:'fulfilled'})
+      if(changedData.code === 40001){
+        showErrorToast(changedData.message);
+        return;
+      }
+      set({items: changedData.data, status:'fulfilled'})
+      showSuccessToast('해당 상품이 장바구니에 담겼습니다.');
+      
     },
     deleteCartItem: async(cino:number) => {
       set({status: 'pending'})
 
       const changedData = await deleteDeleteCartItem(cino)
-      set({items: changedData, status:'fulfilled'})
+      set({items: changedData.data, status:'fulfilled'})
     }
   }
 })

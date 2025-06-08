@@ -12,7 +12,7 @@ export interface UserInfo {
 
 export interface UserStore {
   user: UserInfo,
-  status: ''|'pending'|'fulfilled'|'error',
+  status: 'guest'|'pending'|'fulfilled'|'error',
   login: (email:string, password:string) => void,
   logout: () => void,
   save: (userInfo: UserInfo) => void
@@ -26,11 +26,11 @@ const initState:UserInfo = {
   roleNames: []
 }
 
-const useLoginStore = create<UserStore>( (set) => {
+const useLoginStore = create<UserStore>( (set,get) => {
 
   return {
     user: initState,
-    status: '',
+    status: 'guest',
     login: async (email:string, password:string) => {
       set( {status: 'pending'});
 
@@ -40,21 +40,25 @@ const useLoginStore = create<UserStore>( (set) => {
         set( {user: data, status: 'fulfilled'})
         const newState = {...data, status: 'fulfilled'}
         setCookie("user", newState)
+        console.log("=======loginStatus: ",  get().status)
 
       } catch (error) {
         console.log("Login filed : ", error)
         set({status: 'error'})
+        console.log("=======loginStatus: ",  get().status)
       }
     },
     logout: () => {
-      set( {user: {...initState}, status: ''})
+      set( {user: {...initState}, status: 'guest'})
       removeCookie("user")
+      console.log("=======loginStatus: ",  get().status)
     },
     save: (userInfo: UserInfo) => {
       console.log("userInfo!!!!!:", userInfo)
       set( {user: userInfo, status: 'fulfilled'})
       const newState = {...userInfo, status: 'fulfilled'}
       setCookie("user", newState)
+      console.log("=======loginStatus: ",  get().status)
     }
   }
 })

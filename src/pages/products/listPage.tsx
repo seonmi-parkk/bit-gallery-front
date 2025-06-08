@@ -4,6 +4,7 @@ import jwtAxios from "../../util/jwtUtil";
 import useCustomMove from "../../hooks/useCustomMove";
 import { useQuery } from "@tanstack/react-query";
 import PendingModal from "../../components/common/pendingModal";
+import axios from "axios";
 
 const ListPage = () => {
 
@@ -12,7 +13,7 @@ const ListPage = () => {
   const { data, error, isPending } = useQuery({
     queryKey: ['products/list', page, size], // 캐싱할 때 보관할 이름 
     queryFn: async () => {
-        const res = await jwtAxios.get(`http://localhost:8080/products/list?${queryStr}`)
+        const res = await axios.get(`http://localhost:8080/products/list?${queryStr}`)
         console.log("------queryFn : ",queryStr);
         return res.data
       },
