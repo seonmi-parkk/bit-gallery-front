@@ -6,7 +6,7 @@ const jwtAxios = axios.create();
 // access token 재발급 요청
 const refreshJWT = async (refreshToken: string) => {
   const res = await axios.post(`http://localhost:8080/user/refresh`, { refreshToken: refreshToken })
-  return res.data
+  return res.data.data
 }
 
 // before request

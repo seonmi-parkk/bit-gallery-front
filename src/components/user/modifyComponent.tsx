@@ -1,9 +1,9 @@
 import { useActionState } from "react"
 import useCustomLogin from "../../hooks/useCustomLogin"
 import jwtAxios from "../../util/jwtUtil"
-import PendingModal from "../common/pendingModal"
 import ResultModal from "../common/resultModal"
 import { useNavigate } from "react-router"
+import LoadingSpinner from "../common/loadingSpinner"
 
 interface ModifyResult {
   resultCode: string,
@@ -50,7 +50,7 @@ const ModifyComponent = () => {
 
   return (
     <div className="max-w-3xl mx-auto m-6 px-4">
-      {isPending && <PendingModal />}
+      {isPending && <LoadingSpinner />}
       {/* {state.error.global && <div className="bg-amber-500"> {state.error.global} </div>} */}
       {state.resultCode === 200 &&
         <ResultModal
@@ -59,10 +59,10 @@ const ModifyComponent = () => {
           onConfirm={closeModal}/>
       }
       <form action={action}>
-        <div className="mb-6">
-          <div className="flex justify-center w-full flex-wrap items-center">
-            <div className="w-[100px] p-2 font-bold">Email</div>
-            <input className="flex-1 px-4 py-3 rounded-r border border-solid border-neutral-300 shadow-md"
+        <div className="mb-4">
+          <div className="">
+            <div className="py-2 font-bold">Email</div>
+            <input className="inline-block w-full px-4 py-3 rounded-r border border-solid border-neutral-300 shadow-md"
               name="email"
               type={'text'}
               defaultValue={loginState.email}
@@ -71,28 +71,28 @@ const ModifyComponent = () => {
           </div>
           {state.error?.email && <p className="text-red-500 p-2">{state.error.email}</p>}
         </div>
-        <div className="mb-6">
-          <div className="flex justify-center w-full flex-wrap items-center">
-            <div className="w-[100px] p-2 font-bold">Password</div>
-            <input className="flex-1 px-4 py-3 rounded-r border border-solid border-neutral-300 shadow-md"
+        <div className="mb-4">
+          <div className="">
+            <div className="py-2 font-bold">Password</div>
+            <input className="inline-block w-full px-4 py-3 rounded-r border border-solid border-neutral-300 shadow-md"
               name="password"
               type={'password'}
               />
           </div>
           {state.error?.password && <p className="text-red-500 p-2">{state.error.password}</p>}
         </div>
-        <div className="mb-6">
-          <div className="flex justify-center w-full flex-wrap items-center">
-            <div className="w-[100px] p-2 font-bold">Nickname</div>
-            <input className="flex-1 px-4 py-3 rounded-r border border-solid border-neutral-300 shadow-md"
+        <div className="mb-4">
+          <div className="">
+            <div className="py-2 font-bold">Nickname</div>
+            <input className="inline-block w-full px-4 py-3 rounded-r border border-solid border-neutral-300 shadow-md"
               name="nickname"
               type={'text'}
               defaultValue={loginState.nickname}
               />
           </div>
-          {state.error?.nickname && <p className="text-red-500 p-2">{state.error.nickname}</p>}
+          {state.error?.nickname && <p className="text-red-500 pt-2">{state.error.nickname}</p>}
         </div>
-        <div className="flex justify-center">
+        <div className="flex justify-center mt-10">
           <div className="relative mb-4 flex w-full flex-wrap justify-center">
             <button type="submit"
               className="rounded p-4 mt-4 text-xl w-32 text-white bg-blue-500"

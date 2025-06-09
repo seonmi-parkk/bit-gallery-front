@@ -13,7 +13,6 @@ export default function productsRouter() {
  return (
   {
    path: "products",
-   Component: ProductsIndex,
    children: [
     {
      path: "list",

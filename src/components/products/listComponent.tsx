@@ -3,11 +3,16 @@ import UseCustomCart from "../../hooks/useCustomCart";
 import useCustomMove from "../../hooks/useCustomMove"
 import PageComponent from "../common/pageComponent";
 import Masonry from 'react-masonry-css'
-import { BsCartPlus } from "react-icons/bs";
+import { BsCartPlus, BsCartCheck } from "react-icons/bs";
+import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import '../../styles/product.css'
 import useLoginStore from "../../zstore/useLoginStore";
 import ReadModalComponent from "./readModalComponent";
 import { useState } from "react";
+import 'swiper/css';
+import 'swiper/css/navigation';
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Navigation } from 'swiper/modules';
 import useCustomLogin from "../../hooks/useCustomLogin";
 
 const breakpointColumnsObj = {
@@ -18,21 +23,21 @@ const breakpointColumnsObj = {
 };
 
 const ListComponent = ({ serverData }: { serverData: pageResponseDto<ProductDto> }) => {
-  const { cartItems ,isInCart, addItem } = UseCustomCart()
+  const { cartItems, isInCart, addItem, moveToCart } = UseCustomCart()
 
-  //const {status:loginStatus} = useLoginStore()
-  const {loginStatus} = useCustomLogin()
+  const { status: loginStatus, user: loginUser } = useLoginStore()
 
   const { page, size, moveToList, moveToRead } = useCustomMove()
 
   const [isOpenModal, setIsOpenModal] = useState(false);
   const [selectedPno, setSelectedPno] = useState<number>(0);
 
+  const apiUrl = import.meta.env.VITE_API_BASE_URL;
+  const imageUrl = `${apiUrl}/upload/product/thumb/s_`;
+
   const query = useQueryClient()
 
   console.log("[ListComponent]LoginStatus : ", loginStatus)
-
-  //const images = serverData.dtoList;
 
   // 동일 페이지 클릭 처리
   const moveCheckPage = (pageParam: PageParam) => {
@@ -64,11 +69,27 @@ const ListComponent = ({ serverData }: { serverData: pageResponseDto<ProductDto>
             <div className="flex flex-col h-full">
               <div className="text-1xl w-full flex flex-col">
                 <div className="relative w-full overflow-hidden ">
-                  <img alt="product"
-                    className="w-full rounded-md"
-                    src={`http://localhost:8080/products/view/s_${product.uploadedFileNames[0]}`} />
+
+                  <Swiper
+                    modules={[Autoplay]}
+                    slidesPerView={1}
+                    autoplay={{
+                      delay: 3000, // 3초마다 자동 슬라이드
+                      disableOnInteraction: false, // 유저가 터치해도 autoplay 유지
+                      pauseOnMouseEnter: false  // 마우스 오버해도 autoplay 유지
+                    }}
+                    loop={true}
+                    className="relative product-detail-swiper w-full rounded overflow-hidden"
+                  >
+                    {product.uploadedFileNames.map((imgFile: string, idx: number) => (
+                      <SwiperSlide key={idx}>
+                        <img src={imageUrl+imgFile} className="w-full h-full max-w-full object-contain" />
+                      </SwiperSlide>
+                    ))}
+                    
+                  </Swiper>
                   
-                  <div className="absolute w-full flex justify-between list-item-info px-4 pt-4 pb-3 bottom-0">
+                  <div className="absolute z-10 w-full flex justify-between list-item-info px-4 pt-4 pb-3 bottom-0">
                     <div className="">
                       <div className="max-w-5/6 truncate text-white-1">
                         {product.pname}
@@ -78,15 +99,36 @@ const ListComponent = ({ serverData }: { serverData: pageResponseDto<ProductDto>
                       </div>
                     </div>
 
-                    {/* 해당 상품이 장바구니에 없는 경우에만 추가 버튼 */}
-                    {(loginStatus === 'guest' || cartItems.status === 'fulfilled' && !isInCart(product.pno)) &&
+
+                    {/* {(loginStatus === 'guest' || cartItems.status === 'fulfilled' && !isInCart(product.pno)) &&
                       <button type="button"
                         className="flex justify-center items-center w-10 h-10 rounded text-xl bg-white-1 text-black-2"
                         onClick={(e) => { e.stopPropagation(); addItem(product.pno) }}
                       >
                         <BsCartPlus/>
                       </button>
-                    }
+                    } */}
+
+                    {loginUser.email !== product.sellerEmail && (
+                      !cartItems.items.some(item => item.pno === product.pno) || loginStatus === 'guest' ? (
+                        <button type="button"
+                          className="flex justify-center items-center w-10 h-10 rounded text-xl border border-main-6"
+                          onClick={() => addItem(product.pno)}
+                        >
+                          <BsCartPlus />
+                        </button>
+                      ) : (
+                        <button type="button"
+                          className="flex justify-center items-center w-10 h-10 rounded text-xl border border-main-6"
+                          onClick={() => moveToCart()}
+                        >
+                          <BsCartCheck />
+                        </button>
+                      )
+                    )}
+
+
+
                   </div>
 
                 </div>

@@ -13,9 +13,9 @@ const AddPage = () => {
   }, [loginStatus]);
 
   return (
-    <div className="p-4 w-full bg-white">
-      <div className="text-3xl font-extrabold">
-        Products Add Page
+    <div className="max-w-[900px] m-auto p-4 w-full">
+      <div className="text-3xl text-center font-bold">
+        상품 등록
       </div>
       <AddComponent/>
     </div>

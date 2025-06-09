@@ -1,9 +1,10 @@
 import { useActionState, useState, type MouseEvent } from "react"
 import useCustomMove from "../../hooks/useCustomMove"
-import PendingModal from "../common/pendingModal"
 import ResultModal from "../common/resultModal"
 import jwtAxios from "../../util/jwtUtil"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
+import LoadingSpinner from "../common/loadingSpinner"
+import { IoIosCloseCircleOutline } from "react-icons/io";
 
 
 const ModifyComponent = ({ product }: { product: ProductDto }) => {
@@ -66,102 +67,103 @@ const ModifyComponent = ({ product }: { product: ProductDto }) => {
     }
   }
 
-  return (
-    <div className="border-2 border-sky-200 mt-10 m-2 p-4 bg-white">
+  const apiUrl = import.meta.env.VITE_API_BASE_URL;
+  const imageUrl = `${apiUrl}/upload/product/thumb/s_`;
 
-      { (deleteMutation.isPending || modifyMutation.isPending) && <PendingModal />}
+  return (
+    <div className="mt-10 m-2 p-4 inner">
+
+      { (deleteMutation.isPending || modifyMutation.isPending) && <LoadingSpinner/>}
 
       {(deleteMutation.data || modifyMutation.data) &&  
         <ResultModal message="처리 완료 되었습니다." confirmText="닫기" onConfirm={() => {
-          if (modifyMutation.data?.result) {
+          if (modifyMutation.data?.code === 200) {
             moveToRead(product.pno)  
-          } else if (deleteMutation.data?.result) {
+          } else if (deleteMutation.data?.code === 200) {
             moveToList()
           }
         }} />
       }
 
       <form onSubmit={handleSubmit}>
-        <div className="flex justify-center mt-10">
-          <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-            <div className="w-1/5 p-6 text-right font-bold">PNO</div>
-            <input className="w-4/5 p-6 rounded-r border border-solid border-neutral-300 shadow-md"
-              name="pno" required defaultValue={product.pno}>
-            </input>
-          </div>
-        </div>
 
-        <div className="flex justify-center">
-          <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-            <div className="w-1/5 p-6 text-right font-bold">PNAME</div>
-            <input className="w-4/5 p-6 rounded-r border border-solid border-neutral-300 shadow-md"
-              name="pname" required defaultValue={product.pname}>
-            </input>
-          </div>
-        </div>
+        <input type="hidden" name="pno" defaultValue={product.pno}/>
 
-        <div className="flex justify-center">
-          <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-            <div className="w-1/5 p-6 text-right font-bold">PRICE</div>
-            <input
-              className="w-4/5 p-6 rounded-r border border-solid border-neutral-300 shadow-md"
-              name="price" type={'number'} defaultValue={product.price}>
-            </input>
-          </div>
-        </div>
-
-        <div className="flex justify-center">
-          <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-            <div className="w-1/5 p-6 text-right font-bold">PDESC</div>
-            <textarea
-              className="w-4/5 p-6 rounded-r border border-solid border-neutral-300 shadow-md resize-y"
-              name="pdesc" rows={4} required defaultValue={product.pdesc}>
-            </textarea>
-          </div>
-        </div>
-
-        <div className="flex justify-center">
-          <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-            <div className="w-1/5 p-6 text-right font-bold">Files</div>
-            <input
-              className="w-4/5 p-6 rounded-r border border-solid border-neutral-300 shadow-md"
-              type={'file'}
-              name="files"
-              multiple={true}>
-            </input>
-          </div>
-        </div>
-
-        <div className="w-full justify-center flex flex-col m-auto items-center">
+        <div className="w-full justify-center flex flex-col m-auto items-center mb-8">
           {images.map((imgFile, i) =>
-            <div className="flex justify-center flex-col w-1/3" key={i}>
-              <button className="bg-blue-500 text-3xl text-white"
+            <div className="relative flex justify-center flex-col w-1/3" key={i}>
+              <button className="absolute top-1 right-1 text-4xl text-gray-200"
                 onClick={(event) => deleteOldImages(event, imgFile)}>
-                DELETE
+                <IoIosCloseCircleOutline/>
               </button>
               <img
                 alt="img"
-                src={`http://localhost:8080/products/view/s_${imgFile}`} />
+                src={imageUrl+imgFile} />
             </div>
           )}
         </div>
         <input type="hidden" name="deletedFileNames" />
 
-        <div className="flex justify-end p-4">
-          <button type="submit" name='actionType' value='delete'
-            className="rounded p-4 m-2 text-xl w-32 text-white bg-red-500">
-            Delete
-          </button>
-          <button type="submit" name='actionType' value='modify'
-            className="inline-block rounded p-4 m-2 text-xl w-32 text-white bg-orange-500">
-            Modify
-          </button>
+        <div className="max-w-4xl m-auto">
 
-          <button type="button"
-            className="rounded p-4 m-2 text-xl w-32 text-white bg-blue-500"
-            onClick={() => moveToList()}>
-            List
-          </button>
+          <div className="flex justify-center">
+            <div className="relative mb-6 flex w-full flex-wrap">
+              <div className="w-25 p-3 font-bold">이미지 추가</div>
+              <input
+                className="flex-1 p-3 rounded-r border border-solid border-neutral-300 shadow-md"
+                type={'file'}
+                name="files"
+                multiple={true}>
+              </input>
+            </div>
+          </div>
+      
+          <div className="flex justify-center">
+            <div className="relative mb-6 flex w-full flex-wrap">
+              <div className="w-25 p-3 font-bold">상품명</div>
+              <input className="flex-1 p-3 rounded-r border border-solid border-neutral-300 shadow-md"
+                name="pname" required defaultValue={product.pname}>
+              </input>
+            </div>
+          </div>
+
+          <div className="flex justify-center">
+            <div className="relative mb-6 flex w-full flex-wrap">
+              <div className="w-25 p-3 font-bold">가격</div>
+              <input
+                className="flex-1 p-3 rounded-r border border-solid border-neutral-300 shadow-md"
+                name="price" type={'number'} defaultValue={product.price}>
+              </input>
+            </div>
+          </div>
+
+          <div className="flex justify-center">
+            <div className="relative mb-6 flex w-full flex-wrap">
+              <div className="w-25 p-3 font-bold">상품 설명</div>
+              <textarea
+                className="flex-1 p-3 rounded-r border border-solid border-neutral-300 shadow-md resize-y"
+                name="pdesc" rows={4} required defaultValue={product.pdesc}>
+              </textarea>
+            </div>
+          </div>
+
+          <div className="flex justify-end p-4">
+            <button type="submit" name='actionType' value='delete'
+              className="rounded p-4 m-2 text-xl w-32 text-white bg-red-500">
+              Delete
+            </button>
+            <button type="submit" name='actionType' value='modify'
+              className="inline-block rounded p-4 m-2 text-xl w-32 text-white bg-orange-500">
+              Modify
+            </button>
+
+            <button type="button"
+              className="rounded p-4 m-2 text-xl w-32 text-white bg-blue-500"
+              onClick={() => moveToList()}>
+              List
+            </button>
+          </div>
+
         </div>
       </form>
 

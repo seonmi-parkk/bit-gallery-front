@@ -22,6 +22,10 @@
   background: linear-gradient(rgba(0, 0, 0, 0), rgb(0,0,0,0.5) 32%, rgb(0,0,0,0.8) 100%);
 }
 
+.product-detail-swiper, .product-detail-swiper .swiper-wrapper {
+  display: flex;
+}
+
 .product-detail-swiper .swiper-wrapper, .product-detail-swiper .swiper-slide {
   height: 100%;
 }
@@ -33,4 +37,11 @@
 
 .product-thumb-nail-swiper .swiper-slide {
   width: auto !important;
+}
+.swiper-button-prev:after, 
+.swiper-rtl .swiper-button-next:after,
+.swiper-button-next:after, 
+.swiper-rtl .swiper-button-prev:after {
+  font-size: 16px !important;
+  color: #ffffff60;
 }

@@ -1,16 +1,11 @@
 import { useQuery } from "@tanstack/react-query"
-import PendingModal from "../common/pendingModal"
 import axios from "axios"
-import useCustomMove from "../../hooks/useCustomMove"
-import UseCustomCart from "../../hooks/useCustomCart"
-import { useEffect, type MouseEventHandler } from "react"
-import { useState } from 'react'
-
+import { useEffect} from "react"
 import 'swiper/css'
 import 'swiper/css/thumbs'
-import useLoginStore from "../../zstore/useLoginStore"
 import { RiCloseLargeLine } from "react-icons/ri";
 import ReadComponent from "./readComponent"
+import LoadingSpinner from "../common/loadingSpinner"
 
 
 const ReadModalComponent = ({ pno, onClose }: { pno: number, onClose: () => void }) => {
@@ -31,7 +26,7 @@ const ReadModalComponent = ({ pno, onClose }: { pno: number, onClose: () => void
     queryKey: ['product', pno],
     queryFn: async () => {
       const res = await axios.get(`http://localhost:8080/products/${pno}`)
-      return res.data
+      return res.data.data
     },
     staleTime: 1000 * 60 * 10
   })
@@ -40,7 +35,7 @@ const ReadModalComponent = ({ pno, onClose }: { pno: number, onClose: () => void
 
   return (
     <>
-      {isPending && <PendingModal />}
+      {isPending && <LoadingSpinner/>}
       {data &&
         <>
           <div

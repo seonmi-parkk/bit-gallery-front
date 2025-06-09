@@ -6,12 +6,15 @@ const CartItemComponent = ({cartItem}: {cartItem:CartItemResponse}) => {
 
   const { cino, pno, pname, price, imageFile, status } = cartItem
 
+  const apiUrl = import.meta.env.VITE_API_BASE_URL;
+  const imageUrl = `${apiUrl}/upload/product/thumb/s_`;
+
   return (
     <li key={cino} className={`border-2 cart-item ${status}`}>
       <div className="w-full p-2 border-2">
       {(status == 'PAUSED' || status == 'DELETED') && <span className="bg-black p-1 inline-block mb-2 text-white rounded-sm">판매 중지</span> }
         <div className="">
-          <img src={`http://localhost:8080/products/view/s_${imageFile}`} />
+          <img src={imageUrl+imageFile} />
         </div>
 
         <div className="justify-center text-xl ">

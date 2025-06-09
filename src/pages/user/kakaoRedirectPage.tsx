@@ -15,16 +15,14 @@ const KakaoRedirectPage = () => {
 
   useEffect(() => {
     if (!authCode) return;
-
-    console.log("authCode:: ====",authCode)
-
+    
     // 백엔드로 인가 코드 전달
     axios.post("http://localhost:8080/user/auth/kakao", { 'authCode': authCode })
       .then((result) => {
-        console.log("@@@@@@result : ",result)
-        save(result.data);
+        const resultData = result.data.data;
+        save(resultData);
 
-        if (result.data.isSocial) {
+        if (resultData.isSocial) {
           navigate('/user/modify');
         } else {
           navigate('/');

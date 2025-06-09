@@ -15,6 +15,8 @@ const UseCustomCart = () => {
 
   const cartItems = {items:items, status:status}
 
+  const navigate = useNavigate()
+
   // 로그인/로그아웃 상태 변화시 장바구니 아이템 가져오기 -> 로그인시 노출/ 로그아웃시 비노출
   useEffect(() => {
     if (loginStatus === 'fulfilled') {
@@ -22,6 +24,10 @@ const UseCustomCart = () => {
       console.log("로그인 상태변화 -> 장바구니 아이템 가져옴")
     }
   }, [loginStatus])
+
+  useEffect(() => {
+
+  }, [items]);
 
 
   const addItem = (pno: number) => {
@@ -47,7 +53,11 @@ const UseCustomCart = () => {
     return cartItems.items.some(item => item.pno === pno)
   }
 
-  return {loginState, loginStatus, cartItems, addItem, deleteItem, isInCart}
+  const moveToCart = () => {
+    navigate('/cart')
+  }
+
+  return {loginState, loginStatus, cartItems, addItem, deleteItem, isInCart, moveToCart}
 }
 
 export default UseCustomCart

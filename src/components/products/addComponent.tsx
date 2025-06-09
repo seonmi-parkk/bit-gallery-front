@@ -1,8 +1,8 @@
-import PendingModal from "../common/pendingModal"
 import useCustomMove from "../../hooks/useCustomMove"
 import jwtAxios from "../../util/jwtUtil"
 import { Navigate } from "react-router"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
+import LoadingSpinner from "../common/loadingSpinner"
 
 interface ProductAddResult {
   result?: number,
@@ -14,7 +14,7 @@ const initState: ProductAddResult = {
 
 const addProduct = async (formData: FormData) => {
   const res = await jwtAxios.post('http://localhost:8080/products/', formData)
-  return {result: res.data.result}
+  return {result: res.data.data.result}
 }
 
 const AddComponent = () => {
@@ -40,62 +40,57 @@ const AddComponent = () => {
     mutation.mutate(formData)
   }
 
-  const closeModal = () => {
-    moveToList()
-  }
-
+  
   return (
-    <div className="border-2 border-sky-200 mt-10 m-2 p-4">
-      {mutation.isPending && <PendingModal/>}
+    <div className="mt-10 m-2 p-4">
+      {mutation.isPending && <LoadingSpinner/>}
       {mutation.data?.result &&
         <Navigate to={`/products/read/${mutation.data.result}`} replace />
       }
       
       <form onSubmit={handleSubmit}>
         <div className="flex justify-center">
-          <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-            <div className="w-1/5 p-6 text-right font-bold">Product Name</div>
-            <input className="w-4/5 p-6 rounded-r border border-solid border-neutral-300 shadow-md"
+          <div className="relative mb-6 flex w-full flex-wrap items-stretch">
+            <div className="w-25 p-3 font-bold">상품명</div>
+            <input className="flex-1 p-3 rounded-r border border-solid border-neutral-300"
               name="pname" >
             </input>
           </div>
         </div>
         <div className="flex justify-center">
-          <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-            <div className="w-1/5 p-6 text-right font-bold">Desc</div>
+          <div className="relative mb-6 flex w-full flex-wrap items-stretch">
+            <div className="w-25 p-3 font-bold">상품 설명</div>
             <textarea
-              className="w-4/5 p-6 rounded-r border border-solid border-neutral-300 shadow-md resize-y"
+              className="flex-1 p-3 rounded-r border border-solid border-neutral-300"
               name="pdesc" rows={4} required>
             </textarea>
           </div>
         </div>
         <div className="flex justify-center">
-          <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-            <div className="w-1/5 p-6 text-right font-bold">Price</div>
+          <div className="relative mb-6 flex w-full flex-wrap items-stretch">
+            <div className="w-25 p-3 font-bold">가격</div>
             <input
-              className="w-4/5 p-6 rounded-r border border-solid border-neutral-300 shadow-md"
+              className="flex-1 p-3 rounded-r border border-solid border-neutral-300"
               name="price" type={'number'} required>
             </input>
           </div>
         </div>
         <div className="flex justify-center">
-          <div className="relative mb-4 flex w-full flex-wrap items-stretch">
-            <div className="w-1/5 p-6 text-right font-bold">Files</div>
+          <div className="relative mb-6 flex w-full flex-wrap items-stretch">
+            <div className="w-25 p-3 font-bold">이미지 파일</div>
             <input
-              className="w-4/5 p-6 rounded-r border border-solid border-neutral-300 shadow-md"
+              className="flex-1 p-3 rounded-r border border-solid border-neutral-300"
               type={'file'}
               name="files"
               multiple={true}>
             </input>
           </div>
         </div>
-        <div className="flex justify-end">
-          <div className="relative mb-4 flex p-4 flex-wrap items-stretch">
-            <button type="submit"
-              className="rounded p-4 w-36 bg-blue-500 text-xl text-white">
-              ADD
-            </button>
-          </div>
+        <div className="flex justify-center mt-10">
+          <button type="submit"
+            className="rounded p-4 w-36 bg-blue-500 text-xl text-white">
+            등록
+          </button>
         </div>
       </form>
     </div>
