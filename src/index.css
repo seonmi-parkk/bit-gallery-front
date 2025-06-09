@@ -1,12 +1,29 @@
 @import "tailwindcss";
+@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
 
+body {
+  font-family: 'pretendard', sans-serif;
+}
 button{cursor: pointer;}
-a,div,p {color: #fff;}
+a,div{color: #fff;}
 ::marker {color: transparent;}
+
+:root{
+  --color-warn : #d83232;
+  --color-success : #22c55e;
+  --color-info : #3853db;
+  --color-disabled : #777;
+  --color-yellow : #d8a413 ;
+}
 
 h3{font-size: 30px;}
 h4{font-size: 24px;}
 h5{font-size: 20px;}
+
+.inner {
+  max-width: 1300px;
+  margin: 0 auto;
+}
 
 .bg-main {background: #111;}
 .bg-main-2 {background: #1f1f1f;}
@@ -42,21 +59,142 @@ div.Toastify__toast {
 }
 
 div.toast-succeess{
-  background-color: #22c55e ;
+  background-color: var(--color-success);
 }
 
 div.toast-error{
-  background-color: #d83232 ;
+  background-color:  var(--color-warn);
 }
 
 div.toast-info{
-  background-color: #3853db ;
+  background-color: var(--color-info);
 }
 
 div.toast-ing{
-  background-color: #d8a413 ;
+  background-color: var(--color-yellow);
 }
 
 button.Toastify__close-button {color: #fff;}
 
+.tag {
+  display: inline-block;
+  padding: 3px 6px;
+  margin: 10px 0;
+  border-radius: 4px;
+  color: white;
+  font-size: 14px;
+}
 
+.tag-success, .tag-APPROVED {
+  background: var(--color-success);
+}
+
+.tag.tag-warn, .tag-REJECTED, .tag-PAUSED{
+  background: var(--color-warn);
+}
+
+.tag.tag-info, .tag-PENDING {
+  background: var(--color-info);
+}
+
+.tag.tag-disabled, .tag-DELETED {
+  background: var(--color-disabled);
+}
+
+/* 로딩 스피너 */
+/* loading spinner */
+	.loading-bg{
+	    position: fixed;
+	    top: 0px;
+	    left: 0px;
+	    width: 100%;
+	    height: 100%;
+	    background-color: rgba(0, 0, 0, 0.2);
+	    z-index: 998;
+		}
+	.lds-spinner,
+	.lds-spinner div,
+	.lds-spinner div:after {
+	  box-sizing: border-box;
+	}
+	.lds-spinner {
+	  display: inline-block;
+	  position: absolute;
+    z-index: 100;
+	  top: 30%;
+	  left: 50%;
+	  transform: translateX(-50%);
+	  width: 80px;
+	  height: 80px;
+	}
+	.lds-spinner div {
+	  transform-origin: 40px 40px;
+	  animation: lds-spinner 1.2s linear infinite;
+	}
+	.lds-spinner div:after {
+	  content: " ";
+	  display: block;
+	  position: absolute;
+	  top: 3.2px;
+	  left: 36.8px;
+	  width: 6.4px;
+	  height: 17.6px;
+	  border-radius: 20%;
+	  background: var(--color-yellow);
+	}
+	.lds-spinner div:nth-child(1) {
+	  transform: rotate(0deg);
+	  animation-delay: -1.1s;
+	}
+	.lds-spinner div:nth-child(2) {
+	  transform: rotate(30deg);
+	  animation-delay: -1s;
+	}
+	.lds-spinner div:nth-child(3) {
+	  transform: rotate(60deg);
+	  animation-delay: -0.9s;
+	}
+	.lds-spinner div:nth-child(4) {
+	  transform: rotate(90deg);
+	  animation-delay: -0.8s;
+	}
+	.lds-spinner div:nth-child(5) {
+	  transform: rotate(120deg);
+	  animation-delay: -0.7s;
+	}
+	.lds-spinner div:nth-child(6) {
+	  transform: rotate(150deg);
+	  animation-delay: -0.6s;
+	}
+	.lds-spinner div:nth-child(7) {
+	  transform: rotate(180deg);
+	  animation-delay: -0.5s;
+	}
+	.lds-spinner div:nth-child(8) {
+	  transform: rotate(210deg);
+	  animation-delay: -0.4s;
+	}
+	.lds-spinner div:nth-child(9) {
+	  transform: rotate(240deg);
+	  animation-delay: -0.3s;
+	}
+	.lds-spinner div:nth-child(10) {
+	  transform: rotate(270deg);
+	  animation-delay: -0.2s;
+	}
+	.lds-spinner div:nth-child(11) {
+	  transform: rotate(300deg);
+	  animation-delay: -0.1s;
+	}
+	.lds-spinner div:nth-child(12) {
+	  transform: rotate(330deg);
+	  animation-delay: 0s;
+	}
+	@keyframes lds-spinner {
+	  0% {
+	    opacity: 1;
+	  }
+	  100% {
+	    opacity: 0;
+	  }
+	}
