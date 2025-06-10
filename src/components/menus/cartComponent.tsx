@@ -1,6 +1,8 @@
 import UseCustomCart from "../../hooks/useCustomCart"
 import CartItemComponent from "../cart/cartItemComponent"
 import "../../styles/cart.css"
+import LoadingSpinner from "../common/loadingSpinner"
+import { showErrorToast } from "../../util/toastUtil"
 
 const CartComponent = () => {
 
@@ -11,8 +13,8 @@ const CartComponent = () => {
     <div className="w-full bg-main">
       {loginStatus === 'fulfilled' &&
         <>
-          {cartItems.status === 'pending' && <div>Loading....</div>}
-          {cartItems.status === 'error' && <div>rejected....</div>}
+          {cartItems.status === 'pending' && <LoadingSpinner/>}
+          {cartItems.status === 'error' && showErrorToast("장바구니 데이터 불러오기에 실패했습니다.")}
           {cartItems.status === 'fulfilled' &&
             <>
               <div>{loginState.nickname}님 Cart</div>

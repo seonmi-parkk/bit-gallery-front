@@ -25,11 +25,6 @@ const UseCustomCart = () => {
     }
   }, [loginStatus])
 
-  useEffect(() => {
-
-  }, [items]);
-
-
   const addItem = (pno: number) => {
     if (loginStatus !== 'fulfilled'){
       alert('로그인이 필요합니다.');

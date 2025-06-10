@@ -6,9 +6,9 @@ interface ResultModalProps {
   onCancel?: () => void; 
 }
 
-const ResultModal = ({ message, confirmText,cancelText, onConfirm, onCancel }:ResultModalProps) => {
+const ResultModal = ({ message, confirmText, cancelText, onConfirm, onCancel }:ResultModalProps) => {
   return (
-    <div className="fixed bg-modal-back inset-0 z-50">
+    <div id="ResultModal" className="fixed bg-modal-back inset-0 z-50">
       <div className="result-modal absolute left-[50%] top-[15%] transform -translate-x-[50%] bg-white p-8 rounded-xl shadow-xl w-80 text-center space-y-4">
         <h5 className="text-white text-base">{message}</h5>
 
