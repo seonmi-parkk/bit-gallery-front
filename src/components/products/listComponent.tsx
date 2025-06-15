@@ -96,7 +96,7 @@ const ListComponent = ({ serverData }: { serverData: pageResponseDto<ProductDto>
                         {product.pname}
                       </div>
                       <div className="mt-1 text-white-1 text-sm">
-                        {product.price} 원
+                        {product.price.toLocaleString()} 원
                       </div>
                     </div>
 

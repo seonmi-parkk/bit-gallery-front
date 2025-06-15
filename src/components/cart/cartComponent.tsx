@@ -5,33 +5,34 @@ import LoadingSpinner from "../common/loadingSpinner"
 import { showErrorToast } from "../../util/toastUtil"
 import { useNavigate } from "react-router"
 import { postGetOrderItemList } from "../../api/orderApi"
-import { useEffect, useState } from "react"
+import React, { useEffect, useState } from "react"
 
 const CartComponent = () => {
 
   const {loginState, loginStatus, cartItems, addItem} = UseCustomCart()
 
-  const [orderItem, setOrderItem] = useState<CartItems>({...cartItems}) 
-  const [totalPrice, setTotalPrice] = useState<number>() 
-  const [totalQuantity, setTotalQuantity] = useState<number>() 
+  const [orderItem, setOrderItem] = useState<CartItemResponse[]>([...cartItems.items]) 
+  const [totalPrice, setTotalPrice] = useState<number>(0) 
+  const [totalQuantity, setTotalQuantity] = useState<number>(0) 
+  const [wholeChecked, setWholeChecked] = useState<boolean>(true)
 
 
   // cartItems가 바뀔 때 orderItem 업데이트
   useEffect(() => {
     console.log("cartItems.status",cartItems.status)
     if (cartItems.status === 'fulfilled') {
-      setOrderItem({ ...cartItems });
+      setOrderItem([...cartItems.items]);
     }
   }, [cartItems.status]);
 
   // orderItem이 설정되면 합계 계산
   useEffect(() => {
-    if (!orderItem?.items) return;
+    if (!orderItem) return;
 
     let quantity = 0;
     let price = 0;
 
-    orderItem.items.forEach((item) => {
+    orderItem.forEach((item) => {
       price += item.price;
       quantity += 1;
     });
@@ -44,25 +45,35 @@ const CartComponent = () => {
   const handleCheckboxChange = (e: React.ChangeEvent<HTMLInputElement>, item: CartItemResponse) => {
     const checked = e.target.checked;
 
-    setOrderItem((prev:CartItems) => {
-      const currentItems = prev.items;
+    setOrderItem((prev:CartItemResponse[]) => {
+      const currentItems = prev;
       if (checked) {
         console.log("checked");
         // 체크 시 orderItem에 없으면 추가
         const exists = currentItems.find(i => i.pno === item.pno);
         if (!exists) {
-          return { items: [...currentItems, item] };
+          return { ...currentItems, item };
         }
         return prev;
       } else {
         console.log("not checked");
         // 체크 해제 시 제거
-        return {
-          items: currentItems.filter(i => i.pno !== item.pno),
-        };
+        return currentItems.filter(i => i.pno !== item.pno);
       }
     });
   };
+
+  // 전체선택 체크박스 클릭시
+  const handleWholeCheckboxChange = (e:React.ChangeEvent<HTMLInputElement>) => {
+    const checked = e.target.checked;
+    if(checked === true) {
+      setOrderItem(cartItems.items)
+      setWholeChecked(true)
+    }else {
+      setOrderItem([])
+      setWholeChecked(false)
+    }
+  }
 
   const navigate = useNavigate()
 
@@ -99,17 +110,32 @@ const CartComponent = () => {
           {cartItems.status === 'error' && showErrorToast("장바구니 데이터 불러오기에 실패했습니다.")}
           {cartItems.status === 'fulfilled' &&
             <>
-              <ul>
+              <div className="flex gap-2 my-5">
+                <input  
+                  name="wholeCheckbox"
+                  type="checkbox"
+                  onChange={(e)=>handleWholeCheckboxChange(e)}
+                  checked={wholeChecked}
+                /> 
+                <label htmlFor="wholeCheckbox">전체선택</label>
+              </div>
+
+              <ul className="border-t">
                 {cartItems.items.map(item => <CartItemComponent cartItem={item} key={item.cino} orderItem={orderItem} handleCheckboxChange={handleCheckboxChange}/>)}
               </ul>
 
-        <div>
-          {totalQuantity}개 {totalPrice}원
-            <button
-              className="m-1 p-1 text-xl text-white bg-red-500 rounded-lg"
-              onClick={() => buySelectedItem()}
-            > 선택 구매 </button>
-        </div>
+              <div className="fixed left-0 bottom-0 w-full px-10 py-3 bg-main-2 ">
+                <div className="inner  flex gap-6 justify-end ">
+                  <p className="flex gap-1.5 items-center text-lg">
+                    총 <span className="mr-3 font-medium">{totalQuantity}개</span> 
+                    주문금액 <span className="ml-1 text-2xl font-medium">{totalPrice.toLocaleString()}원</span>
+                  </p>
+                    <button
+                      className="m-1 px-4 py-1.5 text-lg text-white btn-blue rounded-lg"
+                      onClick={() => buySelectedItem()}
+                    > 구매하기 </button>
+                  </div>
+              </div>
             </>
           }
         </>

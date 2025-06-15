@@ -226,7 +226,7 @@ const ReadComponent = ({ data }: { data: ProductDto }) => {
             <div className="relative mb-3 flex w-full flex-wrap items-stretch">
               <div className="mr-3 font-bold">PRICE</div>
               <div className="">
-                {data.price}
+                {data.price.toLocaleString()}
               </div>
             </div>
 

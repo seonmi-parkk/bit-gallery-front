@@ -48,6 +48,10 @@ h5{font-size: 20px;}
 .text-black-1 {color: #111 !important;}
 .text-black-2 {color: #333 !important;}
 
+.btn-blue {
+	background: oklch(0.623 0.214 259.815);
+}
+
 input[type=checkbox] {
 	zoom: 1.54
 }

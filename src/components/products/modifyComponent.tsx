@@ -203,7 +203,7 @@ const ModifyComponent = ({ product }: { product: ProductDto }) => {
             </button>
 
             <button type="button"
-              className="rounded p-4 m-2 text-xl w-32 text-white bg-blue-500"
+              className="rounded p-4 m-2 text-xl w-32 text-white btn-blue"
               onClick={() => moveToList()}>
               List
             </button>

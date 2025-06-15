@@ -5,7 +5,7 @@ import { postGetOrderItemList } from "../../api/orderApi";
 
 type CartItemComponentProps = {
   cartItem: CartItemResponse;
-  orderItem: CartItems;
+  orderItem: CartItemResponse[];
   handleCheckboxChange: (
     e: React.ChangeEvent<HTMLInputElement>,
     item: CartItemResponse
@@ -41,7 +41,7 @@ const CartItemComponent = ({cartItem, orderItem, handleCheckboxChange}: CartItem
         <input
           type="checkbox"
           onChange={(e)=>handleCheckboxChange(e,cartItem)}
-          checked={orderItem.items.some(item => item.pno === pno)}
+          checked={orderItem.some(item => item.pno === pno)}
           />
       {(status == 'PAUSED' || status == 'DELETED') && <span className="bg-black p-1 inline-block mb-2 text-white rounded-sm">판매 중지</span> }
         <div className="w-25 h-25 overflow-hidden ml-1 mr-6">
@@ -53,7 +53,7 @@ const CartItemComponent = ({cartItem, orderItem, handleCheckboxChange}: CartItem
           <div>Pno: {pno}</div> */}
           <div className="mr-6">
             <div>Name: {pname}</div>
-            <div>Price: {price} 원</div>
+            <div>Price: {price.toLocaleString()} 원</div>
           </div>
           {/* <div className='font-extrabold border-t-2 text-right m-2 pr-4'>
             {price} 원
