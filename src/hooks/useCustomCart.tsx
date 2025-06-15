@@ -52,7 +52,7 @@ const UseCustomCart = () => {
     navigate('/cart')
   }
 
-  return {loginState, loginStatus, cartItems, addItem, deleteItem, isInCart, moveToCart}
+  return {loginState, loginStatus, cartItems, typeof: cartItems, addItem, deleteItem, isInCart, moveToCart}
 }
 
 export default UseCustomCart

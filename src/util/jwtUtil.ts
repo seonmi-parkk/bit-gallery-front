@@ -21,6 +21,8 @@ const beforeReq = (config: InternalAxiosRequestConfig) => {
   }
   const { accessToken } = userInfo
   console.log("==========accessToken: "+ accessToken);
+  console.log("==========요청 url: "+ config.url);
+
 
   // Authorization 헤더 처리
   config.headers.Authorization = `Bearer ${accessToken}`

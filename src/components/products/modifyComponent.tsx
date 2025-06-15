@@ -5,29 +5,45 @@ import jwtAxios from "../../util/jwtUtil"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import LoadingSpinner from "../common/loadingSpinner"
 import { IoIosCloseCircleOutline } from "react-icons/io";
+import type { AxiosError } from "axios"
+import { showErrorToast } from "../../util/toastUtil"
+import DraggableImagesComponent from "./DraggableImagesComponent"
+import { API_BASE_URL } from "../../api/apiUrl"
 
 
 const ModifyComponent = ({ product }: { product: ProductDto }) => {
-
   const { moveToList, moveToRead } = useCustomMove()
+  
+  const urlPrefix = API_BASE_URL+"/upload/product/thumb/s_";
+  
+  const initialImages: DraggableImageItem[] = []
 
-  const [images, setImages] = useState<string[]>([...product.uploadedFileNames])
+  // 기존 이미지 노출
+  product.uploadedFileNames.forEach((value) => {
+    initialImages.push({id:value, url:urlPrefix+value, isNew:false})
+  })
+  
 
-  const deletedFileNames: string[] = [];
+  //const [images, setImages] = useState<string[]>([...product.uploadedFileNames])
 
-  const deleteOldImages = (event: MouseEvent, target: string) => {
-    event.preventDefault()
-    event.stopPropagation()
-    setImages(prev => prev.filter(img => img !== target));
-    deletedFileNames.push(target);
-    const input = document.querySelector('input[name="deletedFileNames"]') as HTMLInputElement;
-    if (input) {
-      input.value = deletedFileNames.join(',');
-    }
-  }
+  //const deletedFileNames: string[] = [];
+
+  // const deleteOldImages = (event: MouseEvent, target: string) => {
+  //   event.preventDefault()
+  //   event.stopPropagation()
+  //   setImages(prev => prev.filter(img => img !== target));
+  //   deletedFileNames.push(target);
+  //   const input = document.querySelector('input[name="deletedFileNames"]') as HTMLInputElement;
+  //   if (input) {
+  //     input.value = deletedFileNames.join(',');
+  //   }
+  // }
+
+  const [images, setImages] = useState<DraggableImageItem[]>(initialImages);
 
   const queryClient = useQueryClient()
 
+  // 삭제 요청
   const deleteMutation = useMutation({
     mutationFn: async () => {
       const res = await jwtAxios.patch(`http://localhost:8080/products/${product.pno}`)
@@ -39,6 +55,7 @@ const ModifyComponent = ({ product }: { product: ProductDto }) => {
     }
   })
 
+  // 수정 요청
   const modifyMutation = useMutation({
     mutationFn: async (formData: FormData) => {
       const header = { headers: { "Content-Type": "multipart/form-data" } }
@@ -48,9 +65,25 @@ const ModifyComponent = ({ product }: { product: ProductDto }) => {
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['product', String(product.pno)] })
       queryClient.invalidateQueries({ queryKey: ['products/list'], exact: false })
+    },
+    onError: (error) => {
+      const axiosError = error as AxiosError<any>
+
+      if (axiosError.response) {
+        console.error('서버 응답 에러:', axiosError.response.data)
+        showErrorToast(axiosError.response.data.code === 40000 ? '잘못된 요청입니다.' : '수정 처리 중 오류가 발생했습니다.');
+      } else if (axiosError.request) {
+        console.error('요청 미전송');
+        showErrorToast('서버에 연결할 수 없습니다.');
+      } else {
+        console.error('기타 에러:', axiosError.message)
+        showErrorToast("알 수 없는 오류가 발생했습니다.")
+      }
     }
+
   })
 
+  // 수정/삭제 버튼 클릭시 
   const handleSubmit = (e:React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
 
@@ -61,6 +94,16 @@ const ModifyComponent = ({ product }: { product: ProductDto }) => {
     console.log("actionType : ", actionType)
 
     if(actionType === 'modify') {
+      // 새 이미지 업로드
+      console.log("images",images);
+      images.forEach((image, idx) => {
+        formData.append(`images[${idx}].fileName`, image.id);
+        formData.append(`images[${idx}].isNew`, image.isNew.toString());
+        if (image.file) {
+          formData.append(`images[${idx}].file`, image.file); 
+        }
+      })
+
       modifyMutation.mutate(formData)
     } else if(actionType === 'delete') {
       deleteMutation.mutate()
@@ -72,6 +115,8 @@ const ModifyComponent = ({ product }: { product: ProductDto }) => {
 
   return (
     <div className="mt-10 m-2 p-4 inner">
+      <DraggableImagesComponent images={images} setImages={setImages}/>
+
 
       { (deleteMutation.isPending || modifyMutation.isPending) && <LoadingSpinner/>}
 
@@ -93,7 +138,7 @@ const ModifyComponent = ({ product }: { product: ProductDto }) => {
           {images.map((imgFile, i) =>
             <div className="relative flex justify-center flex-col w-1/3" key={i}>
               <button className="absolute top-1 right-1 text-4xl text-gray-200"
-                onClick={(event) => deleteOldImages(event, imgFile)}>
+                onClick={(event) => {}}>
                 <IoIosCloseCircleOutline/>
               </button>
               <img

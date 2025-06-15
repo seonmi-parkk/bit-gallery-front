@@ -1,5 +1,4 @@
 @import "tailwindcss";
-@import url("https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css");
 
 body {
   font-family: 'pretendard', sans-serif;
@@ -48,6 +47,10 @@ h5{font-size: 20px;}
 .text-white-1 {color: #ddd;}
 .text-black-1 {color: #111 !important;}
 .text-black-2 {color: #333 !important;}
+
+input[type=checkbox] {
+	zoom: 1.54
+}
 
 /* toast */
 div.Toastify__toast {

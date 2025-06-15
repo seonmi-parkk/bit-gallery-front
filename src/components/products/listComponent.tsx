@@ -91,6 +91,7 @@ const ListComponent = ({ serverData }: { serverData: pageResponseDto<ProductDto>
                   
                   <div className="absolute z-10 w-full flex justify-between list-item-info px-4 pt-4 pb-3 bottom-0">
                     <div className="">
+                      {product.pno}
                       <div className="max-w-5/6 truncate text-white-1">
                         {product.pname}
                       </div>
@@ -113,7 +114,7 @@ const ListComponent = ({ serverData }: { serverData: pageResponseDto<ProductDto>
                       !cartItems.items.some(item => item.pno === product.pno) || loginStatus === 'guest' ? (
                         <button type="button"
                           className="flex justify-center items-center w-10 h-10 rounded text-xl border border-main-6"
-                          onClick={() => addItem(product.pno)}
+                          onClick={(e) => {e.stopPropagation(); addItem(product.pno);}}
                         >
                           <BsCartPlus />
                         </button>

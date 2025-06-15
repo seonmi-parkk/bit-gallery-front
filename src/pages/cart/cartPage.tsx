@@ -1,5 +1,5 @@
 import { useEffect } from "react"
-import CartComponent from "../../components/menus/cartComponent"
+import CartComponent from "../../components/cart/cartComponent"
 import useCustomLogin from "../../hooks/useCustomLogin"
 import { showErrorToast, showInfoToast, showIngToast, showSuccessToast } from "../../util/toastUtil"
 
@@ -17,8 +17,8 @@ const CartPage = () => {
     
   return (
       <div className="">
-        <h3>CartPage</h3>
-        <button onClick={() => showSuccessToast("업로드 완료!")}>
+        <h3>장바구니</h3>
+        {/* <button onClick={() => showSuccessToast("업로드 완료!")}>
           알림 테스트 성공
         </button>
         <button onClick={() => showErrorToast("업로드 실패!")}>
@@ -29,7 +29,7 @@ const CartPage = () => {
         </button>
         <button onClick={() => showIngToast("업로드 중!")}>
           알림 테스트 진행중
-        </button>
+        </button> */}
         <CartComponent/>
       </div>
       

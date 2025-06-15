@@ -14,7 +14,8 @@ interface CartItemResponse {
   status: string
 }
 
-interface CartItemsArray {
+interface CartItems {
   items: CartItemResponse[],
   status?: string
 }
+
