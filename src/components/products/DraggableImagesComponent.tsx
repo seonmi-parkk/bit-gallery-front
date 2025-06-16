@@ -2,17 +2,7 @@
 import React, { useState, type ChangeEvent } from 'react'
 import { DragDropContext, Droppable, Draggable, type DropResult } from '@hello-pangea/dnd'
 import { IoIosCloseCircleOutline } from "react-icons/io";
-// interface ImageItem {
-//   id: string
-//   url: string
-//   file?: File,
-//   isNew: boolean 
-// }
-
-// const initialImages: ImageItem[] = [
-//   { id: '1', url: 'http://localhost:8080/upload/product/thumb/s_c52214be-529e-4871-a108-4c6145bd7884_filippo-pluKNPG82bI-unsplash.jpg', isNew: false },
-//   { id: '2', url: 'http://localhost:8080/upload/product/thumb/s_5388bf70-fdf2-48b2-9016-55c42198ee9c_filip-kvasnak-ThFBfl1JTI8-unsplash.jpg', isNew: false },
-// ]
+import { AiFillCloseCircle } from "react-icons/ai";
 
 interface DraggableImagesProps {
   images: DraggableImageItem[];
@@ -20,9 +10,6 @@ interface DraggableImagesProps {
 }
 
 const DraggableImagesComponent = ({images, setImages} :DraggableImagesProps) => {
-  //const [images, setImages] = useState<ImageItem[]>(initialImages)
-
-  //const [deleteImageIds, setDeleteImageIds] = useState<string[]>([])
 
   // 삭제버튼 클릭시 images에서 제거
   const handleRemoveImage = (index: number) => {
@@ -70,15 +57,18 @@ const DraggableImagesComponent = ({images, setImages} :DraggableImagesProps) => 
   }
 
   return (
-    <div className="space-y-4">
-      <input type="hidden" name="deletedFileNames" />
-      <input type="file" accept="image/*" multiple onChange={handleFileUpload} />
+    <div className="py-3">
+      <label className="inline-block">
+        <span className="btn-blue text-white px-3 py-1.5 rounded cursor-pointer">파일 선택</span> 
+        <span className="ml-2 text-gray-300">* 드래그하여 순서 조정 가능합니다.</span>
+        <input type="file" accept="image/*" className='hidden' multiple onChange={handleFileUpload} />
+      </label>
 
       <DragDropContext onDragEnd={handleDragEnd}>
         <Droppable droppableId="imageList" direction="horizontal">
           {(provided) => (
             <div
-              className="flex space-x-4 mt-4"
+              className="flex flex-wrap"
               ref={provided.innerRef}
               {...provided.droppableProps}
             >
@@ -89,7 +79,7 @@ const DraggableImagesComponent = ({images, setImages} :DraggableImagesProps) => 
                       ref={provided.innerRef}
                       {...provided.draggableProps}
                       {...provided.dragHandleProps}
-                      className="relative w-32 h-32 border border-gray-400 rounded overflow-hidden"
+                      className="relative w-32 h-32 mr-2 mt-6 border border-gray-400 rounded overflow-hidden"
                     >
                       <img
                         src={image.url}
@@ -97,9 +87,9 @@ const DraggableImagesComponent = ({images, setImages} :DraggableImagesProps) => 
                         className="w-full h-full object-cover"
                       />
 
-                      <button className="absolute top-1 right-1 text-4xl text-gray-200"
+                      <button className="absolute top-1 right-1 text-3xl text-gray-500"
                         onClick={(event) => handleRemoveImage(index)}>
-                        <IoIosCloseCircleOutline/>
+                        <AiFillCloseCircle/>
                       </button>
                     </div>
                   )}

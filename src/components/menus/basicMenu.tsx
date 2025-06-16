@@ -1,6 +1,9 @@
 import { NavLink } from "react-router";
 import useCustomLogin from "../../hooks/useCustomLogin";
 import logo from '../../assets/logo.png';
+import { STATIC_IMG_URL } from "../../api/apiUrl";
+import { MdOutlineLogout } from "react-icons/md";
+import { GrUserAdmin } from "react-icons/gr";
 
 function BasicMenu() {
 
@@ -35,21 +38,27 @@ function BasicMenu() {
 
         <div className="font-medium">
 
-        { loginStatus !== 'fulfilled' ?
-          <div className="text-white text-sm m-1 rounded">
-            <NavLink to={'/user/login'}>Login</NavLink>
-          </div>
-          :
-          <div className=" flex gap-4 text-white text-sm m-1 rounded">
-
-            <a className="text-white" href="/manager">관리자</a>
-
-            <p>{loginState.nickname} 님</p>
-            {/* <NavLink to={'/user/logout'}>Logout</NavLink> */}
-            <div onClick={()=>doLogout()}>Logout</div>
-          </div>
-        }
-      </div>
+          { loginStatus !== 'fulfilled' ?
+            <div className="text-white text-sm m-1 rounded">
+              <NavLink to={'/user/login'}>Login</NavLink>
+            </div>
+            :
+            <div className="flex items-center gap-4.5 text-white  m-1 rounded">
+              {loginState.roleNames.includes('MANAGER') &&
+                <a className="flex items-center text-white" href="/manager">
+                  <GrUserAdmin className="text-lg mr-1"/>관리자
+                </a>
+              }
+              <div className="flex items-center gap-2">
+                <div className="w-10 h-10 rounded-full overflow-hidden">
+                  <img className="w-fit" src={STATIC_IMG_URL+"/"+loginState.profileImage}/>
+                </div>
+                <p>{loginState.nickname} 님</p>
+              </div>
+              <div onClick={()=>doLogout()} className="text-2xl cursor-pointer"><MdOutlineLogout/></div>
+            </div>
+          }
+        </div>
       </div>
 
       

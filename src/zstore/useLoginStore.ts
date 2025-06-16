@@ -7,7 +7,8 @@ export interface UserInfo {
   nickname: string,
   accessToken: string,
   refreshToken: string,
-  roleNames: string[]
+  roleNames: string[],
+  profileImage: string
 }
 
 export interface UserStore {
@@ -23,7 +24,8 @@ const initState:UserInfo = {
   nickname: '',
   accessToken: '',
   refreshToken: '',
-  roleNames: []
+  roleNames: [],
+  profileImage: ''
 }
 
 const useLoginStore = create<UserStore>( (set,get) => {

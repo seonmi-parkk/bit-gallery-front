@@ -7,5 +7,5 @@ interface OrderPreviewDto {
   pno : number,
   pname : string,
   price : number,
-  uploadedFileName : string
+  imageFile : string
 }

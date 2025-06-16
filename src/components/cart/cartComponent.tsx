@@ -9,7 +9,7 @@ import React, { useEffect, useState } from "react"
 
 const CartComponent = () => {
 
-  const {loginState, loginStatus, cartItems, addItem} = UseCustomCart()
+  const {loginStatus, cartItems} = UseCustomCart()
 
   const [orderItem, setOrderItem] = useState<CartItemResponse[]>([...cartItems.items]) 
   const [totalPrice, setTotalPrice] = useState<number>(0) 
@@ -52,7 +52,7 @@ const CartComponent = () => {
         // 체크 시 orderItem에 없으면 추가
         const exists = currentItems.find(i => i.pno === item.pno);
         if (!exists) {
-          return { ...currentItems, item };
+          return [...currentItems, item ];
         }
         return prev;
       } else {
@@ -77,20 +77,10 @@ const CartComponent = () => {
 
   const navigate = useNavigate()
 
-  // 선택 구매버튼 클릭 시
+  // 구매하기 버튼 클릭 시
   const buySelectedItem = () => {
-    // 선택된 아이템의 cno가져오기
-    const pnos:number[] = [];
-    const checked = document.querySelectorAll('input[type="checkbox"]:checked');
-
-    checked.forEach(cb => {
-      const parentLi = cb.closest('li'); 
-      const key = parentLi?.getAttribute('data-key');
-      if(key) {
-        pnos.push(Number(key));
-      }
-      console.log("✔️ pnos:", pnos);
-    });
+    // 구매할 아이템의 pno가져오기
+    const pnos:number[] = orderItem.map(item => item.pno);
     
     postGetOrderItemList(pnos)
     .then(res => {

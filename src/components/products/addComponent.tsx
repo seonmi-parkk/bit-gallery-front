@@ -3,6 +3,8 @@ import jwtAxios from "../../util/jwtUtil"
 import { Navigate } from "react-router"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import LoadingSpinner from "../common/loadingSpinner"
+import DraggableImagesComponent from "./DraggableImagesComponent"
+import { useState } from "react"
 
 interface ProductAddResult {
   result?: number,
@@ -12,16 +14,24 @@ const initState: ProductAddResult = {
   result: 0
 }
 
-const addProduct = async (formData: FormData) => {
-  const res = await jwtAxios.post('http://localhost:8080/products/', formData)
-  return {result: res.data.data.result}
-}
-
 const AddComponent = () => {
 
-  const {moveToList} = useCustomMove()
+  const initialImages: DraggableImageItem[] = []
+  
+  const [images, setImages] = useState<DraggableImageItem[]>(initialImages);
 
   const queryClient = useQueryClient()
+
+  const addProduct = async (formData: FormData) => {
+    // form에 이미지 추가
+    images.forEach((image, idx) => {
+      if(image.file) {
+        formData.append(`files[${idx}]`, image.file);
+      }
+    })
+    const res = await jwtAxios.post('http://localhost:8080/products/', formData)
+    return {result: res.data.data.result}
+  }
 
   const mutation = useMutation({
     mutationFn: addProduct,
@@ -49,6 +59,13 @@ const AddComponent = () => {
       }
       
       <form onSubmit={handleSubmit}>
+        <div className="flex justify-center mt-8">
+          <div className="mb-6 flex w-full">
+            <div className="w-25 p-3 font-bold flex-shrink-0">상품 이미지</div>
+            <DraggableImagesComponent images={images} setImages={setImages}/>
+          </div>
+        </div>
+        
         <div className="flex justify-center">
           <div className="relative mb-6 flex w-full flex-wrap items-stretch">
             <div className="w-25 p-3 font-bold">상품명</div>
@@ -72,17 +89,6 @@ const AddComponent = () => {
             <input
               className="flex-1 p-3 rounded-r border border-solid border-neutral-300"
               name="price" type={'number'} required>
-            </input>
-          </div>
-        </div>
-        <div className="flex justify-center">
-          <div className="relative mb-6 flex w-full flex-wrap items-stretch">
-            <div className="w-25 p-3 font-bold">이미지 파일</div>
-            <input
-              className="flex-1 p-3 rounded-r border border-solid border-neutral-300"
-              type={'file'}
-              name="files"
-              multiple={true}>
             </input>
           </div>
         </div>

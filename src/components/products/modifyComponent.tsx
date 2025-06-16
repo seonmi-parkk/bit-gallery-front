@@ -115,9 +115,7 @@ const ModifyComponent = ({ product }: { product: ProductDto }) => {
 
   return (
     <div className="mt-10 m-2 p-4 inner">
-      <DraggableImagesComponent images={images} setImages={setImages}/>
-
-
+      
       { (deleteMutation.isPending || modifyMutation.isPending) && <LoadingSpinner/>}
 
       {(deleteMutation.data || modifyMutation.data) &&  
@@ -134,34 +132,14 @@ const ModifyComponent = ({ product }: { product: ProductDto }) => {
 
         <input type="hidden" name="pno" defaultValue={product.pno}/>
 
-        <div className="w-full justify-center flex flex-col m-auto items-center mb-8">
-          {images.map((imgFile, i) =>
-            <div className="relative flex justify-center flex-col w-1/3" key={i}>
-              <button className="absolute top-1 right-1 text-4xl text-gray-200"
-                onClick={(event) => {}}>
-                <IoIosCloseCircleOutline/>
-              </button>
-              <img
-                alt="img"
-                src={imageUrl+imgFile} />
+          <div className="max-w-4xl m-auto">
+            <div className="flex justify-center">
+              <div className="relative mb-6 flex w-full">
+                <div className="flex-shrink-0 w-25 p-3 font-bold">상품 이미지</div>
+                <DraggableImagesComponent images={images} setImages={setImages}/>
+              </div>
             </div>
-          )}
-        </div>
-        <input type="hidden" name="deletedFileNames" />
 
-        <div className="max-w-4xl m-auto">
-
-          <div className="flex justify-center">
-            <div className="relative mb-6 flex w-full flex-wrap">
-              <div className="w-25 p-3 font-bold">이미지 추가</div>
-              <input
-                className="flex-1 p-3 rounded-r border border-solid border-neutral-300 shadow-md"
-                type={'file'}
-                name="files"
-                multiple={true}>
-              </input>
-            </div>
-          </div>
       
           <div className="flex justify-center">
             <div className="relative mb-6 flex w-full flex-wrap">

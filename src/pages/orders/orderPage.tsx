@@ -1,4 +1,5 @@
 import { useLocation } from "react-router";
+import OrderComponent from "../../components/order/orderComponent";
 
 const OrderPage = () => {
 
@@ -9,7 +10,10 @@ const OrderPage = () => {
   console.log("orderData",orderData)
 
   return (
-    <div>주문하기</div>
+    <div className="inner">
+      <h3 className="mb-6">주문</h3>
+      <OrderComponent orderData={orderData}/>
+    </div>
   )
 }
 

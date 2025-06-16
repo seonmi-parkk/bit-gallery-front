@@ -49,15 +49,11 @@ const CartItemComponent = ({cartItem, orderItem, handleCheckboxChange}: CartItem
         </div>
 
         <div className="flex flex-1 justify-between text-xl ">
-          {/* <div>Cart Item No: {cino}</div>
-          <div>Pno: {pno}</div> */}
           <div className="mr-6">
             <div>Name: {pname}</div>
             <div>Price: {price.toLocaleString()} 원</div>
           </div>
-          {/* <div className='font-extrabold border-t-2 text-right m-2 pr-4'>
-            {price} 원
-          </div> */}
+          
           <div className="flex  text-white font-bold p-2">
             <button
               className="m-1 px-2 py-1 text-base font-medium text-black bg-white rounded-lg"
