@@ -6,10 +6,13 @@ import { showErrorToast } from "../../util/toastUtil"
 import { useNavigate } from "react-router"
 import { postGetOrderItemList } from "../../api/orderApi"
 import React, { useEffect, useState } from "react"
+import useCustomLogin from "../../hooks/useCustomLogin"
+import CartImage from "@/assets/images/cart.png"
 
 const CartComponent = () => {
 
   const {loginStatus, cartItems} = UseCustomCart()
+  const {moveToLogin} = useCustomLogin()
 
   const [orderItem, setOrderItem] = useState<CartItemResponse[]>([...cartItems.items]) 
   const [totalPrice, setTotalPrice] = useState<number>(0) 
@@ -94,6 +97,14 @@ const CartComponent = () => {
 
   return (
     <div className="w-full bg-main">
+      {loginStatus !== 'fulfilled' && 
+        <div className="mt-14">
+          <h3 className="font-medium">로그인이 필요합니다.</h3>
+          <p className="m-4 mb-8 text-lg text-gray-300">로그인 후 Bit Gallery의 다양한 상품을 구매하실 수 있습니다.</p>
+          <img className="max-w-[240px] m-auto" src={CartImage} alt="cart" />
+          <button className="mt-10 px-4 py-1.5 text-lg text-white btn-blue rounded-lg" onClick={moveToLogin}>로그인</button>
+        </div>
+      }
       {loginStatus === 'fulfilled' &&
         <>
           {cartItems.status === 'pending' && <LoadingSpinner/>}

@@ -12,7 +12,9 @@ a,div{color: #fff;}
   --color-success : #22c55e;
   --color-info : #3853db;
   --color-disabled : #777;
-  --color-yellow : #d8a413 ;
+  --color-yellow : #dba511 ;
+
+	--color-yellow-hover : #c89300 ;
 }
 
 h3{font-size: 30px;}
@@ -28,11 +30,15 @@ h5{font-size: 20px;}
 .bg-main-2 {background: #1f1f1f;}
 .bg-main-3 {background: #333;}
 .bg-main-4 {background: #555;}
+.bg-main-5 {background: #666;}
 .bg-main-6 {background: #777;}
 
 .bg-white-1 {background: #ddd;}
 .bg-white-2 {background: #ccc;}
 .bg-white-3 {background: #eee;}
+
+.bg-yellow {background: var(--color-yellow);}
+.bg-yellow-hover {background: var(--color-yellow-hover);}
 
 .bg-modal-back {background: rgb(17, 17, 17, 0.8);}
 .result-modal {

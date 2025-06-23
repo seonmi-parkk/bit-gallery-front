@@ -7,7 +7,7 @@ const OrderItemComponent = ({orderItem}:{orderItem:OrderPreviewDto}) => {
   const imageUrl = `${apiUrl}/upload/product/thumb/s_`;
 
   return (
-    <li key={pno} className={`border-b cart-item ${status}`}>
+    <li key={pno} className={`border-b cart-item`}>
       <div className="flex items-start w-full px-2 py-4">
         <div className="w-25 h-25 overflow-hidden ml-1 mr-6">
           <img src={imageUrl+imageFile} />
@@ -17,8 +17,8 @@ const OrderItemComponent = ({orderItem}:{orderItem:OrderPreviewDto}) => {
           {/* <div>Cart Item No: {cino}</div>
           <div>Pno: {pno}</div> */}
           <div className="mr-6">
-            <div>Name: {pname}</div>
-            <div>Price: {price.toLocaleString()} 원</div>
+            <div>상품명 : {pname}</div>
+            <div>가격 : {price.toLocaleString()} 원</div>
           </div>
         
 

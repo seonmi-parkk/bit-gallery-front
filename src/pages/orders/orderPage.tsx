@@ -11,7 +11,7 @@ const OrderPage = () => {
 
   return (
     <div className="inner">
-      <h3 className="mb-6">주문</h3>
+      <h3 className="font-bold mb-6 text-center">주문</h3>
       <OrderComponent orderData={orderData}/>
     </div>
   )
