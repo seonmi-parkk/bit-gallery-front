@@ -87,7 +87,7 @@ const CartComponent = () => {
     
     postGetOrderItemList(pnos)
     .then(res => {
-      console.log(res)  
+      console.log("postGetOrderItemList res : ",res)  ;
       navigate('/orders', { state: res.data }) // 주문페이지로 이동, 응답 전달
     
     }).catch(e => {

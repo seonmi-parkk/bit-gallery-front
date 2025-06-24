@@ -6,7 +6,15 @@ import { postRequestOrder } from "../../api/orderApi";
 import { showErrorToast } from "../../util/toastUtil";
 import { useNavigate } from "react-router";
 
-const OrderComponent = ({orderData}: { orderData: OrderPreviewDto[]}) => {
+type orderDataType = {
+  idempotencyKey : string,
+  orderPreview : OrderPreviewDto[]
+}
+
+const OrderComponent = ({orderData}: {orderData: orderDataType}) => {
+
+  console.log("orderDataorderData:" , orderData);
+  const preview = orderData.orderPreview;
 
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
   const imageUrl = `${apiUrl}/upload/product/thumb/s_`;
@@ -16,10 +24,10 @@ const OrderComponent = ({orderData}: { orderData: OrderPreviewDto[]}) => {
   const [maxHeight, setMaxHeight] = useState<string>('0px');
   const ulRef = useRef<HTMLUListElement>(null);
 
-  const [paymentMethod, setPaymentMethod] = useState<string>();
+  const [paymentType, setPaymentType] = useState<string>();
 
-  const totalPrice = orderData.reduce((sum, item) => sum + item.price, 0).toLocaleString();
-  const totalQuantity = orderData.length;
+  const totalPrice = preview.reduce((sum, item) => sum + item.price, 0).toLocaleString();
+  const totalQuantity = preview.length;
 
   useEffect(() => {
     if (ulRef.current) {
@@ -36,24 +44,28 @@ const OrderComponent = ({orderData}: { orderData: OrderPreviewDto[]}) => {
   // 주문하기
   const requestOrder = (e:React.MouseEvent<HTMLButtonElement>) => {
     // 구매할 아이템의 pno가져오기
-    const pnos:number[] = orderData.map(item => item.pno);
+    const pnos:number[] = preview.map(item => item.pno);
     console.log("pnos",pnos)
-    // 결제방법 paymentMethod
+    // 결제방법 paymentType
     
-    if (!paymentMethod) {
+    if (!paymentType) {
       showErrorToast("결제 방식이 선택되지 않았습니다.");
       return;
     }
-    const order = {"productNos":pnos, "paymentMethod":paymentMethod}
+    const order = {"productNos":pnos, "paymentType":paymentType}
 
-    postRequestOrder(order)
+    postRequestOrder(order, orderData.idempotencyKey)
     .then(res => {
       if(res.message === 'SUCCESS' && res.data.paymentUrl){
+        console.log("결제 요청완료 : ", res)  
         window.location.href = res.data.paymentUrl
       }
       console.log(res)  
     }).catch(e => {
+      showErrorToast('유효하지 않은 주문 요청입니다. 다시 시도해주세요.');
+      history.back();
       console.error(e)
+      
     })
   }
 
@@ -66,7 +78,7 @@ const OrderComponent = ({orderData}: { orderData: OrderPreviewDto[]}) => {
           className="relative overflow-hidden transition-all duration-300 ease-in-out border-y"
           style={{ maxHeight }}
         >
-          {orderData.length > 1 &&
+          {preview.length > 1 &&
             <>
               <button
                 className="absolute right-0 top-1 mt-2 text-3xl font-semibold underline"
@@ -77,14 +89,14 @@ const OrderComponent = ({orderData}: { orderData: OrderPreviewDto[]}) => {
               <li className={`border-b cart-item`}>
                 <div className="flex items-start w-full px-2 py-4">
                   <div className="w-25 h-25 overflow-hidden ml-1 mr-6">
-                    <img src={imageUrl+orderData[0].imageFile} />
+                    <img src={imageUrl+preview[0].imageFile} />
                   </div>
 
                   <div className="flex flex-1 justify-between text-xl ">
                     {/* <div>Cart Item No: {cino}</div>
                     <div>Pno: {pno}</div> */}
                     <div className="mr-6">
-                      <div>주문 상품 : {orderData[0].pname} 외 {totalQuantity}개</div>
+                      <div>주문 상품 : {preview[0].pname} 외 {totalQuantity}개</div>
                       <div>주문 금액 : {totalPrice} 원</div>
                     </div>
                   </div>
@@ -93,16 +105,16 @@ const OrderComponent = ({orderData}: { orderData: OrderPreviewDto[]}) => {
               </li>
             </>
           }
-          {orderData.map(item => <OrderItemComponent orderItem={item} key={item.pno} />)}
+          {preview.map(item => <OrderItemComponent orderItem={item} key={item.pno} />)}
         </ul>
       </div>
       
       <div className="my-14">
         <h5 className="mb-3">결제 방법</h5>
         <button 
-          data-payment="kakao"
-          className={` rounded-sm px-4 py-3 ${paymentMethod === "kakao"?"bg-main-3":"bg-main-4"}`}
-          onClick={(e)=>setPaymentMethod(e.currentTarget.dataset.payment)}
+          data-payment="KAKAOPAY"
+          className={` rounded-sm px-4 py-3 ${paymentType === "KAKAOPAY"?"bg-main-3":"bg-main-4"}`}
+          onClick={(e)=>setPaymentType(e.currentTarget.dataset.payment)}
         >
           카카오페이
         </button>

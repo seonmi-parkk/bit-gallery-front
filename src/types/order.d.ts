@@ -1,6 +1,6 @@
 interface OrderRequest {
   productNos: number[],
-  paymentMethod: String
+  paymentType: String
 }
 
 interface OrderPreviewDto {
@@ -8,4 +8,18 @@ interface OrderPreviewDto {
   pname : string,
   price : number,
   imageFile : string
+}
+
+interface OrderDetailResponse {
+  ono : number,
+  paidAt: Date,
+  totalPrice: number,
+  orderItems: OrderItem[]
+}
+
+interface OrderItem {
+  pno: number,
+  pname: string,
+  price: number,
+  imageFile: string
 }
