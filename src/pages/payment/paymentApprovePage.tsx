@@ -1,15 +1,17 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 import jwtAxios from "../../util/jwtUtil";
 import LoadingSpinner from "../../components/common/loadingSpinner";
-import { showSuccessToast } from "../../util/toastUtil";
+import { showErrorToast, showSuccessToast } from "../../util/toastUtil";
+import { v4 as uuidv4 } from 'uuid';
+
 
 const PaymentApprovePage = () => {
   
   const [searchParams] = useSearchParams();
+  const [idempotencyKey, setIdempotencyKey] = useState(uuidv4());
 
   const orderId = searchParams.get("order_id");
-  const idempotencyKey = searchParams.get("idempotency_key")
   const pgToken = searchParams.get("pg_token");
 
   const host = 'http://localhost:8080';
@@ -36,6 +38,8 @@ const PaymentApprovePage = () => {
       })
       .catch(err => {
         console.error("결제 승인 실패:", err);
+        showErrorToast('결제 실패하였습니다.');
+        history.back();
       });
     }
   }, [orderId, pgToken]);

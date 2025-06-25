@@ -121,7 +121,7 @@ const CartComponent = () => {
                 <label htmlFor="wholeCheckbox">전체선택</label>
               </div>
 
-              <ul className="border-t">
+              <ul className="border-t mb-[60px]">
                 {cartItems.items.map(item => <CartItemComponent cartItem={item} key={item.cino} orderItem={orderItem} handleCheckboxChange={handleCheckboxChange}/>)}
               </ul>
 

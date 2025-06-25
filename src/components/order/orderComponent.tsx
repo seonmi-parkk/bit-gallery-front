@@ -4,17 +4,11 @@ import { useEffect, useRef, useState } from "react";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import { postRequestOrder } from "../../api/orderApi";
 import { showErrorToast } from "../../util/toastUtil";
-import { useNavigate } from "react-router";
+import { v4 as uuidv4 } from 'uuid';
 
-type orderDataType = {
-  idempotencyKey : string,
-  orderPreview : OrderPreviewDto[]
-}
-
-const OrderComponent = ({orderData}: {orderData: orderDataType}) => {
+const OrderComponent = ({orderData}: {orderData: OrderPreviewDto[]}) => {
 
   console.log("orderDataorderData:" , orderData);
-  const preview = orderData.orderPreview;
 
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
   const imageUrl = `${apiUrl}/upload/product/thumb/s_`;
@@ -26,9 +20,11 @@ const OrderComponent = ({orderData}: {orderData: orderDataType}) => {
 
   const [paymentType, setPaymentType] = useState<string>();
 
-  const totalPrice = preview.reduce((sum, item) => sum + item.price, 0).toLocaleString();
-  const totalQuantity = preview.length;
+  const totalPrice = orderData.reduce((sum, item) => sum + item.price, 0).toLocaleString();
+  const totalQuantity = orderData.length;
+  const [uuid, setUuid] = useState(uuidv4());
 
+  console.log("uuid: ",uuid);
   useEffect(() => {
     if (ulRef.current) {
       if (isExpanded) {
@@ -44,7 +40,7 @@ const OrderComponent = ({orderData}: {orderData: orderDataType}) => {
   // 주문하기
   const requestOrder = (e:React.MouseEvent<HTMLButtonElement>) => {
     // 구매할 아이템의 pno가져오기
-    const pnos:number[] = preview.map(item => item.pno);
+    const pnos:number[] = orderData.map(item => item.pno);
     console.log("pnos",pnos)
     // 결제방법 paymentType
     
@@ -54,7 +50,7 @@ const OrderComponent = ({orderData}: {orderData: orderDataType}) => {
     }
     const order = {"productNos":pnos, "paymentType":paymentType}
 
-    postRequestOrder(order, orderData.idempotencyKey)
+    postRequestOrder(order, uuid)
     .then(res => {
       if(res.message === 'SUCCESS' && res.data.paymentUrl){
         console.log("결제 요청완료 : ", res)  
@@ -63,7 +59,7 @@ const OrderComponent = ({orderData}: {orderData: orderDataType}) => {
       console.log(res)  
     }).catch(e => {
       showErrorToast('유효하지 않은 주문 요청입니다. 다시 시도해주세요.');
-      history.back();
+      //history.back();
       console.error(e)
       
     })
@@ -78,7 +74,7 @@ const OrderComponent = ({orderData}: {orderData: orderDataType}) => {
           className="relative overflow-hidden transition-all duration-300 ease-in-out border-y"
           style={{ maxHeight }}
         >
-          {preview.length > 1 &&
+          {orderData.length > 1 &&
             <>
               <button
                 className="absolute right-0 top-1 mt-2 text-3xl font-semibold underline"
@@ -86,17 +82,17 @@ const OrderComponent = ({orderData}: {orderData: orderDataType}) => {
               >
                 {isExpanded ? <MdKeyboardArrowUp/> : <MdKeyboardArrowDown/>}
               </button>
-              <li className={`border-b cart-item`}>
-                <div className="flex items-start w-full px-2 py-4">
+              <li className={`border-b border-gray-700 cart cart-item`}>
+                <div className="flex items-start w-full px-6 py-4">
                   <div className="w-25 h-25 overflow-hidden ml-1 mr-6">
-                    <img src={imageUrl+preview[0].imageFile} />
+                    <img src={imageUrl+orderData[0].imageFile} />
                   </div>
 
-                  <div className="flex flex-1 justify-between text-xl ">
+                  <div className="flex flex-1 justify-between">
                     {/* <div>Cart Item No: {cino}</div>
                     <div>Pno: {pno}</div> */}
                     <div className="mr-6">
-                      <div>주문 상품 : {preview[0].pname} 외 {totalQuantity}개</div>
+                      <div>주문 상품 : {orderData[0].pname} 외 {totalQuantity}개</div>
                       <div>주문 금액 : {totalPrice} 원</div>
                     </div>
                   </div>
@@ -105,7 +101,7 @@ const OrderComponent = ({orderData}: {orderData: orderDataType}) => {
               </li>
             </>
           }
-          {preview.map(item => <OrderItemComponent orderItem={item} key={item.pno} />)}
+          {orderData.map(item => <OrderItemComponent orderItem={item} key={item.pno} />)}
         </ul>
       </div>
       

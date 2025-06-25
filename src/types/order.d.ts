@@ -14,6 +14,7 @@ interface OrderDetailResponse {
   ono : number,
   paidAt: Date,
   totalPrice: number,
+  paymentType: string,
   orderItems: OrderItem[]
 }
 

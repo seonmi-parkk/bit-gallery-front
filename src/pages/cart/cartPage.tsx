@@ -16,8 +16,8 @@ const CartPage = () => {
     // }, [loginStatus]);
     
   return (
-      <div className="inner text-center">
-        <h3 className="font-bold">장바구니</h3>
+      <div className="inner">
+        <h3 className="font-bold text-center">장바구니</h3>
         {/* <button onClick={() => showSuccessToast("업로드 완료!")}>
           알림 테스트 성공
         </button>
