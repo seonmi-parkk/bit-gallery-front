@@ -4,7 +4,6 @@ import useCustomMove from "../../hooks/useCustomMove"
 import PageComponent from "../common/pageComponent";
 import Masonry from 'react-masonry-css'
 import { BsCartPlus, BsCartCheck } from "react-icons/bs";
-import { IoIosArrowBack, IoIosArrowForward } from "react-icons/io";
 import '../../styles/product.css'
 import useLoginStore from "../../zstore/useLoginStore";
 import ReadModalComponent from "./readModalComponent";
@@ -13,7 +12,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Navigation } from 'swiper/modules';
-import useCustomLogin from "../../hooks/useCustomLogin";
+
 
 const breakpointColumnsObj = {
   default: 4,
@@ -22,14 +21,13 @@ const breakpointColumnsObj = {
   500: 1
 };
 
-const ListComponent = ({ serverData }: { serverData: pageResponseDto<ProductDto> }) => {
+const ListComponent = ({serverData} : {serverData:pageResponseDto<ProductDto>}) => {
   const { cartItems, isInCart, addItem, moveToCart } = UseCustomCart()
 
   const { status: loginStatus, user: loginUser } = useLoginStore()
 
   const { page, size, moveToList, moveToRead } = useCustomMove()
 
-  const [isOpenModal, setIsOpenModal] = useState(false);
   const [selectedPno, setSelectedPno] = useState<number>(0);
 
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
@@ -37,7 +35,8 @@ const ListComponent = ({ serverData }: { serverData: pageResponseDto<ProductDto>
 
   const query = useQueryClient()
 
-  console.log("[ListComponent]LoginStatus : ", loginStatus)
+  const [isOpenModal,setIsOpenModal] = useState<boolean>(false);
+
 
   // 동일 페이지 클릭 처리
   const moveCheckPage = (pageParam: PageParam) => {
@@ -63,7 +62,7 @@ const ListComponent = ({ serverData }: { serverData: pageResponseDto<ProductDto>
           <div
             key={product.pno}
             className="list-item relative rounded cursor-pointer"
-            onClick={() => {setIsOpenModal(true); setSelectedPno(product.pno)}}
+            onClick={() => {setIsOpenModal(true); setSelectedPno(product.pno);}}
           >
 
             <div className="flex flex-col h-full">
@@ -78,7 +77,7 @@ const ListComponent = ({ serverData }: { serverData: pageResponseDto<ProductDto>
                       disableOnInteraction: false, // 유저가 터치해도 autoplay 유지
                       pauseOnMouseEnter: false  // 마우스 오버해도 autoplay 유지
                     }}
-                    loop={true}
+                    loop={product.uploadedFileNames.length > 1}
                     className="relative product-detail-swiper w-full rounded overflow-hidden"
                   >
                     {product.uploadedFileNames.map((imgFile: string, idx: number) => (
@@ -99,16 +98,6 @@ const ListComponent = ({ serverData }: { serverData: pageResponseDto<ProductDto>
                         {product.price.toLocaleString()} 원
                       </div>
                     </div>
-
-
-                    {/* {(loginStatus === 'guest' || cartItems.status === 'fulfilled' && !isInCart(product.pno)) &&
-                      <button type="button"
-                        className="flex justify-center items-center w-10 h-10 rounded text-xl bg-white-1 text-black-2"
-                        onClick={(e) => { e.stopPropagation(); addItem(product.pno) }}
-                      >
-                        <BsCartPlus/>
-                      </button>
-                    } */}
 
                     {loginUser.email !== product.sellerEmail && (
                       !cartItems.items.some(item => item.pno === product.pno) || loginStatus === 'guest' ? (
@@ -147,7 +136,8 @@ const ListComponent = ({ serverData }: { serverData: pageResponseDto<ProductDto>
       {isOpenModal && selectedPno !== 0 && 
         <ReadModalComponent
           pno={selectedPno} 
-          onClose={() => {setIsOpenModal(false); setSelectedPno(0); }}
+          onClose={() => setSelectedPno(0)}
+          isOpenModal={isOpenModal}
         />
       }
     </div>

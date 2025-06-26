@@ -4,12 +4,14 @@ import logo from '../../assets/logo.png';
 import { STATIC_IMG_URL } from "../../api/apiUrl";
 import { MdOutlineLogout } from "react-icons/md";
 import { GrUserAdmin } from "react-icons/gr";
+import UseCustomCart from "../../hooks/useCustomCart";
 
 function BasicMenu() {
 
-  const {loginState, loginStatus} = useCustomLogin()
+  const {loginState, loginStatus, doLogout} = useCustomLogin()
 
-  const {doLogout} = useCustomLogin()
+  const {itemQuantity} = UseCustomCart()
+
 
   return (
     <nav id='navbar' className="fixed top-0 z-10 w-full bg-main flex px-10 py-6 ">
@@ -30,7 +32,10 @@ function BasicMenu() {
                 <NavLink to='/products/add'>상품 등록</NavLink>
               </li>
               <li className="flex items-center pr-6 text-lg">
-                <NavLink to='/cart'>Cart</NavLink>
+                <NavLink className="flex items-center "  to='/cart'>
+                  Cart 
+                  <span className="flex items-center justify-center bg-warn w-4.5 h-4.5 ml-1 text-[12   px] rounded-full">{itemQuantity}</span>
+                </NavLink>
               </li>
             </>
           }
@@ -49,11 +54,13 @@ function BasicMenu() {
                   <GrUserAdmin className="text-lg mr-1"/>관리자
                 </a>
               }
-              <div className="flex items-center gap-2">
-                <div className="w-10 h-10 rounded-full overflow-hidden">
-                  <img className="w-fit" src={STATIC_IMG_URL+"/"+loginState.profileImage}/>
-                </div>
-                <p>{loginState.nickname} 님</p>
+              <div className="">
+                <NavLink to={'/mypage'} className="flex items-center gap-2">
+                  <div className="w-10 h-10 rounded-full overflow-hidden">
+                    <img className="w-fit" src={STATIC_IMG_URL+"/"+loginState.profileImage}/>
+                  </div>
+                  <p>{loginState.nickname} 님</p>
+                </NavLink>  
               </div>
               <div onClick={()=>doLogout()} className="text-2xl cursor-pointer"><MdOutlineLogout/></div>
             </div>

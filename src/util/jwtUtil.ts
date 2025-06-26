@@ -20,8 +20,8 @@ const beforeReq = (config: InternalAxiosRequestConfig) => {
     return Promise.reject(new Error("REQUIRE_LOGIN"))
   }
   const { accessToken } = userInfo
-  console.log("==========accessToken: "+ accessToken);
-  console.log("==========요청 url: "+ config.url);
+  //console.log("==========accessToken: "+ accessToken);
+  //console.log("==========요청 url: "+ config.url);
 
 
   // Authorization 헤더 처리

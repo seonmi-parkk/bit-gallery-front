@@ -1,24 +1,20 @@
 import { useEffect, useRef, useState } from "react";
 import OrderItemComponent from "./orderItemComponent";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
+import ReadModalComponent from "../products/readModalComponent";
 
 const OrderDetailComponent = ({data}:{data:OrderDetailResponse}) => {
 
   const orderData = data.orderItems;
-  const apiUrl = import.meta.env.VITE_API_BASE_URL;
-  const imageUrl = `${apiUrl}/upload/product/thumb/s_`;
 
   // 주문 상품 토글 처리
   const [isExpanded, setIsExpanded] = useState<boolean>(true);
   const [maxHeight, setMaxHeight] = useState<string>('0px');
   const ulRef = useRef<HTMLUListElement>(null);
 
-  const [paymentType, setPaymentType] = useState<string>();
-
-  //const totalPrice = data.reduce((sum, item) => sum + item.price, 0).toLocaleString();
-  //const totalQuantity = orderData.length;
-  
-
+  // 상품 상세 모달
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [selectedPno, setSelectedPno] = useState<number>(0);
   
   useEffect(() => {
     if (ulRef.current) {
@@ -35,22 +31,23 @@ const OrderDetailComponent = ({data}:{data:OrderDetailResponse}) => {
     <div>
       <div className="my-14">
         
+        <h4 className="font-bold mt-10 mb-3">주문 정보</h4>
         <div className="bg-main-2 rounded-lg px-6 py-4 border-gray-700 border">
-          <h6 className="mb-1"><span className="font-medium">주문번호</span> {data.ono}</h6>
-          <h6 className=" text-gray-300">{data.paidAt.toString()}</h6>
+          <p className="mb-2"><span className="font-medium mr-2">주문번호</span> {data.ono}</p>
+          <p className=" text-gray-300"><span className="font-medium mr-2">주문일시</span> {data.paidAt.toString()}</p>
         </div>
 
       
         <h4 className="font-bold mt-10 mb-3">결제 정보</h4>
         <div className="bg-main-2 rounded-lg px-6 py-4 border-gray-700 border">
-          <h6 className="mb-1"><span className="font-medium">결제방법</span> {data.paymentType}</h6>
-          <h6 className=" text-gray-300">총 주문 금액 - {data.totalPrice} 원</h6>
+          <p className="mb-2"><span className="font-medium mr-2">결제방법</span> {data.paymentType}</p>
+          <p className=" text-gray-300"><span className="font-medium mr-2">총 주문 금액</span> {data.totalPrice} 원</p>
         </div>
 
         <h4 className="relative font-bold mt-10 mb-3">
           주문 상품
           <button
-            className="absolute right-0 top-1 text-3xl font-semibold underline"
+            className="absolute right-0 top-1 text-4xl underline"
             onClick={() => setIsExpanded(prev => !prev)}
           >
             {isExpanded ? <MdKeyboardArrowUp/> : <MdKeyboardArrowDown/>}
@@ -65,12 +62,21 @@ const OrderDetailComponent = ({data}:{data:OrderDetailResponse}) => {
           >
             <h6 className="font-medium px-6 py-3">
               <span>주문 상세 내역</span>
-              <span>{orderData.length}건</span>
+              <span className="pl-4 font-normal text-white-2">{orderData.length}건</span>
             </h6>
-            {orderData.map(item => <OrderItemComponent orderItem={item} key={item.pno} />)}
+            {orderData.map(item => <OrderItemComponent orderItem={item} key={item.pno} setIsOpenModal={setIsOpenModal} setSelectedPno={setSelectedPno} />)}
           </ul>
         </div>
       </div>
+
+      {/* 상세페이지 모달 */}
+      {isOpenModal && selectedPno !== 0 && 
+        <ReadModalComponent
+          pno={selectedPno} 
+          onClose={() => {setIsOpenModal(false); setSelectedPno(0); }}
+        />
+      }
+
     </div>
   )
 }

@@ -98,7 +98,7 @@ const CartComponent = () => {
   return (
     <div className="w-full bg-main">
       {loginStatus !== 'fulfilled' && 
-        <div className="mt-14">
+        <div className="mt-10 text-center">
           <h3 className="font-medium">로그인이 필요합니다.</h3>
           <p className="m-4 mb-8 text-lg text-gray-300">로그인 후 Bit Gallery의 다양한 상품을 구매하실 수 있습니다.</p>
           <img className="max-w-[240px] m-auto" src={CartImage} alt="cart" />

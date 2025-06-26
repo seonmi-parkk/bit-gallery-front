@@ -7,8 +7,13 @@ import { RiCloseLargeLine } from "react-icons/ri";
 import ReadComponent from "./readComponent"
 import LoadingSpinner from "../common/loadingSpinner"
 
+type ReadModalComponentProps = {
+  pno: number, 
+  onClose: () => void,
+  isOpenModal: boolean
+};
 
-const ReadModalComponent = ({ pno, onClose }: { pno: number, onClose: () => void }) => {
+const ReadModalComponent = ({ isOpenModal, pno, onClose }: ReadModalComponentProps) => {
 
   useEffect(() => {
     // body 스크롤 막기

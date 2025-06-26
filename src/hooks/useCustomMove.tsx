@@ -37,6 +37,7 @@ function useCustomMove() : UseCustomMoveReturn { // return 타입 = UseCustomMov
       queryStr = createSearchParams({
         page: String(pageNum),
         size: String(sizeNum),
+        modal: 'false'
       }).toString()
 
       // 동일 페이지 클릭 처리
@@ -53,7 +54,16 @@ function useCustomMove() : UseCustomMoveReturn { // return 타입 = UseCustomMov
     navigate({ pathname: `/products/list`, search: queryStr})
   }
 
-  return {page, size, refresh, moveToList, moveToModify, moveToRead}
+  const moveToPage = (newPage: number) => {
+    const queryStr = createSearchParams({
+      page: String(newPage),
+      size: String(size), 
+    }).toString();
+
+    navigate({ pathname: '/products/list', search: queryStr });
+  };
+
+  return {page, size, refresh, moveToList, moveToModify, moveToRead, moveToPage}
 }
 
 export default useCustomMove

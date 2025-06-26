@@ -1,6 +1,7 @@
 @import "tailwindcss";
 
 body {
+	background-color: var(--color-bg);
   font-family: 'pretendard', sans-serif;
 }
 button{cursor: pointer;}
@@ -8,6 +9,7 @@ a,div{color: #fff;}
 ::marker {color: transparent;}
 
 :root{
+	--color-bg: #111;
   --color-warn : #d83232;
   --color-success : #22c55e;
   --color-info : #3853db;
@@ -15,6 +17,13 @@ a,div{color: #fff;}
   --color-yellow : #dba511 ;
 
 	--color-yellow-hover : #c89300 ;
+
+	--color-main-2 : #1f1f1f;
+	--color-main-3 : #333;
+	--color-main-4 : #555;
+	--color-main-5 : #666;
+	--color-main-6 : #777;
+	
 }
 
 h3{font-size: 30px;}
@@ -27,12 +36,12 @@ h6{font-size: 18px;}
   margin: 0 auto;
 }
 
-.bg-main {background: #111;}
-.bg-main-2 {background: #1f1f1f;}
-.bg-main-3 {background: #333;}
-.bg-main-4 {background: #555;}
-.bg-main-5 {background: #666;}
-.bg-main-6 {background: #777;}
+.bg-main {background: var(--color-bg);}
+.bg-main-2 {background: var(--color-main-2);}
+.bg-main-3 {background: var(--color-main-3);}
+.bg-main-4 {background: var(--color-main-4);}
+.bg-main-5 {background: var(--color-main-5);}
+.bg-main-6 {background: var(--color-main-6);}
 
 .bg-white-1 {background: #ddd;}
 .bg-white-2 {background: #ccc;}
@@ -40,6 +49,8 @@ h6{font-size: 18px;}
 
 .bg-yellow {background: var(--color-yellow);}
 .bg-yellow-hover {background: var(--color-yellow-hover);}
+
+.bg-warn {background-color: var(--color-warn);}
 
 .bg-modal-back {background: rgb(17, 17, 17, 0.8);}
 .result-modal {
@@ -49,9 +60,13 @@ h6{font-size: 18px;}
 }
 
 .border-white-2 {border-color: #ccc;}
+.border-main-3 {border-color: #333;}
 .border-main-6 {border-color: #777;}
 
 .text-white-1 {color: #ddd;}
+.text-white-2 {color: #ccc;}
+.text-white-3 {color: #aaa;}
+.text-white-4 {color: #888;}
 .text-black-1 {color: #111 !important;}
 .text-black-2 {color: #333 !important;}
 
@@ -61,6 +76,12 @@ h6{font-size: 18px;}
 
 input[type=checkbox] {
 	zoom: 1.54
+}
+
+input[type=text], input[type=password] {
+	border: 1px solid #999;
+	padding: 8px 10px;
+	border-radius: 4px;
 }
 
 /* toast */
@@ -212,3 +233,25 @@ button.Toastify__close-button {color: #fff;}
 	    opacity: 0;
 	  }
 	}
+
+/* 스크롤바 */
+/* src/index.css 또는 App.css 등 전역 CSS 파일에 추가 */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #888;
+  border-radius: 6px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #555;
+}

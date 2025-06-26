@@ -14,11 +14,11 @@ function BasicLayout() {
   useEffect(() => {
     // 새로고침시 쿠키에서 로그인 정보 확인
     if(status === 'guest') {
-      console.log("loginStatus 없음")
+      //console.log("loginStatus 없음")
       const cookieData = getCookie("user")
 
       if(cookieData){
-        console.log("cookie에서 로그인정보 가져와서 save")
+      //console.log("cookie에서 로그인정보 가져와서 save")
         save(cookieData)
       }
     }

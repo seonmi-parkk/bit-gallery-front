@@ -7,6 +7,7 @@ import userRouter from "./userRouter";
 import todoRouter from "./todoRouter";
 import orderRouter from "./orderRouter";
 import paymentRouter from "./paymentRouter";
+import mypageRouter from "./mypageRouter";
 const Loading = () => <div>Loaidng...</div> // 로딩할 때 보여주는 함수형 컴포넌트 
 const ProductsList = lazy(() => import("../pages/products/listPage"))
 const ProductsAdd = lazy(() => import("../pages/products/addPage"))
@@ -42,7 +43,8 @@ const router = createBrowserRouter([
       todoRouter(),
       userRouter(),
       orderRouter(),
-      paymentRouter()
+      paymentRouter(),
+      mypageRouter()
     ]
   },
   

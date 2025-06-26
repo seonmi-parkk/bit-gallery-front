@@ -21,7 +21,7 @@ const UseCustomCart = () => {
   useEffect(() => {
     if (loginStatus === 'fulfilled') {
       getItems()
-      console.log("로그인 상태변화 -> 장바구니 아이템 가져옴")
+      //console.log("로그인 상태변화 -> 장바구니 아이템 가져옴")
     }
   }, [loginStatus])
 
@@ -52,7 +52,9 @@ const UseCustomCart = () => {
     navigate('/cart')
   }
 
-  return {loginState, loginStatus, cartItems, typeof: cartItems, addItem, deleteItem, isInCart, moveToCart}
+  const itemQuantity = items.length;
+
+  return {itemQuantity, loginState, loginStatus, cartItems, typeof: cartItems, addItem, deleteItem, isInCart, moveToCart}
 }
 
 export default UseCustomCart

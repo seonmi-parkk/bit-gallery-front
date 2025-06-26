@@ -5,6 +5,7 @@ import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import { postRequestOrder } from "../../api/orderApi";
 import { showErrorToast } from "../../util/toastUtil";
 import { v4 as uuidv4 } from 'uuid';
+import ReadModalComponent from "../products/readModalComponent";
 
 const OrderComponent = ({orderData}: {orderData: OrderPreviewDto[]}) => {
 
@@ -24,7 +25,11 @@ const OrderComponent = ({orderData}: {orderData: OrderPreviewDto[]}) => {
   const totalQuantity = orderData.length;
   const [uuid, setUuid] = useState(uuidv4());
 
-  console.log("uuid: ",uuid);
+  // 상품 상세 모달
+  const [isOpenModal, setIsOpenModal] = useState(false);
+  const [selectedPno, setSelectedPno] = useState<number>(0);
+
+  
   useEffect(() => {
     if (ulRef.current) {
       if (isExpanded) {
@@ -68,7 +73,7 @@ const OrderComponent = ({orderData}: {orderData: OrderPreviewDto[]}) => {
   return (
     <div className="w-full bg-main">
       <div className="my-14">
-        <h5 className="mb-3">주문 상품</h5>
+        <h4 className="mb-3 font-medium">주문 상품</h4>
         <ul 
           ref={ulRef}
           className="relative overflow-hidden transition-all duration-300 ease-in-out border-y"
@@ -77,7 +82,7 @@ const OrderComponent = ({orderData}: {orderData: OrderPreviewDto[]}) => {
           {orderData.length > 1 &&
             <>
               <button
-                className="absolute right-0 top-1 mt-2 text-3xl font-semibold underline"
+                className="absolute right-0 top-1 mt-2 text-4xl  underline"
                 onClick={() => setIsExpanded(prev => !prev)}
               >
                 {isExpanded ? <MdKeyboardArrowUp/> : <MdKeyboardArrowDown/>}
@@ -101,12 +106,19 @@ const OrderComponent = ({orderData}: {orderData: OrderPreviewDto[]}) => {
               </li>
             </>
           }
-          {orderData.map(item => <OrderItemComponent orderItem={item} key={item.pno} />)}
+          {orderData.map(item => 
+            <OrderItemComponent 
+              orderItem={item} 
+              key={item.pno} 
+              setIsOpenModal={setIsOpenModal} 
+              setSelectedPno={setSelectedPno}
+            />)
+          }
         </ul>
       </div>
       
       <div className="my-14">
-        <h5 className="mb-3">결제 방법</h5>
+        <h4 className="mb-3 font-medium">결제 방법</h4>
         <button 
           data-payment="KAKAOPAY"
           className={` rounded-sm px-4 py-3 ${paymentType === "KAKAOPAY"?"bg-main-3":"bg-main-4"}`}
@@ -119,8 +131,8 @@ const OrderComponent = ({orderData}: {orderData: OrderPreviewDto[]}) => {
       <div className="fixed left-0 bottom-0 w-full px-10 py-3 bg-main-2 ">
         <div className="inner  flex gap-6 justify-end ">
           <p className="flex gap-1.5 items-center text-lg">
-            총 <span className="mr-3 font-medium">${totalQuantity} 개</span> 
-            주문금액 <span className="ml-1 text-2xl font-medium">${totalPrice} 원</span>
+            총 <span className="mr-3 font-medium">{totalQuantity} 개</span> 
+            주문금액 <span className="ml-1 text-2xl font-medium">{totalPrice} 원</span>
           </p>
             <button
               className="m-1 px-4 py-1.5 text-lg text-white btn-blue rounded-lg"
@@ -128,6 +140,15 @@ const OrderComponent = ({orderData}: {orderData: OrderPreviewDto[]}) => {
             > 구매하기 </button>
         </div>
       </div>
+
+      {/* 상세페이지 모달 */}
+      {isOpenModal && selectedPno !== 0 && 
+        <ReadModalComponent
+          pno={selectedPno} 
+          onClose={() => {setIsOpenModal(false); setSelectedPno(0); }}
+        />
+      }
+
     </div>
   )
 }

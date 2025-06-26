@@ -67,11 +67,12 @@ const ModifyComponent = ({ product }: { product: ProductDto }) => {
       queryClient.invalidateQueries({ queryKey: ['products/list'], exact: false })
     },
     onError: (error) => {
-      const axiosError = error as AxiosError<any>
+      const axiosError = error as AxiosError<ApiResponse>;
 
       if (axiosError.response) {
         console.error('서버 응답 에러:', axiosError.response.data)
-        showErrorToast(axiosError.response.data.code === 40000 ? '잘못된 요청입니다.' : '수정 처리 중 오류가 발생했습니다.');
+        showErrorToast(axiosError.response?.data?.message.toString());
+
       } else if (axiosError.request) {
         console.error('요청 미전송');
         showErrorToast('서버에 연결할 수 없습니다.');
