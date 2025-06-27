@@ -20,6 +20,8 @@ const ReadComponent = ({ data }: { data: ProductDto }) => {
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
   const imageUrl = `${apiUrl}/upload`;
 
+  const defaultProfile = import.meta.env.VITE_DEFAULT_PROFILE;
+
   const { moveToModify, moveToList } = useCustomMove()
 
   const { addItem, isInCart, moveToCart } = UseCustomCart()
@@ -34,12 +36,18 @@ const ReadComponent = ({ data }: { data: ProductDto }) => {
 
   const [product, setProduct] = useState<ProductDto>(data)
 
+  const [profileImage, setProfileImage] = useState<string>(imageUrl+"/profile/"+defaultProfile)
+
   const queryClient = useQueryClient()
 
   // 판매 중지
   const pauseMutation = useMutation({
     mutationFn: async (pno: number) => {
       const res = await jwtAxios.patch(`http://localhost:8080/products/${pno}/paused`)
+      const sellerImage = res.data.data.sellerImage ;
+      if(sellerImage != null){
+        setProfileImage(sellerImage);
+      }
       return res.data.data
     },
     onSuccess: (result) => {
@@ -66,6 +74,9 @@ const ReadComponent = ({ data }: { data: ProductDto }) => {
   const activateMutation = useMutation({
     mutationFn: async (pno: number) => {
       const res = await jwtAxios.patch(`http://localhost:8080/products/${pno}/activated`)
+      if(sellerImage != null){
+        setProfileImage(sellerImage);
+      }
       return res.data.data
     },
     onSuccess: (result) => {
@@ -103,7 +114,7 @@ const ReadComponent = ({ data }: { data: ProductDto }) => {
           <div className="flex gap-3 items-center">
             <div className="w-10 h-10 rounded-full" 
               style={{ 
-                backgroundImage: `url(${imageUrl}/${data.sellerImage})`,
+                backgroundImage: `url(${profileImage})`,
                 backgroundSize: "cover",
                 backgroundPosition: "center"
               }}

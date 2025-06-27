@@ -1,7 +1,6 @@
 import { NavLink } from "react-router";
 import useCustomLogin from "../../hooks/useCustomLogin";
 import logo from '../../assets/logo.png';
-import { STATIC_IMG_URL } from "../../api/apiUrl";
 import { MdOutlineLogout } from "react-icons/md";
 import { GrUserAdmin } from "react-icons/gr";
 import UseCustomCart from "../../hooks/useCustomCart";
@@ -12,6 +11,9 @@ function BasicMenu() {
 
   const {itemQuantity} = UseCustomCart()
 
+  const apiUrl = import.meta.env.VITE_API_BASE_URL;
+  const imageUrl = apiUrl+"/upload/profile/";
+  const defaultProfile = import.meta.env.VITE_DEFAULT_PROFILE;
 
   return (
     <nav id='navbar' className="fixed top-0 z-10 w-full bg-main flex px-10 py-6 ">
@@ -57,7 +59,10 @@ function BasicMenu() {
               <div className="">
                 <NavLink to={'/mypage'} className="flex items-center gap-2">
                   <div className="w-10 h-10 rounded-full overflow-hidden">
-                    <img className="w-fit" src={STATIC_IMG_URL+"/"+loginState.profileImage}/>
+                    <img className="w-fit" 
+                      src={ loginState.profileImage != null ? 
+                        imageUrl + loginState.profileImage : imageUrl + defaultProfile
+                      }/>
                   </div>
                   <p>{loginState.nickname} 님</p>
                 </NavLink>  

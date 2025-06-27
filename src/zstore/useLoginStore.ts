@@ -16,7 +16,8 @@ export interface UserStore {
   status: 'guest'|'pending'|'fulfilled'|'error',
   login: (email:string, password:string) => void,
   logout: () => void,
-  save: (userInfo: UserInfo) => void
+  save: (userInfo: UserInfo) => void,
+  updateUserInfo: (partialInfo: Partial<Pick<UserInfo, 'email' | 'nickname' | 'profileImage'>>) => void
 }
 
 const initState:UserInfo = {
@@ -27,6 +28,7 @@ const initState:UserInfo = {
   roleNames: [],
   profileImage: ''
 }
+
 
 const useLoginStore = create<UserStore>( (set,get) => {
 
@@ -61,7 +63,16 @@ const useLoginStore = create<UserStore>( (set,get) => {
       const newState = {...userInfo, status: 'fulfilled'}
       setCookie("user", newState)
       console.log("=======loginStatus: ",  get().status)
+    },
+    updateUserInfo: (partialInfo) => {
+      const current = get().user;
+      const updatedUser = { ...current, ...partialInfo };
+      set({ user: updatedUser });
+
+      const newState = { ...updatedUser, status: get().status };
+      setCookie("user", newState);
     }
+
   }
 })
 

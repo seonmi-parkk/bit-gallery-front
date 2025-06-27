@@ -5,7 +5,7 @@ import useLoginStore from "../zstore/useLoginStore"
 
 const useCustomLogin = () => {
 
-  const {user, status, login, logout} = useLoginStore()
+  const {user, status, login, logout, updateUserInfo} = useLoginStore()
 
   // 로그인 상태 객체
   const loginState = user
@@ -44,7 +44,7 @@ const useCustomLogin = () => {
   // 관리자 여부 확인
   
 
-  return {loginState, loginStatus, doLogin, doLogout, moveToLogin, moveToLoginReturn, moveToPath}
+  return {loginState, loginStatus, doLogin, doLogout, moveToLogin, moveToLoginReturn, moveToPath, updateUserInfo}
 
 }
 export default useCustomLogin
