@@ -5,6 +5,8 @@ import LoadingSpinner from "../common/loadingSpinner";
 import React, { useState, useCallback, useRef } from 'react';
 import ProfileImageCropper from "../common/ProfileImageCropper";
 import PasswordValidator from "../user/passwordVaildator";
+import axios, { AxiosError } from "axios";
+import { showErrorToast, showSuccessToast } from "../../util/toastUtil";
 
 
 const InfoComponent = () => {
@@ -81,38 +83,44 @@ const InfoComponent = () => {
   };
 
   // 비밀변호 변경 요청
-  const requestChangePassword = () => {
-  
-    if (!passwordValidatorRef.current) return;
+  const requestChangePassword = async () => {
+  if (!passwordValidatorRef.current) return;
 
-    // PasswordValidator 유효성 검증 결과 가져오기
-    if (!passwordValidatorRef.current.isValid()) {
-      alert("비밀번호 조건을 모두 만족시켜 주세요.");
-      return;
-    }
+  const { currentPassword, newPassword } = passwordValidatorRef.current.getPasswords();
+  console.log("왜왜왜ㅗ애ㅙ");
 
-    // PasswordValidator 기존 비밀번호, 새로운 비밀번호 가져오기
-    const { currentPassword, newPassword } = passwordValidatorRef.current.getPasswords();
+  try {
+    const res = await jwtAxios.patch(`${apiUrl}/user/password`, {
+      currentPassword,
+      newPassword,
+    });
 
-    try {
-      async () => {
-        const res = await jwtAxios.patch('/user/password', {
-          currentPassword,
-          newPassword
-        });
-
-        if (res.data.code === 200) {
-          alert('비밀번호가 변경되었습니다.');
-          setIsChangingPassword(false);
-        } else {
-          alert('비밀번호 변경 실패히였습니다.');
+    if (res.data.code === 200) {
+      showSuccessToast('비밀번호가 변경되었습니다.');
+      setIsChangingPassword(false);
+    } 
+  } catch (err: unknown) {
+    let errorMessage = '비밀번호 변경 중 오류가 발생했습니다.';
+    if (axios.isAxiosError(err)) {
+       const rawMessage = err.response?.data?.message;
+      console.log('rawMessage: ',rawMessage)
+      // message가 객체인 경우(@Valid)
+      if (rawMessage == "유효성 검증 실패") {
+        const messages = Object.values(err.response?.data?.data);
+        if (Array.isArray(messages) && typeof messages[0] === "string") {
+          errorMessage = messages[0];
         }
+
+      // message가 문자열인 경우(다른 예외)
+      } else if (typeof rawMessage === "string") {
+        errorMessage = rawMessage;
       }
-    } catch (err) {
-      console.error(err);
-      alert('변경 요청 중 에러가 발생하였습니다.');
     }
+
+    showErrorToast(errorMessage);
   }
+};
+
 
 
   return (
@@ -212,7 +220,7 @@ const InfoComponent = () => {
                     <button
                       type="button"
                       className="rounded p-1.5 w-18 bg-main-3"
-                      onClick={requestChangePassword}
+                      onClick={() => requestChangePassword()}
                     >
                       변경
                     </button>
@@ -226,15 +234,6 @@ const InfoComponent = () => {
                   </div>
                 </div>
               )}
-            </div>
-
-
-            <div className="mt-16 text-center">
-              <button type="button" 
-                className="rounded p-2 w-22 text-lg bg-blue-500 text-white"
-              >
-                수정
-              </button>          
             </div>
 
           </form>

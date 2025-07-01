@@ -7,7 +7,7 @@ const PasswordValidator = forwardRef((_, ref) => {
   const [confirmPassword, setConfirmPassword] = useState('');
 
   const isLengthValid = (value:string) => { 
-    return value.length >= 8 && value.length <= 32
+    return value.length >= 8 && value.length <= 20
   };
 
   const hasTwoTypes = (value:string) => {
@@ -78,7 +78,7 @@ const PasswordValidator = forwardRef((_, ref) => {
             {newPassword == '' || hasTwoTypes(newPassword) ? '✔️' : '❌'} 영문/숫자/특수문자 중, 2가지 이상 포함
           </li>
           <li className={changeTextColor(newPassword, isLengthValid(newPassword))}>
-            {newPassword == '' || isLengthValid(newPassword) ? '✔️' : '❌'} 8자 이상 32자 이하 입력 (공백 제외)
+            {newPassword == '' || isLengthValid(newPassword) ? '✔️' : '❌'} 8자 이상 20자 이하 입력 (공백 제외)
           </li>
           <li className={changeTextColor(newPassword, hasNoRepeatedChars(newPassword))}>
             {newPassword == '' || hasNoRepeatedChars(newPassword) ? '✔️' : '❌'} 연속 3자 이상 동일한 문자/숫자 제외
