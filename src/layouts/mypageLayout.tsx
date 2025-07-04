@@ -3,7 +3,7 @@ import { Outlet } from "react-router"
 const MypageLayout = () => {
   return (
     <div className="max-w-[1200px] m-auto">
-      <div className="flex gap-15">
+      <div className="flex gap-20">
         <div className="mr-6">
           <h4 className="text-4xl text-white-3 font-medium">MYPAGE</h4>
           <ul className="mt-10">
@@ -48,7 +48,7 @@ const MypageLayout = () => {
           </ul>
         </div>
 
-        <div className="flex-1 p-8 border border-gray-700 min-h-[75vh] rounded-2xl">
+        <div className="flex-1 p-8 border border-main-3 min-h-[75vh] rounded-2xl">
           <Outlet/>  
         </div>
       </div>

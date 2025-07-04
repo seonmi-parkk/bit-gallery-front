@@ -6,9 +6,10 @@ import { FaRegEdit } from "react-icons/fa";
 
 type Props = {
   completedImage: (preview: string, file: File) => void;
+  setIsChangingProfile: (isChanging:boolean) => void;
 };
 
-const ProfileImageCropper = ({ completedImage }: Props) => {
+const ProfileImageCropper = ({ completedImage, setIsChangingProfile }: Props) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [imageSrc, setImageSrc] = useState('');
   const [croppedImage, setCroppedImage] = useState<string | null>(null);
@@ -76,7 +77,7 @@ const ProfileImageCropper = ({ completedImage }: Props) => {
     <div>
       <label className="flex justify-center items-center bg-main-3 w-9 h-9 rounded cursor-pointer">
         <span className="text-white pl-0.5 pb-0.5"><FaRegEdit/></span>
-        <input type="file" accept="image/*" className='hidden' onChange={handleImageChange} />
+        <input type="file" accept="image/*" className='hidden' onChange={(e)=> {handleImageChange(e); setIsChangingProfile(true);} } />
       </label>
 
       <Modal style={customStyle} isOpen={modalOpen} onRequestClose={() => setModalOpen(false)} contentLabel="이미지 자르기">

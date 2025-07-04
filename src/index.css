@@ -84,6 +84,10 @@ input[type=text], input[type=password] {
 	border-radius: 4px;
 }
 
+.border-0 {
+	border-width: 0px !important;
+}
+
 /* toast */
 div.Toastify__toast {
   color: white !important;

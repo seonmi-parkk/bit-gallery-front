@@ -5,7 +5,7 @@ import { Thumbs } from 'swiper/modules'
 import { BsCartPlus, BsCartCheck } from "react-icons/bs";
 import { FaRegEdit } from "react-icons/fa";
 import useLoginStore from "../../zstore/useLoginStore";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useCartStore from "../../zstore/useCartStore";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import jwtAxios from "../../util/jwtUtil";
@@ -20,7 +20,7 @@ const ReadComponent = ({ data }: { data: ProductDto }) => {
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
   const imageUrl = `${apiUrl}/upload`;
 
-  const defaultProfile = import.meta.env.VITE_DEFAULT_PROFILE;
+  let defaultProfile = import.meta.env.VITE_DEFAULT_PROFILE;
 
   const { moveToModify, moveToList } = useCustomMove()
 
@@ -40,14 +40,21 @@ const ReadComponent = ({ data }: { data: ProductDto }) => {
 
   const queryClient = useQueryClient()
 
+  // 판매자 프로필 이미지
+  useEffect(() => {
+    if (data.sellerImage) {
+      setProfileImage(`${imageUrl}/profile/${data.sellerImage}`);
+    }
+  }, [data.sellerImage]);
+
   // 판매 중지
   const pauseMutation = useMutation({
     mutationFn: async (pno: number) => {
       const res = await jwtAxios.patch(`http://localhost:8080/products/${pno}/paused`)
-      const sellerImage = res.data.data.sellerImage ;
-      if(sellerImage != null){
-        setProfileImage(sellerImage);
-      }
+      // const sellerImage = res.data.data.sellerImage ;
+      // if(sellerImage != null){
+      //   setProfileImage(sellerImage);
+      // }
       return res.data.data
     },
     onSuccess: (result) => {
@@ -74,9 +81,9 @@ const ReadComponent = ({ data }: { data: ProductDto }) => {
   const activateMutation = useMutation({
     mutationFn: async (pno: number) => {
       const res = await jwtAxios.patch(`http://localhost:8080/products/${pno}/activated`)
-      if(sellerImage != null){
-        setProfileImage(sellerImage);
-      }
+      // if(sellerImage != null){
+      //   setProfileImage(sellerImage);
+      // }
       return res.data.data
     },
     onSuccess: (result) => {

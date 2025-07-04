@@ -17,7 +17,7 @@ function BasicMenu() {
 
   return (
     <nav id='navbar' className="fixed top-0 z-10 w-full bg-main flex px-10 py-6 ">
-      <div className="flex justify-between w-full" >
+      <div className="flex justify-between  w-full" >
 
         <ul className="flex text-white font-medium">
           <li className="flex items-center pr-6 text-2xl mr-10" style={{ maxWidth: '320px' }}>
