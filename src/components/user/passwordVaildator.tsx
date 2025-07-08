@@ -25,7 +25,8 @@ const PasswordValidator = ({ validator }: Props) => {
       <div className="mt-2 mb-6">
         <label htmlFor="newPassword" className="block mb-1">새 비밀번호</label>
         <input
-          type="newPassword"
+          type="password"
+          name="newPassword"
           value={newPassword}
           onChange={(e) => setNewPassword(e.target.value)}
           className="w-full border rounded px-4 py-2 mb-2"
@@ -48,7 +49,8 @@ const PasswordValidator = ({ validator }: Props) => {
       <div className="mt-2 mb-6">
         <label htmlFor="checkPassword" className="block mb-1">새 비밀번호 확인</label>
         <input
-          type="checkPassword"
+          type="password"
+          name="checkPassword"
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           className="w-full border rounded px-4 py-2 mb-1"

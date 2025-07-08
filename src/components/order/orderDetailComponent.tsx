@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from "react";
-import OrderItemComponent from "./orderItemComponent";
 import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import ReadModalComponent from "../products/readModalComponent";
+import OrderDetailItemComponent from "./orderDetailItemComponent";
 
 const OrderDetailComponent = ({data}:{data:OrderDetailResponse}) => {
 
@@ -64,7 +64,7 @@ const OrderDetailComponent = ({data}:{data:OrderDetailResponse}) => {
               <span>주문 상세 내역</span>
               <span className="pl-4 font-normal text-white-2">{orderData.length}건</span>
             </h6>
-            {orderData.map(item => <OrderItemComponent orderItem={item} key={item.pno} setIsOpenModal={setIsOpenModal} setSelectedPno={setSelectedPno} />)}
+            {orderData.map(item => <OrderDetailItemComponent orderItem={item} key={item.pno} setIsOpenModal={setIsOpenModal} setSelectedPno={setSelectedPno} />)}
           </ul>
         </div>
       </div>

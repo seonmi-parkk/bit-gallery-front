@@ -78,7 +78,7 @@ input[type=checkbox] {
 	zoom: 1.54
 }
 
-input[type=text], input[type=password] {
+input[type=text], input[type=password], input[type=email] {
 	border: 1px solid #999;
 	padding: 8px 10px;
 	border-radius: 4px;

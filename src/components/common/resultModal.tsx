@@ -10,10 +10,10 @@ const ResultModal = ({ message, confirmText, cancelText, onConfirm, onCancel }:R
   return (
     <div id="ResultModal" className="fixed bg-modal-back inset-0 z-50">
       <div className="result-modal absolute left-[50%] top-[15%] transform -translate-x-[50%] bg-white p-8 rounded-xl shadow-xl w-80 text-center space-y-4">
-        <h5 className="text-white text-base">{message}</h5>
+        <h5 className="text-white text-base leading-relaxed">{message}</h5>
 
         <div className="flex justify-center gap-4 pt-3">
-          {onCancel && (
+          {cancelText && (
             <button
               className="px-4 py-1.5 bg-white-1 text-black rounded hover:bg-gray-50"
               onClick={onCancel}

@@ -9,11 +9,10 @@ import LoadingSpinner from "../common/loadingSpinner"
 
 type ReadModalComponentProps = {
   pno: number, 
-  onClose: () => void,
-  isOpenModal: boolean
+  onClose: () => void
 };
 
-const ReadModalComponent = ({ isOpenModal, pno, onClose }: ReadModalComponentProps) => {
+const ReadModalComponent = ({pno, onClose }: ReadModalComponentProps) => {
 
   useEffect(() => {
     // body 스크롤 막기

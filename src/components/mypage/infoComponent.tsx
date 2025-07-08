@@ -138,7 +138,7 @@ const InfoComponent = () => {
       if (axios.isAxiosError(err)) {
         const rawMessage = err.response?.data?.message;
 
-        // message가 객체인 경우(@Valid)
+        // message가 유효성 검증 실패인 경우(@Valid)
         if (rawMessage == "유효성 검증 실패") {
           const messages = Object.values(err.response?.data?.data);
           if (Array.isArray(messages) && typeof messages[0] === "string") {
@@ -146,7 +146,7 @@ const InfoComponent = () => {
           }
 
         // message가 문자열인 경우(다른 예외)
-        } else if (typeof rawMessage === "string") {
+        } else {
           errorMessage = rawMessage;
         }
       }
@@ -369,7 +369,8 @@ const InfoComponent = () => {
                   <div className="mt-2 mb-6">
                     <label htmlFor="currentPassword" className="block mb-1">현재 비밀번호</label>
                     <input
-                      type="currentPassword"
+                      type="password"
+                      name="currentPassword"
                       value={currentPassword}
                       onChange={(e) => {setCurrentPassword(e.target.value)}}
                       className="w-full border rounded px-4 py-2 mb-1"
