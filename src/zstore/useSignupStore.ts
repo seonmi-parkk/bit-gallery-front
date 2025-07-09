@@ -7,7 +7,9 @@ export type SignupFormData = {
   email: string;
   emailVerified: boolean;
   nickname: string;
+  nicknameVaildated: boolean;
   password: string;
+  passwordValidated: boolean;
 };
 
 const initSignupForm = (): SignupFormData => ({
@@ -16,7 +18,10 @@ const initSignupForm = (): SignupFormData => ({
   email: '',
   emailVerified: false,
   nickname: '',
+  nicknameVaildated: false,
   password: '',
+  passwordValidated: false
+
 });
 
 type SignupState = {
@@ -41,7 +46,6 @@ export const useSignupStore = create<SignupState>()(
         set((state) => ({ form: { ...state.form, ...data } })),
       reset: () =>
         set({
-          step: 1,
           form: initSignupForm(),
         }),
     }),

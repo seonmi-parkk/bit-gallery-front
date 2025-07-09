@@ -1,10 +1,9 @@
 import { useSignupStore } from "../../../zstore/useSignupStore";
 import { useState } from "react";
-import { IoIosArrowBack } from "react-icons/io";
+import { IoIosArrowForward } from "react-icons/io";
 import useGlobalModalStore from "../../../zstore/useGlobalModalStore";
 import GlobalModal from "../../../components/common/globalModal";
-import { showErrorToast } from "../../../util/toastUtil";
-import jwtAxios from "../../../util/jwtUtil";
+import { showErrorToast, showSuccessToast } from "../../../util/toastUtil";
 import axios from "axios";
 import LoadingSpinner from "../../../components/common/loadingSpinner";
 
@@ -47,7 +46,7 @@ const EmailStep = () => {
     setLoading(true);
 
     try {
-      const res = await jwtAxios.post(
+      const res = await axios.post(
         `${apiUrl}/user/email-verification`, 
         {'email' : email}
       )
@@ -103,7 +102,7 @@ const EmailStep = () => {
 
     // 인증코드 확인 요청
     try {
-      const res = await jwtAxios.post(
+      const res = await axios.post(
         `${apiUrl}/user/email-verification/verify`, 
         {
           'email' : email,
@@ -113,6 +112,7 @@ const EmailStep = () => {
 
       // 성공 응답의 경우
       if (res.data.code === 200) {
+        showSuccessToast('이메일 인증에 성공하였습니다.');
         // 내용 저장
         updateForm({ email, emailVerified: true });
         // 다음 단계로 넘어가기
@@ -139,7 +139,7 @@ const EmailStep = () => {
 
   return (
     <>
-      <div className="max-w-md m-auto">
+      <div>
         <div className="flex justify-center gap-2 my-6">
           <input type="email" 
             value={email} 
@@ -168,10 +168,12 @@ const EmailStep = () => {
             인증
           </button>
         </div>
-        {/* <button onClick={prevStep} className="flex items-center gap-2 m-auto mt-16 rounded p-2 bg-main-3 text-white">
-          <IoIosArrowBack />
-          이전으로
-        </button> */}
+        {form.emailVerified &&
+          <button onClick={nextStep} className="flex items-center gap-2 m-auto mt-16 rounded p-2 pl-3 bg-main-3 text-white">
+            다음으로
+            <IoIosArrowForward />
+          </button>
+        }
       </div>
 
       {/* 로딩 중인 경우 로딩 스피너 띄우기 */}

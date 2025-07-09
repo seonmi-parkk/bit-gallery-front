@@ -1,9 +1,11 @@
+import LoginComponent from "../../../components/user/loginComponent";
 import { useSignupStore } from "../../../zstore/useSignupStore";
 import EmailStep from "./emailStep";
 import UserInfoStep from "./userInfoStep";
 
 const SignupPage = () => {
   const step = useSignupStore((state) => state.step);
+  console.log('step: ',step);
 
   return (
     <div className="p-6 max-w-3xl m-auto text-center">
@@ -25,9 +27,10 @@ const SignupPage = () => {
         </div>
       </div>
 
-      <div className="px-4">
+      <div className="px-4 max-w-md m-auto">
         {step === 1 && <EmailStep />}
         {step === 2 && <UserInfoStep />}
+        {step === 3 && <LoginComponent />}
       </div>
     </div>
   )
