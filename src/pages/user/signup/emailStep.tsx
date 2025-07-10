@@ -1,6 +1,6 @@
 import { useSignupStore } from "../../../zstore/useSignupStore";
 import { useState } from "react";
-import { IoIosArrowForward } from "react-icons/io";
+import { IoIosArrowForward, IoIosArrowBack } from "react-icons/io";
 import useGlobalModalStore from "../../../zstore/useGlobalModalStore";
 import GlobalModal from "../../../components/common/globalModal";
 import { showErrorToast, showSuccessToast } from "../../../util/toastUtil";
@@ -12,7 +12,7 @@ const EmailStep = () => {
 
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
 
-  const {form, updateForm, nextStep} = useSignupStore();
+  const {form, updateForm, nextStep, prevStep} = useSignupStore();
 
   const [email, setEmail] = useState<string>(form.email);
 
@@ -140,7 +140,7 @@ const EmailStep = () => {
   return (
     <>
       <div>
-        <div className="flex justify-center gap-2 my-6">
+        <div className="flex justify-center gap-3 my-6">
           <input type="email" 
             value={email} 
             onChange={(e) => {setEmail(e.target.value); updateForm({ emailVerified: false })}} 
@@ -154,7 +154,7 @@ const EmailStep = () => {
             인증 메일 발송
           </button>
         </div>
-        <div className="flex justify-center gap-2 my-6">
+        <div className="flex justify-center gap-3 my-6">
           <input type="text" 
             value={verificationCode} 
             onChange={(e) => setVerificationCode(e.target.value)} 
@@ -168,12 +168,19 @@ const EmailStep = () => {
             인증
           </button>
         </div>
-        {form.emailVerified &&
-          <button onClick={nextStep} className="flex items-center gap-2 m-auto mt-16 rounded p-2 pl-3 bg-main-3 text-white">
-            다음으로
-            <IoIosArrowForward />
+
+        <div className="flex justify-center gap-4 m-auto mt-16">
+          <button onClick={prevStep} className="flex items-center gap-2 rounded p-2 pr-3 bg-main-3 text-white">
+            <IoIosArrowBack />
+            이전으로
           </button>
-        }
+          {form.emailVerified &&
+            <button onClick={nextStep} className="flex items-center gap-2 rounded p-2 pl-3 btn-blue text-white">
+              다음으로
+              <IoIosArrowForward />
+            </button>
+          }
+        </div>
       </div>
 
       {/* 로딩 중인 경우 로딩 스피너 띄우기 */}

@@ -36,6 +36,7 @@ const CartComponent = () => {
     let price = 0;
 
     orderItem.forEach((item) => {
+      item.status 
       price += item.price;
       quantity += 1;
     });
@@ -121,7 +122,7 @@ const CartComponent = () => {
                 <label htmlFor="wholeCheckbox">전체선택</label>
               </div>
 
-              <ul className="border-t mb-[60px]">
+              <ul className="border-t border-b border-main-6 mb-[60px]">
                 {cartItems.items.map(item => <CartItemComponent cartItem={item} key={item.cino} orderItem={orderItem} handleCheckboxChange={handleCheckboxChange}/>)}
               </ul>
 

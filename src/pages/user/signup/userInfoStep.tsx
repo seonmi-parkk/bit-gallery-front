@@ -5,12 +5,14 @@ import { useState, type ChangeEvent } from "react";
 import PasswordValidator from "../../../components/user/passwordVaildator";
 import { usePasswordValidator } from "../../../hooks/usePasswordValidator";
 import { IoIosArrowBack } from "react-icons/io";
+import useCustomLogin from "../../../hooks/useCustomLogin";
 
 
 const UserInfoStep = () => {
+  const {moveToLogin} = useCustomLogin();
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
   
-  const {form, updateForm, reset, prevStep, nextStep, step} = useSignupStore();
+  const {form, updateForm, reset, prevStep} = useSignupStore();
   const [nickname, setNickname] = useState(form.nickname);
 
   // 비밀번호 유효성 검사
@@ -77,17 +79,15 @@ const UserInfoStep = () => {
     try {
       const res = await axios.post(`${apiUrl}/user/signup`, {
         'email' : form.email,
-        'password' : form.password,
+        'password' : newPassword,
         'nickname' : form.nickname
       });
 
       // 성공시
       if (res.data.code === 200) {
-        showInfoToast("회원가입 완료되었습니다.");
-        console.log('step : ', step)
-        nextStep();
-        console.log('[후]step : ', step)
+        showInfoToast("회원가입이 완료되었습니다.");
         reset(); // 상태 초기화
+        moveToLogin();
       }
     } catch (err: unknown) {
       let errorMessage = '회원가입에 실패했습니다.';
@@ -112,7 +112,7 @@ const UserInfoStep = () => {
     <>
       <div className="text-left"> 
         <label htmlFor="nickname" className="block mb-1">닉네임</label>
-        <div className="flex items-start">
+        <div className="flex items-start gap-3">
           <div className="flex-1">
             <input
                 type="text" name="nickname"
@@ -128,7 +128,7 @@ const UserInfoStep = () => {
           </div>
           <button
             type="button"
-            className="shrink-0 rounded p-1.5 w-18 ml-2 py-2.5 bg-main-3"
+            className="shrink-0 rounded p-1.5 w-18 py-2.5 bg-main-3"
             onClick={checkNickname}
           >
             중복 체크

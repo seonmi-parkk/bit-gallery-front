@@ -2,8 +2,6 @@ import { create } from 'zustand';
 import { persist } from 'zustand/middleware';
 
 export type SignupFormData = {
-  phone: string;
-  phoneVerified: boolean;
   email: string;
   emailVerified: boolean;
   nickname: string;
@@ -13,8 +11,6 @@ export type SignupFormData = {
 };
 
 const initSignupForm = (): SignupFormData => ({
-  phone: '',
-  phoneVerified: false,
   email: '',
   emailVerified: false,
   nickname: '',
@@ -37,7 +33,7 @@ type SignupState = {
 export const useSignupStore = create<SignupState>()(
   persist( // localStorage에 저장하여 새로고침해도 데이터 유지
     (set) => ({
-      step: 1,
+      step: 0,
       form: initSignupForm(),
       setStep: (step) => set({ step }),
       nextStep: () => set((state) => ({ step: state.step + 1 })),
@@ -46,6 +42,7 @@ export const useSignupStore = create<SignupState>()(
         set((state) => ({ form: { ...state.form, ...data } })),
       reset: () =>
         set({
+          step: 0,
           form: initSignupForm(),
         }),
     }),

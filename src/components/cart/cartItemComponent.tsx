@@ -36,31 +36,32 @@ const CartItemComponent = ({cartItem, orderItem, handleCheckboxChange}: CartItem
 
 
   return (
-    <li key={cino} data-key={cino} className={`border-b border-gray-700 cart-item ${status}`}>
+    <li key={cino} data-key={cino} className={`border-b border-main-3 cart-item ${status}`}>
       <div className="flex items-start w-full px-2 py-4">
         <input
           type="checkbox"
           onChange={(e)=>handleCheckboxChange(e,cartItem)}
-          checked={orderItem.some(item => item.pno === pno)}
+          checked={orderItem.some(item => item.pno === pno) && status == 'APPROVED' }
           />
-      {(status == 'PAUSED' || status == 'DELETED') && <span className="bg-black p-1 inline-block mb-2 text-white rounded-sm">판매 중지</span> }
+      
         <div className="w-25 h-25 overflow-hidden ml-1 mr-5">
           <img src={imageUrl+imageFile} />
         </div>
 
         <div className="flex flex-1 justify-between items-start">
           <div className="mr-6">
+            {(status == 'PAUSED' || status == 'DELETED') && <span className="bg-warn px-1 py-0.5 inline-block mb-2 text-white text-sm rounded-sm">판매 중지</span> }
             <p>{pname}</p>
             <p className="mt-1">{price.toLocaleString()} 원</p>
           </div>
           
           <div className="flex  text-white font-bold px-2">
             <button
-              className="m-1 px-2 py-1 text-base font-medium text-black bg-white rounded-lg"
+              className="m-1 px-2 py-1 text-base font-medium bg-main-3 rounded-lg"
               onClick={() => buyItem(pno)}
             > 개별 구매 </button>
             <button
-              className="m-1 px-2 py-1 text-white border rounded-lg"
+              className="m-1 px-2 py-1 text-white border border-main-4 rounded-lg"
               onClick={() => deleteCartItem(cino)}
             > <RiCloseLine /> </button>
             

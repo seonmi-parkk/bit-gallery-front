@@ -59,9 +59,10 @@ h6{font-size: 18px;}
   backdrop-filter: blur(20px);
 }
 
-.border-white-2 {border-color: #ccc;}
-.border-main-3 {border-color: #333;}
-.border-main-6 {border-color: #777;}
+.border-white-2 {border-color: var(--bg-white-2) !important;}
+.border-main-3 {border-color: var(--color-main-3) !important;}
+.border-main-4 {border-color: var(--color-main-4) !important;}
+.border-main-6 {border-color: var(--color-main-6) !important;}
 
 .text-white-1 {color: #ddd;}
 .text-white-2 {color: #ccc;}

@@ -13,12 +13,16 @@ import ResultModal from "../common/resultModal";
 import useGlobalModalStore from "../../zstore/useGlobalModalStore";
 import GlobalModal from "../common/globalModal";
 import { showSuccessToast } from "../../util/toastUtil";
+import { postGetOrderItemList } from "../../api/orderApi";
+import { useNavigate } from "react-router";
 
 
 const ReadComponent = ({ data }: { data: ProductDto }) => {
 
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
   const imageUrl = `${apiUrl}/upload`;
+
+  const navigate = useNavigate();
 
   let defaultProfile = import.meta.env.VITE_DEFAULT_PROFILE;
 
@@ -114,6 +118,18 @@ const ReadComponent = ({ data }: { data: ProductDto }) => {
     })
   }
 
+  // 구매하기
+  const buyItem = (pno:number) => {
+    postGetOrderItemList([pno])
+    .then(res => {
+      console.log(res)  
+      navigate('/orders', { state: res.data }) // 주문페이지로 이동, 응답 전달
+    
+    }).catch(e => {
+      console.error(e)
+    })
+  }
+
   return (
     <>
       <div className=" px-5 py-4">
@@ -133,7 +149,7 @@ const ReadComponent = ({ data }: { data: ProductDto }) => {
             {loginUser.email !== data.sellerEmail &&
               <button type="button"
                 className="flex justify-center items-center h-10 px-3 rounded text-sm font-bold bg-white-1 text-black-2 "
-                onClick={() => {}}
+                onClick={() => buyItem(data.pno)}
               >
                 구매하기
               </button>
