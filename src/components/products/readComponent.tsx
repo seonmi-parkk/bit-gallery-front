@@ -213,7 +213,7 @@ const ReadComponent = ({ data }: { data: ProductDto }) => {
               modules={[Thumbs]}
               spaceBetween={10}
               thumbs={{ swiper: thumbsSwiper }}
-              className="product-detail-swiper w-full max-h-[calc(100vh-260px)] mb-4 rounded overflow-hidden"
+              className="product-detail-swiper w-full max-h-[calc(100vh-300px)] 2xl:max-h-[calc(100vh-380px)] mb-4 rounded overflow-hidden"
             >
               {data.uploadedFileNames.map((imgFile: string, idx: number) => (
                 <SwiperSlide key={idx}>
@@ -250,24 +250,35 @@ const ReadComponent = ({ data }: { data: ProductDto }) => {
               {product.statusName}
             </div>
 
-            <div className="relative mt-2 mb-3 flex w-full flex-wrap items-stretch">
-              <div className="mr-3 font-bold">PNAME</div>
+            <div className="relative mt-2 mb-4 flex w-full flex-wrap items-stretch">
+              <div className="w-14 mr-3 font-bold">상품명</div>
               <div className="">
                 {data.pname}
               </div>
             </div>
 
-            <div className="relative mb-3 flex w-full flex-wrap items-stretch">
-              <div className="mr-3 font-bold">PRICE</div>
+            <div className="relative mb-4 flex w-full flex-wrap items-stretch">
+              <div className="w-14 mr-3 font-bold">가격</div>
               <div className="">
                 {data.price.toLocaleString()}
               </div>
             </div>
 
-            <div className="relative mb-3 flex w-full flex-wrap items-stretch">
-              <div className="mr-3 font-bold">PDESC</div>
+            <div className="relative mb-4 flex w-full flex-wrap items-stretch">
+              <div className="w-14 mr-3 font-bold">상세설명</div>
               <div className="">
                 {data.pdesc}
+              </div>
+            </div>
+
+            <div className="relative mb-3 flex w-full flex-wrap items-stretch">
+              <div className="w-14 mr-3 font-bold">카테고리</div>
+              <div className="flex flex-wrap flex-1">
+                {data.productCategories.map((category, index) => (
+                  <div key={index} className="px-2.5 py-1 mt-[-3px] mb-2.5 mr-1.5 bg-main-3 rounded-full">
+                    {category}
+                  </div>
+                ))}
               </div>
             </div>
           </div>

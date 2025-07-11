@@ -19,8 +19,8 @@ const ModifyPage = () => {
   
 
   return (
-    <div className="p-4 w-full">
-      <div className="text-3xl w-fit m-auto mb-10 px-8 py-4 font-bold text-center border-b-2">
+    <div className="max-w-[900px] m-auto w-full">
+      <div className="text-3xl w-fit m-auto mb-10 font-bold text-center">
         상품 수정
       </div>
 

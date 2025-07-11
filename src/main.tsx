@@ -12,6 +12,6 @@ const queryClient = new QueryClient()
 createRoot(document.getElementById('root')!).render(
   <QueryClientProvider client={queryClient}>
     <RouterProvider router={router}></RouterProvider>
-    <ReactQueryDevtools initialIsOpen={true}/>
+    {/* {import.meta.env.DEV && <ReactQueryDevtools initialIsOpen={false} />} */}
   </QueryClientProvider>
 )

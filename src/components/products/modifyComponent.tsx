@@ -9,6 +9,8 @@ import type { AxiosError } from "axios"
 import { showErrorToast } from "../../util/toastUtil"
 import DraggableImagesComponent from "./DraggableImagesComponent"
 import { API_BASE_URL } from "../../api/apiUrl"
+import CategoryFilterComponent from "../common/categoryFilterComponent"
+import { useCategorySelector } from "../../hooks/useCategorySelector"
 
 
 const ModifyComponent = ({ product }: { product: ProductDto }) => {
@@ -40,6 +42,9 @@ const ModifyComponent = ({ product }: { product: ProductDto }) => {
   // }
 
   const [images, setImages] = useState<DraggableImageItem[]>(initialImages);
+
+  // 카테고리
+  const {selectedIds, toggleCategory, allCategories} = useCategorySelector(product.productCategories, 5);
 
   const queryClient = useQueryClient()
 
@@ -105,6 +110,12 @@ const ModifyComponent = ({ product }: { product: ProductDto }) => {
         }
       })
 
+      // form에 카테고리 추가
+      selectedIds.forEach((id, index) => {
+        formData.append(`productCategories[${index}]`, id.toString());
+      });
+
+
       modifyMutation.mutate(formData)
     } else if(actionType === 'delete') {
       deleteMutation.mutate()
@@ -115,7 +126,7 @@ const ModifyComponent = ({ product }: { product: ProductDto }) => {
   const imageUrl = `${apiUrl}/upload/product/thumb/s_`;
 
   return (
-    <div className="mt-10 m-2 p-4 inner">
+    <div className="mt-10 p-4 inner">
       
       { (deleteMutation.isPending || modifyMutation.isPending) && <LoadingSpinner/>}
 
@@ -133,19 +144,18 @@ const ModifyComponent = ({ product }: { product: ProductDto }) => {
 
         <input type="hidden" name="pno" defaultValue={product.pno}/>
 
-          <div className="max-w-4xl m-auto">
-            <div className="flex justify-center">
-              <div className="relative mb-6 flex w-full">
-                <div className="flex-shrink-0 w-25 p-3 font-bold">상품 이미지</div>
-                <DraggableImagesComponent images={images} setImages={setImages}/>
-              </div>
+        <div className="">
+          <div className="flex justify-center">
+            <div className="relative mb-6 flex w-full">
+              <div className="flex-shrink-0 w-25 p-3 font-bold">상품 이미지</div>
+              <DraggableImagesComponent images={images} setImages={setImages}/>
             </div>
+          </div>
 
-      
           <div className="flex justify-center">
             <div className="relative mb-6 flex w-full flex-wrap">
               <div className="w-25 p-3 font-bold">상품명</div>
-              <input className="flex-1 p-3 rounded-r border border-solid border-neutral-300 shadow-md"
+              <input className="flex-1 p-3 rounded-r border border-solid border-main-4"
                 name="pname" required defaultValue={product.pname}>
               </input>
             </div>
@@ -155,7 +165,7 @@ const ModifyComponent = ({ product }: { product: ProductDto }) => {
             <div className="relative mb-6 flex w-full flex-wrap">
               <div className="w-25 p-3 font-bold">가격</div>
               <input
-                className="flex-1 p-3 rounded-r border border-solid border-neutral-300 shadow-md"
+                className="flex-1 p-3 rounded-r border border-solid border-main-4"
                 name="price" type={'number'} defaultValue={product.price}>
               </input>
             </div>
@@ -165,24 +175,35 @@ const ModifyComponent = ({ product }: { product: ProductDto }) => {
             <div className="relative mb-6 flex w-full flex-wrap">
               <div className="w-25 p-3 font-bold">상품 설명</div>
               <textarea
-                className="flex-1 p-3 rounded-r border border-solid border-neutral-300 shadow-md resize-y"
+                className="flex-1 p-3 rounded-r border border-solid border-main-4 resize-y"
                 name="pdesc" rows={4} required defaultValue={product.pdesc}>
               </textarea>
             </div>
           </div>
 
-          <div className="flex justify-end p-4">
-            <button type="submit" name='actionType' value='delete'
-              className="rounded p-4 m-2 text-xl w-32 text-white bg-red-500">
-              Delete
-            </button>
+          <div className="flex">
+            <div className="relative mb-6 flex">
+              <div className="w-25 p-3 font-bold shrink-0">카테고리</div>
+              <div>
+                <p className="my-3 opacity-70">* 카테고리는 최대 5개까지 설정 가능합니다.</p>
+                <CategoryFilterComponent allCategories={allCategories} selectedIds={selectedIds} toggleCategory={toggleCategory}/>
+              </div>
+            </div>
+          </div>
+
+          <div className="relative flex gap-3 justify-end mt-8">                  
             <button type="submit" name='actionType' value='modify'
-              className="inline-block rounded p-4 m-2 text-xl w-32 text-white bg-orange-500">
-              Modify
+              className="absolute top-1/2 -translate-y-1/2 left-1/2 -translate-x-1/2 rounded p-2.5 w-26 bg-blue-500 text-white">
+              수정
+            </button>
+
+            <button type="submit" name='actionType' value='delete'
+              className="rounded p-2.5 w-26 bg-main-2 text-white">
+              삭제
             </button>
 
             <button type="button"
-              className="rounded p-4 m-2 text-xl w-32 text-white btn-blue"
+              className="rounded p-2.5 w-26 bg-main-2 text-white"
               onClick={() => moveToList()}>
               List
             </button>

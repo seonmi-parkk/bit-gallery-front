@@ -21,10 +21,9 @@ const ReadPage = () => {
   return (
     <div className="w-full">
       {isPending && <LoadingSpinner/>}
-      {data &&
-      
-        <ReadComponent data={data}></ReadComponent>
-      }
+      <div className="inner">
+        {data && <ReadComponent data={data}></ReadComponent>}
+      </div>
     </div>
   )
 }

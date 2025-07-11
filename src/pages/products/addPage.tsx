@@ -13,7 +13,7 @@ const AddPage = () => {
   }, [loginStatus]);
 
   return (
-    <div className="max-w-[900px] m-auto p-4 w-full">
+    <div className="max-w-[900px] m-auto w-full">
       <div className="text-3xl text-center font-bold">
         상품 등록
       </div>

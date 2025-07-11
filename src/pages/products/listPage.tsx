@@ -5,15 +5,29 @@ import { useQuery, useQueryClient } from "@tanstack/react-query";
 import axios from "axios";
 import { showErrorToast } from "../../util/toastUtil";
 import LoadingSpinner from "../../components/common/loadingSpinner";
+import { useState } from "react";
+import CategoryFilterComponent from "../../components/common/categoryFilterComponent";
+import { useCategorySelector } from "../../hooks/useCategorySelector";
 
 
 const ListPage = () => {
 
   const { page, size, moveToPage } = useCustomMove()
-  const queryStr = createSearchParams({ page: String(page), size: String(size) }).toString()
+
+  // 카테고리
+  const {selectedIds, toggleCategory, allCategories} = useCategorySelector([]);
+
+
+  // 상품 리스트 데이터 가져오기
   const { data, error, isPending } = useQuery({
-    queryKey: ['products/list', page, size], // 캐싱할 때 보관할 이름 
+    queryKey: ['products/list', page, size, selectedIds], // 캐싱할 때 보관할 이름 
     queryFn: async () => {
+        const queryStr = createSearchParams({ 
+          page: String(page), 
+          size: String(size),
+          categories: selectedIds.join(',')
+        }).toString();
+
       const res = await axios.get(`http://localhost:8080/products/list?${queryStr}`)
 
       if (res.data.code !== 200) {
@@ -25,12 +39,17 @@ const ListPage = () => {
   })
 
   return (
-    <div className="w-full mt-4">
+    <div className="w-full">
+      <CategoryFilterComponent
+        allCategories={allCategories}
+        selectedIds={selectedIds}
+        toggleCategory={toggleCategory}
+      />
 
       {isPending && <LoadingSpinner/>}
 
       {data &&
-        <ListComponent serverData={data} ></ListComponent>
+        <ListComponent serverData={data}></ListComponent>
       }
     </div>
   );

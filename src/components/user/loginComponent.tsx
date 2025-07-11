@@ -35,7 +35,7 @@ const LoginComponent = () => {
   }, [loginStatus]);
 
   return (
-    <div className="w-full mt-10 m-2 px-16 py-10 bg-main-2 rounded-xl">
+    <div className="w-full mt-10 m-2 px-16 pt-16 pb-18 bg-main-2 rounded-xl">
       {loginStatus === 'fulfilled' && <ResultModal message="로그인 되었습니다." confirmText="닫기" onConfirm={closeModal}/>}
       <div className="flex justify-center">
         <div className="text-4xl m-4 p-4 font-extrabold text-blue-500">LOGIN</div>
@@ -43,14 +43,14 @@ const LoginComponent = () => {
       <div className="flex justify-center">
         <div className="relative mb-6 flex w-full flex-wrap items-stretch">
           <div className="mb-2 font-medium">Email</div>
-          <input className="w-full p-4 rounded-r border border-solid border-main-6 shadow-md"
+          <input className="w-full p-4 rounded-r border border-solid border-main-4 shadow-md"
             name="email" type={'text'} onChange={(e) => setEmail(e.target.value)} />
         </div>
       </div>
       <div className="flex justify-center">
         <div className="relative mb-6 flex w-full flex-wrap items-stretch">
           <div className="mb-2 font-medium">Password</div>
-          <input className="w-full p-4 rounded-r border border-solid border-main-6 shadow-md"
+          <input className="w-full p-4 rounded-r border border-solid border-main-4 shadow-md"
             name="password" type={'password'} onChange={(e) => setPassword(e.target.value)} />
         </div>
       </div>

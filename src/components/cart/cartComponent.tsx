@@ -36,9 +36,10 @@ const CartComponent = () => {
     let price = 0;
 
     orderItem.forEach((item) => {
-      item.status 
-      price += item.price;
-      quantity += 1;
+      if (item.status !== "PAUSED") {
+        price += item.price;
+        quantity += 1;
+      }
     });
 
     setTotalPrice(price);
@@ -83,8 +84,8 @@ const CartComponent = () => {
 
   // 구매하기 버튼 클릭 시
   const buySelectedItem = () => {
-    // 구매할 아이템의 pno가져오기
-    const pnos:number[] = orderItem.map(item => item.pno);
+    // 구매할 아이템의 pno가져오기 (판매중지 상품 제외)
+    const pnos:number[] = orderItem.filter(item => item.status !== "PAUSED").map(item => item.pno);
     
     postGetOrderItemList(pnos)
     .then(res => {

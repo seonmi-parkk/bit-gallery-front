@@ -53,6 +53,7 @@ const ListComponent = ({serverData} : {serverData:pageResponseDto<ProductDto>}) 
 
   return (  
     <div>
+
       <Masonry
         breakpointCols={breakpointColumnsObj}
         className="masonry-grid"
@@ -89,12 +90,12 @@ const ListComponent = ({serverData} : {serverData:pageResponseDto<ProductDto>}) 
                   </Swiper>
                   
                   <div className="absolute z-10 w-full flex justify-between list-item-info px-4 pt-4 pb-3 bottom-0">
-                    <div className="">
-                      {product.pno}
-                      <div className="max-w-5/6 truncate text-white-1">
+                    <div className="flex-1">
+                      {/* {product.pno} */}
+                      <div className="max-w-5/6 truncate text-white-1 font-medium">
                         {product.pname}
                       </div>
-                      <div className="mt-1 text-white-1 text-sm">
+                      <div className="mt-2 text-white-1 text-sm">
                         {product.price.toLocaleString()} 원
                       </div>
                     </div>
@@ -102,14 +103,14 @@ const ListComponent = ({serverData} : {serverData:pageResponseDto<ProductDto>}) 
                     {loginUser.email !== product.sellerEmail && (
                       !cartItems.items.some(item => item.pno === product.pno) || loginStatus === 'guest' ? (
                         <button type="button"
-                          className="flex justify-center items-center w-10 h-10 rounded text-xl border border-main-6"
+                          className="flex justify-center items-center w-10 h-10 rounded text-xl border border-main-6 bg-white-op1"
                           onClick={(e) => {e.stopPropagation(); addItem(product.pno);}}
                         >
                           <BsCartPlus />
                         </button>
                       ) : (
                         <button type="button"
-                          className="flex justify-center items-center w-10 h-10 rounded text-xl border border-main-6"
+                          className="flex justify-center items-center w-10 h-10 rounded text-xl border border-main-6 bg-white-op1"
                           onClick={() => moveToCart()}
                         >
                           <BsCartCheck />
@@ -137,7 +138,7 @@ const ListComponent = ({serverData} : {serverData:pageResponseDto<ProductDto>}) 
         <ReadModalComponent
           pno={selectedPno} 
           onClose={() => setSelectedPno(0)}
-          isOpenModal={isOpenModal}
+          // isOpenModal={isOpenModal}
         />
       }
     </div>

@@ -1,7 +1,6 @@
 // components/DraggableImageList.tsx
 import React, { useState, type ChangeEvent } from 'react'
 import { DragDropContext, Droppable, Draggable, type DropResult } from '@hello-pangea/dnd'
-import { IoIosCloseCircleOutline } from "react-icons/io";
 import { AiFillCloseCircle } from "react-icons/ai";
 
 interface DraggableImagesProps {
@@ -59,8 +58,8 @@ const DraggableImagesComponent = ({images, setImages} :DraggableImagesProps) => 
   return (
     <div className="py-3">
       <label className="inline-block">
-        <span className="btn-blue text-white px-3 py-1.5 rounded cursor-pointer">파일 선택</span> 
-        <span className="ml-2 text-gray-300">* 드래그하여 순서 조정 가능합니다.</span>
+        <span className="btn-blue text-white px-3 py-1.5 rounded cursor-pointer text-sm">파일 선택</span> 
+        <span className="ml-2  opacity-80">* 드래그하여 순서 조정 가능합니다.</span>
         <input type="file" accept="image/*" className='hidden' multiple onChange={handleFileUpload} />
       </label>
 

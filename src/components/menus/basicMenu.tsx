@@ -36,7 +36,7 @@ function BasicMenu() {
               <li className="flex items-center pr-6 text-lg">
                 <NavLink className="flex items-center "  to='/cart'>
                   Cart 
-                  <span className="flex items-center justify-center bg-warn w-4.5 h-4.5 ml-1 text-[12   px] rounded-full">{itemQuantity}</span>
+                  <span className="flex items-center justify-center bg-warn w-4 h-4 ml-1 text-[12px] rounded-full">{itemQuantity}</span>
                 </NavLink>
               </li>
             </>

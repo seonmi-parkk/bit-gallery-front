@@ -8,7 +8,8 @@ interface ProductDto {
   pdesc : string,
   uploadedFileNames : string[],
   status : string,
-  statusName? : string
+  statusName? : string,
+  productCategories : string[],
 }
 
 interface ProductListDto {
