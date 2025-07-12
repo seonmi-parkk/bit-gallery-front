@@ -12,7 +12,7 @@ function useCustomMove() : UseCustomMoveReturn { // return 타입 = UseCustomMov
   const sizeStr: string | null = queryParams.get('size')
 
   const page : number = pageStr ? Number(pageStr) : 1
-  const size : number = sizeStr ? Number(sizeStr) : 8
+  const size : number = sizeStr ? Number(sizeStr) : 16
 
   const queryDefault = createSearchParams({// -> queryparameter 생성
     page: String(page),
@@ -33,7 +33,7 @@ function useCustomMove() : UseCustomMoveReturn { // return 타입 = UseCustomMov
 
     if(pageParam) {
       const pageNum = Number(pageParam.page) || 1
-      const sizeNum = Number(pageParam.size) || 8
+      const sizeNum = Number(pageParam.size) || 16
       queryStr = createSearchParams({
         page: String(pageNum),
         size: String(sizeNum),

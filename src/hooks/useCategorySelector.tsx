@@ -1,8 +1,8 @@
 
 import { useEffect, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import jwtAxios from "../util/jwtUtil";
 import { showErrorToast } from "../util/toastUtil";
+import axios from "axios";
 
 
 export const useCategorySelector = (initialNames: string[] = [], maxCount?: number) => {
@@ -12,7 +12,7 @@ export const useCategorySelector = (initialNames: string[] = [], maxCount?: numb
   const {data: allCategories = [], isSuccess} = useQuery({
     queryKey: ['categorys'], // 캐싱할 때 보관할 이름 
     queryFn: async () => {
-      const res = await jwtAxios.get(`http://localhost:8080/categories/list`)
+      const res = await axios.get(`http://localhost:8080/categories/list`)
 
       if (res.data.code !== 200) {
         showErrorToast("카테고리 가져오기 실패했습니다. 잠시후 다시 시도해주세요.");
