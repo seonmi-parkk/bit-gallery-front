@@ -19,3 +19,12 @@ interface ProductListDto {
   price : number,
   uploadedFileNames : string[],
 }
+
+interface AdminProductResponseDto {
+  pno : number,
+  pname : string,
+  price : number,
+  createdAt : string,
+  sellerNickname : string,
+  productImage : string
+}
