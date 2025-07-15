@@ -29,7 +29,7 @@ function BasicLayout() {
       <div className="bg-main min-h-[calc(100vh-5rem)]">
         <BasicMenu/>
         <div className="w-full mt-20 px-6 py-8">
-          <main className=" w-full px-5 py-5">
+          <main className=" w-full md:px-5 md:py-5">
             <Outlet />
           </main>
           {/* <aside className="bg-green-300 md:w-1/3 lg:w-1/4 px-5 py-40">
