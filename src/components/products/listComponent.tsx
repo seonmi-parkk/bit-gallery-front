@@ -31,7 +31,7 @@ const ListComponent = ({serverData} : {serverData:pageResponseDto<ProductDto>}) 
   const [selectedPno, setSelectedPno] = useState<number>(0);
 
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
-  const imageUrl = `${apiUrl}/upload/product/thumb/s_`;
+  const imageUrl = `${apiUrl}/upload/product/list_thumb/t_`;
 
   const query = useQueryClient()
 

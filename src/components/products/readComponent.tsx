@@ -21,6 +21,7 @@ const ReadComponent = ({ data }: { data: ProductDto }) => {
 
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
   const imageUrl = `${apiUrl}/upload`;
+  const wmThumbImageUrl = `${imageUrl}/product/wm_thumb/w_`;
 
   const navigate = useNavigate();
 
@@ -217,7 +218,7 @@ const ReadComponent = ({ data }: { data: ProductDto }) => {
             >
               {data.uploadedFileNames.map((imgFile: string, idx: number) => (
                 <SwiperSlide key={idx}>
-                  <img src={`${imageUrl}/product/thumb/s_${imgFile}`} className="w-full h-full max-w-full max-h-[calc(100vh-260px)] object-contain" />
+                  <img src={wmThumbImageUrl+imgFile} className="w-full h-full max-w-full max-h-[calc(100vh-260px)] object-contain" />
                 </SwiperSlide>
               ))}
             </Swiper>
@@ -235,7 +236,7 @@ const ReadComponent = ({ data }: { data: ProductDto }) => {
                 {data.uploadedFileNames.map((imgFile: string, idx: number) => (
                   <SwiperSlide key={idx}>
                     <img
-                      src={`${imageUrl}/product/thumb/s_${imgFile}`}
+                      src={wmThumbImageUrl+imgFile}
                       className=" w-14 h-14 sm:w-18 sm:h-18 lg:w-22 lg:h-22 2xl:w-28 2xl:h-28  object-cover border-2 hover:border-blue-500 cursor-pointer"
                     />
                   </SwiperSlide>

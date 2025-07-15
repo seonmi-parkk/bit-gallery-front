@@ -1,7 +1,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import jwtAxios from "../../util/jwtUtil"
 import { createSearchParams, useNavigate } from "react-router";
-import { showErrorToast } from "../../util/toastUtil";
+import { showErrorToast, showSuccessToast } from "../../util/toastUtil";
 import useCustomMove from "../../hooks/useCustomMove";
 import type { AxiosError } from "axios";
 
@@ -43,12 +43,13 @@ const ProductsComponent = () => {
   const approveMutation = useMutation({
     mutationFn: async ({ action, pno }: { action: string; pno: number }) => {
       const res = await jwtAxios.patch(`${apiUrl}/products/${pno}/${action}`)
-      return res.data
+      return { data: res.data, action, pno };
     },
-    onSuccess: ({ pno }) => {
+    onSuccess: ({ action, pno }) => {
       queryClient.invalidateQueries({ queryKey: ['admin/products/approval-requests'] }) 
       queryClient.invalidateQueries({ queryKey: ['product', String(pno)] })
       queryClient.invalidateQueries({ queryKey: ['products/list'], exact: false })
+      showSuccessToast(action == 'approved'? '승인 처리되었습니다.' : '반려 처리되었습니다.')
     },
     onError: (error) => {
           const axiosError = error as AxiosError<ApiResponse>;

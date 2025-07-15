@@ -15,14 +15,14 @@ import { useCategorySelector } from "../../hooks/useCategorySelector"
 
 const ModifyComponent = ({ product }: { product: ProductDto }) => {
   const { moveToList, moveToRead } = useCustomMove()
-  
-  const urlPrefix = API_BASE_URL+"/upload/product/thumb/s_";
+
+  const wmThumbImageUrl = API_BASE_URL+"/upload/product/list_thumb/t_";
   
   const initialImages: DraggableImageItem[] = []
 
   // 기존 이미지 노출
   product.uploadedFileNames.forEach((value) => {
-    initialImages.push({id:value, url:urlPrefix+value, isNew:false})
+    initialImages.push({id:value, url:wmThumbImageUrl+value, isNew:false})
   })
   
 
@@ -121,9 +121,6 @@ const ModifyComponent = ({ product }: { product: ProductDto }) => {
       deleteMutation.mutate()
     }
   }
-
-  const apiUrl = import.meta.env.VITE_API_BASE_URL;
-  const imageUrl = `${apiUrl}/upload/product/thumb/s_`;
 
   return (
     <div className="mt-10 p-4 inner">

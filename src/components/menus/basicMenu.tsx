@@ -52,7 +52,7 @@ function BasicMenu() {
             :
             <div className="flex items-center gap-4.5 text-white  m-1 rounded">
               {loginState.roleNames.includes('MANAGER') &&
-                <a className="flex items-center text-white" href="/manager">
+                <a className="flex items-center text-white" href="/admin">
                   <GrUserAdmin className="text-lg mr-1"/>관리자
                 </a>
               }
