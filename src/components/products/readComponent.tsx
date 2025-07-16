@@ -267,9 +267,12 @@ const ReadComponent = ({ data }: { data: ProductDto }) => {
 
             <div className="relative mb-4 flex w-full flex-wrap items-stretch">
               <div className="w-14 mr-3 font-bold">상세설명</div>
-              <div className="">
-                {data.pdesc}
-              </div>
+              
+              <p dangerouslySetInnerHTML={{ __html: data.pdesc.replace(/\n/g, '<br />') }}
+                className="leading-relaxed" 
+              >
+              
+              </p>
             </div>
 
             <div className="relative mb-3 flex w-full flex-wrap items-stretch">

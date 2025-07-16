@@ -11,12 +11,12 @@ const OrderItemComponent = ({orderItem, setIsOpenModal, setSelectedPno}:OrderIte
   const { pno, pname, price, imageFile} = orderItem
 
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
-  const imageUrl = `${apiUrl}/upload/product/thumb/s_`;
+  const imageUrl = `${apiUrl}/upload/product/list_thumb/t_`;
 
   return (
     <li 
       key={pno} 
-      className={`border-t border-gray-700 cart-item cursor-pointer`}
+      className={`border-t border-main-4 cart-item cursor-pointer`}
       onClick={()=> {setIsOpenModal(true); setSelectedPno(pno);}}
     >
       <div className="flex items-start w-full px-6 py-4">

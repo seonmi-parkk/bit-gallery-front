@@ -32,16 +32,16 @@ const OrderDetailComponent = ({data}:{data:OrderDetailResponse}) => {
       <div className="my-14">
         
         <h4 className="font-bold mt-10 mb-3">주문 정보</h4>
-        <div className="bg-main-2 rounded-lg px-6 py-4 border-gray-700 border">
+        <div className="bg-main-2 rounded-lg px-6 py-4 border-main-4 border">
           <p className="mb-2"><span className="font-medium mr-2">주문번호</span> {data.ono}</p>
           <p className=" text-gray-300"><span className="font-medium mr-2">주문일시</span> {data.paidAt.toString()}</p>
         </div>
 
       
         <h4 className="font-bold mt-10 mb-3">결제 정보</h4>
-        <div className="bg-main-2 rounded-lg px-6 py-4 border-gray-700 border">
+        <div className="bg-main-2 rounded-lg px-6 py-4 border-main-4 border">
           <p className="mb-2"><span className="font-medium mr-2">결제방법</span> {data.paymentType}</p>
-          <p className=" text-gray-300"><span className="font-medium mr-2">총 주문 금액</span> {data.totalPrice} 원</p>
+          <p className=" text-gray-300"><span className="font-medium mr-2">총 주문 금액</span> {data.totalPrice.toLocaleString()} 원</p>
         </div>
 
         <h4 className="relative font-bold mt-10 mb-3">

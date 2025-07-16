@@ -12,7 +12,7 @@ const OrderComponent = ({orderData}: {orderData: OrderPreviewDto[]}) => {
   console.log("orderDataorderData:" , orderData);
 
   const apiUrl = import.meta.env.VITE_API_BASE_URL;
-  const imageUrl = `${apiUrl}/upload/product/thumb/s_`;
+  const imageUrl = `${apiUrl}/upload/product/list_thumb/t_`;
 
   // 주문 상품 토글 처리
   const [isExpanded, setIsExpanded] = useState<boolean>(false);
@@ -121,7 +121,7 @@ const OrderComponent = ({orderData}: {orderData: OrderPreviewDto[]}) => {
         <h4 className="mb-3 font-medium">결제 방법</h4>
         <button 
           data-payment="KAKAOPAY"
-          className={` rounded-sm px-4 py-3 ${paymentType === "KAKAOPAY"?"bg-main-3":"bg-main-4"}`}
+          className={` rounded-sm px-4 py-3 ${paymentType === "KAKAOPAY"?"btn-blue":"bg-main-4"}`}
           onClick={(e)=>setPaymentType(e.currentTarget.dataset.payment)}
         >
           카카오페이

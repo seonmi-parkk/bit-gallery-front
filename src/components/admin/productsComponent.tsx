@@ -88,7 +88,12 @@ const ProductsComponent = () => {
               </tr>
             </thead>
             <tbody>
-              {data.map((product:AdminProductResponseDto, index:number) => (
+              {data.length == 0 && 
+                <tr>
+                  <td colSpan={7}><p className="py-4">새로 등록된 상품이 없습니다.</p></td>
+                </tr>
+              }
+              {data.length != 0 && data.map((product:AdminProductResponseDto, index:number) => (
                 <tr key={index}>
                   <td className="hidden sm:table-cell">{product.pno}</td>
                   <td className="w-1/2 sm:w-1/3 md:w-1/4 text-left"

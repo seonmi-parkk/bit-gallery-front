@@ -3,7 +3,7 @@ import { createBrowserRouter, Navigate } from "react-router";
 import { lazy, Suspense } from "react";
 import BasicLayout from "../layouts/basicLayout";
 import productRouter from "./productRouter";
-import userRouter from "./adminRouter";
+import userRouter from "./userRouter";
 import todoRouter from "./todoRouter";
 import orderRouter from "./orderRouter";
 import paymentRouter from "./paymentRouter";
